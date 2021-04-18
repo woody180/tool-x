@@ -6,7 +6,10 @@ require_once 'Config/database.php';
 require_once 'Config/app.php';
 
 // Display errors
-if (ERROR_HANDLING) ini_set('display_errors', 1);
+if (ERROR_HANDLING) 
+    ini_set('display_errors', 1);
+else
+    ini_set('display_errors', 0);
 
 // Helper library
 require_once 'Helpers/Library.php';
