@@ -69,7 +69,7 @@ $router->post('api/one', function($req, $res) {
             ->with($body)
             ->rules([
                 'name' => 'required|alpha',
-                'username' => 'required|min[4]|max[20]alpha_num',
+                'username' => 'required|min[4]|max[20]|alpha_num',
                 'email' => 'valid_email|min[5]',
                 'password' => 'min[5]'
             ])
