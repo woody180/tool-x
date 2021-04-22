@@ -77,8 +77,28 @@ class Validation {
         
         if ($param === 'valid_url') {
             
-            if (!empty($bodyVal) && !filter_var($bodyVal, FILTER_VALIDATE_URL))
-                $this->errors[$name][] = "Url is invalid!";
+            $urlParts = explode('://', $bodyVal);
+            $partOne = $urlParts[0] ?? '';
+            $partTwo = $urlParts[1] ?? '';
+            $validParts = ['http://', 'https://', 'ftp://'];
+
+            $str = '';
+            if (empty($partTwo)) {
+                $newUrl = $bodyVal;
+                $str = $this->str2url($newUrl);
+            } else {
+                $newUrl = $partTwo;
+                $str = $this->str2url($partTwo);
+            }
+
+            if (strcmp($newUrl, $str) < 0) {
+                $this->errors[$name][] = 'Url is invalid';
+            } else if (!empty($partTwo) && !in_array($partOne, $validParts)) {
+                
+                if (!filter_var($bodyVal, FILTER_VALIDATE_URL)) {
+                    $this->errors[$name][] = 'Url is invalid';
+                }
+            }
         }
 
 
