@@ -69,7 +69,9 @@ class Router {
 
             if (preg_match_all("/" . $route . "/", $this->request->url, $match)) {
 
-                if (isset($match[0]) && isset($match[0][0]) && $match[0][0] === $this->request->url) {
+                $queryStr = !empty($this->request->query) ? '?' . http_build_query($this->request->query) : null;
+                $compareTo = $queryStr ? explode($queryStr, $this->request->url)[0] : $this->request->url;
+                if (isset($match[0]) && isset($match[0][0]) && $match[0][0] === $compareTo) {
                     return $method;
                 } else {
                     continue;
@@ -78,7 +80,7 @@ class Router {
         }
 
         return 0;
-    }    
+    }
     
     
     private function runMiddleware($func) {
