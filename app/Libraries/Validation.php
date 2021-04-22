@@ -80,7 +80,7 @@ class Validation {
             $urlParts = explode('://', $bodyVal);
             $partOne = $urlParts[0] ?? '';
             $partTwo = $urlParts[1] ?? '';
-            $validParts = ['http://', 'https://', 'ftp://'];
+            $validParts = ['http', 'https', 'ftp'];
 
             $str = '';
             if (empty($partTwo)) {
@@ -93,11 +93,13 @@ class Validation {
 
             if (strcmp($newUrl, $str) < 0) {
                 $this->errors[$name][] = 'Url is invalid';
-            } else if (!empty($partTwo) && !in_array($partOne, $validParts)) {
+            } else if (!empty($partTwo) && in_array($partOne, $validParts)) {
                 
                 if (!filter_var($bodyVal, FILTER_VALIDATE_URL)) {
                     $this->errors[$name][] = 'Url is invalid';
                 }
+            } else if (!empty($partTwo) && !in_array($partOne, $validParts)) {
+                $this->errors[$name][] = 'Url is invalid';
             }
         }
 
