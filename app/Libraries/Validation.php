@@ -1,4 +1,4 @@
-<?php namespace App\Libraries;
+<?php namespace App\ThirdParty;
 
 /*
  * Avaialble validators
@@ -77,10 +77,17 @@ class Validation {
         
         if ($param === 'valid_url') {
             
+            if (!empty($bodyVal) && !filter_var($bodyVal, FILTER_VALIDATE_URL))
+                $this->errors[$name][] = "Url is invalid!";
+        }
+
+
+        if ($param === 'valid_slug') {
+
             $str = $this->str2url($bodyVal);
-            
+
             if (!empty($bodyVal) && $str !== $bodyVal)
-                $this->errors[$name][] = "url is invalid!";
+                $this->errors[$name][] = "Slug is invalid!";
         }
         
         

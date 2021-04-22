@@ -83,7 +83,8 @@ $router->post('api/one', function($req, $res) {
 3. alpha_num
 4. valid_email
 5. valid_url
-6. min[]
-7. max[]
-8. required
-9. valid_input
+6. valid_slug
+7. min[]
+8. max[]
+9. required
+10. valid_input
