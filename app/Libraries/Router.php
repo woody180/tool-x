@@ -48,37 +48,28 @@ class Router {
     }
     
     
-    
+        
     // Placeholder to regex
     protected function checkPatternMatch() {
         $routes = [];
 
         foreach ($this->routes[$this->request->getMethod] as $route => $method) {
             $url = str_replace('/', '\/', $route);
-            $url = str_replace('(:num)', '[0-9,]+', $url);
-            $url = str_replace('(:alpha)', '[a-zA-Zა-ზ,]+', $url);
-            $url = str_replace('(:alphanum)', '[a-zA-Zა-ზ0-9,]+', $url);
-            $url = str_replace('(:any)', '(.*)', $url);
+            $url = str_replace('(:any)', '.*', $url);
+            $url = str_replace('(:num)', '\d+', $url);
+            $url = str_replace('(:alpha)', '[a-zA-Zა-ზ-]+', $url);
+            $url = str_replace('(:alphanum)', '[a-zA-Zა-ზ0-9-]+', $url);
 
             // Push to new routes array
             $routes[$this->request->getMethod][$url] = $method;
         }
 
         // Find requested url
-        $index = -1;
         foreach ($routes[$this->request->getMethod] as $route => $method) {
 
-            $index ++;
+            if (preg_match_all("/" . $route . "/", $this->request->url, $match)) {
 
-            if (preg_match("~" . $route . "~", $this->request->url, $match)) {
-                
-                // Routes ans assoc array
-                $tempRoutesArr = array_keys($this->routes[$this->request->getMethod]);
-                $routeUrlArr = $tempRoutesArr[$index] == '/' ? ['/'] : explode('/', $tempRoutesArr[$index]);
-
-                // Check if url parameters and route url are the same count
-                $urlParam = empty($this->request->urlSegments) ? ['/'] : $this->request->urlSegments;
-                if (count($routeUrlArr) == count($urlParam)) {
+                if (isset($match[0]) && isset($match[0][0]) && $match[0][0] === $this->request->url) {
                     return $method;
                 } else {
                     continue;
@@ -87,8 +78,7 @@ class Router {
         }
 
         return 0;
-    }
-    
+    }    
     
     
     private function runMiddleware($func) {
@@ -124,7 +114,7 @@ class Router {
                 
                 // Check if $callback is callable
                 if (is_callable($callback[0])) {
-                    
+
                     // Check if route has some middleware
                     if ($callback[1]) $this->runMiddleware($callback[1]);
 
