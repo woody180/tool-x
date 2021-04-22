@@ -67,10 +67,12 @@ class Router {
         // Find requested url
         foreach ($routes[$this->request->getMethod] as $route => $method) {
 
-            if (preg_match_all("/" . $route . "/", $this->request->url, $match)) {
+            $queryStr = !empty($this->request->query) ? '?' . http_build_query($this->request->query) : null;
+            $compareTo = $queryStr ? explode($queryStr, $this->request->url)[0] : $this->request->url;
+            $compareTo = empty($compareTo) ? '/' : $compareTo;
 
-                $queryStr = !empty($this->request->query) ? '?' . http_build_query($this->request->query) : null;
-                $compareTo = $queryStr ? explode($queryStr, $this->request->url)[0] : $this->request->url;
+            if (preg_match_all("/" . $route . "/", $compareTo, $match)) {
+
                 if (isset($match[0]) && isset($match[0][0]) && $match[0][0] === $compareTo) {
                     return $method;
                 } else {
