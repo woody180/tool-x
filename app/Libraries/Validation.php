@@ -126,10 +126,7 @@ class Validation {
         
         if ($param === 'valid_input') {
             
-            $str = $this->str2url($bodyVal, [
-                'lowercase' => false,
-                'delimiter' => ' '
-            ]);
+            $str = strip_tags($bodyVal);
             
             if (!empty($bodyVal) && $str != $bodyVal)
                 $this->errors[$name][] = "None secure characters added.";
