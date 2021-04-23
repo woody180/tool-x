@@ -55,10 +55,11 @@ class Router {
 
         foreach ($this->routes[$this->request->getMethod] as $route => $method) {
             $url = str_replace('/', '\/', $route);
-            $url = str_replace('(:any)', '.*', $url);
+            $url = str_replace('(:continue)', '.*', $url);
             $url = str_replace('(:num)', '\d+', $url);
-            $url = str_replace('(:alpha)', '[a-zA-Zა-ზ-]+', $url);
-            $url = str_replace('(:alphanum)', '[a-zA-Zა-ზ0-9-]+', $url);
+            $url = str_replace('(:alpha)', '[a-zA-Zა-ზ]+', $url);
+            $url = str_replace('(:alphanum)', '[a-zA-Z]+', $url);
+            $url = str_replace('(:segment)', '[\w-]+', $url);
 
             // Push to new routes array
             $routes[$this->request->getMethod][$url] = $method;
