@@ -1,4 +1,5 @@
-# Creating routes
+# Router
+## Creating routes
 
 Go to the app/Routes directory. Create route file add add two lines to it...
 ```
@@ -8,7 +9,7 @@ use App\Libraries\Router;
 $router = Router::getInstance();
 ```
 
-# Router HTTP verbs
+## Router HTTP verbs
 
 ```
 $router->get('/', function($req, $res) {});
@@ -38,7 +39,7 @@ $router->get('/', function($req, $res) {
 |(:segment)|Secured url characters such as dashes and low dashes, numbers and alphabetical characters|
 
 
-# Router configuration
+## Router configuration
 Configuration file can be found in ```app\Config\routes.php``` file
 Add route path without app\Routes directory
 
