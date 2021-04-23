@@ -27,6 +27,26 @@ $router->get('/', function($req, $res) {
 });
 ```
 
+## Router placeholder
+
+| Placeholders      | Description |
+| ----------- | ----------- |
+|(:continue)|Continues url segments|
+|(:alpha)|Only alphabetical characters|
+|(:num)|Only numeric characters|
+|(:alphanum)|Only alphabetical and numeric characters|
+|(:segment)|Secured url characters such as dashes and low dashes, numbers and alphabetical characters|
+
+
+# Router configuration
+Configuration file can be found in ```app\Config\routes.php``` file
+Add route path without app\Routes directory
+
+```['Back', 'Front']```
+
+Rotues will be search in app\Routes\Back and app\Routes\Front - automatically.
+
+
 # Middlewares
 
 Middleware file has to be inside the ```app/Rotutes``` directory. It is a third parameter of the $router http verb method.
