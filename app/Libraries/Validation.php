@@ -50,7 +50,7 @@ class Validation {
             preg_match('/min([\[](.*)[\]])/', $param, $match);
             $num = $match[2];
             
-            if (!empty($bodyVal) && strlen($bodyVal) < $num)
+            if (!empty($bodyVal) && mb_strlen($bodyVal) < $num)
                 $this->errors[$name][] = "$name field must has at least $num characters.";
         }
         
@@ -58,7 +58,7 @@ class Validation {
             preg_match('/max([\[](.*)[\]])/', $param, $match);
             $num = $match[2];
             
-            if (!empty($bodyVal) && strlen($bodyVal) > $num)
+            if (!empty($bodyVal) && mb_strlen($bodyVal) > $num)
                 $this->errors[$name][] = "$name field maximum characters constraint is - $num.";
         }
         
