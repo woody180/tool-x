@@ -47,19 +47,19 @@ class Validation {
     private function makeValid(string $param, string $name, $bodyVal) {
         
         if (preg_match('/min\[.*\]/', $param)) {
-            $num = explode('[', $param);
-            $num = explode(']', $num[1])[0];
+            preg_match('/min([\[](.*)[\]])/', $param, $match);
+            $num = $match[2];
             
             if (!empty($bodyVal) && strlen($bodyVal) < $num)
                 $this->errors[$name][] = "$name field must has at least $num characters.";
         }
         
         if (preg_match('/max\[.*\]/', $param)) {
-            $num = explode('[', $param);
-            $num = explode(']', $num[1])[0];
+            preg_match('/max([\[](.*)[\]])/', $param, $match);
+            $num = $match[2];
             
             if (!empty($bodyVal) && strlen($bodyVal) > $num)
-                $this->errors[$name][] = "$name field maximum characters contstaint is - $num.";
+                $this->errors[$name][] = "$name field maximum characters constraint is - $num.";
         }
         
         if ($param === 'required') {
