@@ -1,4 +1,4 @@
-<?php $this->layout('partials/template') ?>
+<?php $this->layout('partials/template', ['title' => APPNAME]) ?>
 
 <?php $this->start('mainSection') ?>
 <section class="uk-section">
