@@ -1,4 +1,4 @@
-<?php namespace App\ThirdParty;
+<?php namespace App\Libraries;
 
 /*
  * Avaialble validators
