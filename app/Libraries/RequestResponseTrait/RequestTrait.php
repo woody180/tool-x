@@ -52,7 +52,7 @@ trait RequestTrait {
         $queryStr = null;
 
         if ( isset($queryString[0]) && isset($queryString[0][0]) ) {
-            parse_str($queryString[0][0], $queryArr);
+            parse_str($queryString[1][0], $queryArr);
             $queryStr = $queryString[0][0];
         } else {
             $queryArr = null;
