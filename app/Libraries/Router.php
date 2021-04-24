@@ -57,7 +57,7 @@ class Router {
             $url = str_replace('/', '\/', $route);
             $url = str_replace('(:continue)', '[\w\-_].*', $url);           // Continues segment
             $url = str_replace('(:num)', '\d+', $url);                      // Only numbers
-            $url = str_replace('(:hash)', '[\#][\w\-_]+', $url);            // Everything after hash tag
+            // $url = str_replace('(:hash)', '[\#][\w\-_]+', $url);            // Everything after hash tag
             $url = str_replace('(:alpha)', '[a-zA-Zა-ზа-яА-Я]+', $url);     // Only alphabetical
             $url = str_replace('(:alphanum)', '[a-zA-Zа-яА-Я\d]+', $url);   // Only alphabetical and numbers
             $url = str_replace('(:segment)', '[\w\-_]+', $url);             // Only alpha, num, dashes, lowdashes and numbers

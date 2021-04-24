@@ -7,6 +7,7 @@
  * alpha_num
  * valid_email
  * valid_url
+ * valid_slug
  * min[]
  * max[]
  * required
