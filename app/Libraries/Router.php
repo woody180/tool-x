@@ -55,11 +55,12 @@ class Router {
 
         foreach ($this->routes[$this->request->getMethod] as $route => $method) {
             $url = str_replace('/', '\/', $route);
-            $url = str_replace('(:continue)', '.*', $url);
-            $url = str_replace('(:num)', '\d+', $url);
-            $url = str_replace('(:alpha)', '[a-zA-Zა-ზ]+', $url);
-            $url = str_replace('(:alphanum)', '[a-zA-Z]+', $url);
-            $url = str_replace('(:segment)', '[\w-]+', $url);
+            $url = str_replace('(:continue)', '[\w\-_].*', $url);           // Continues segment
+            $url = str_replace('(:num)', '\d+', $url);                      // Only numbers
+            $url = str_replace('(:hash)', '[\#][\w\-_]+', $url);            // Everything after hash tag
+            $url = str_replace('(:alpha)', '[a-zA-Zა-ზа-яА-Я]+', $url);     // Only alphabetical
+            $url = str_replace('(:alphanum)', '[a-zA-Zа-яА-Я\d]+', $url);   // Only alphabetical and numbers
+            $url = str_replace('(:segment)', '[\w\-_]+', $url);             // Only alpha, num, dashes, lowdashes and numbers
 
             // Push to new routes array
             $routes[$this->request->getMethod][$url] = $method;
@@ -68,13 +69,13 @@ class Router {
         // Find requested url
         foreach ($routes[$this->request->getMethod] as $route => $method) {
 
-            $queryStr = !empty($this->request->query) ? '?' . http_build_query($this->request->query) : null;
+            $queryStr = !empty($this->request->query) ? $this->request->queryStr : null;
             $compareTo = $queryStr ? explode($queryStr, $this->request->url)[0] : $this->request->url;
             $compareTo = empty($compareTo) ? '/' : $compareTo;
+            
+            if (preg_match("/" . $route . "/", $compareTo, $match)) {
 
-            if (preg_match_all("/" . $route . "/", $compareTo, $match)) {
-
-                if (isset($match[0]) && isset($match[0][0]) && $match[0][0] === $compareTo) {
+                if (isset($match[0]) && $match[0] === $compareTo) {
                     return $method;
                 } else {
                     continue;

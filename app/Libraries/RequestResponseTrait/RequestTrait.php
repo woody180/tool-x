@@ -48,11 +48,15 @@ trait RequestTrait {
             
         
         // Query string
-        $queryString = explode('?', CURRENT_URL)[1] ?? null;
-        if ($queryString)
-            parse_str($queryString, $queryArr);
-        else
+        preg_match_all('/[\?](.*)[\/]?+/', CURRENT_URL, $queryString);
+        $queryStr = null;
+
+        if ( isset($queryString[0]) && isset($queryString[0][0]) ) {
+            parse_str($queryString[0][0], $queryArr);
+            $queryStr = $queryString[0][0];
+        } else {
             $queryArr = null;
+        }
         
         
         $paramsObj = new stdClass();
@@ -61,6 +65,7 @@ trait RequestTrait {
         $paramsObj->urlSegments = $this->urlParams;
         $paramsObj->getMethod = $this->getMethod;
         $paramsObj->query = $queryArr;
+        $paramsObj->queryStr = $queryStr;
         $paramsObj->files = isset($_FILES['files']) ? $_FILES['files'] : $_FILES;
         
 
