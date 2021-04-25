@@ -436,14 +436,14 @@ class Library {
             $sorter[$ii]=$va[$key];
         }
         asort($sorter);
-        
+
         foreach ($sorter as $ii => $va) {
             if (is_array($array[$ii][$nextArrayKey])) {
                 self::array_value_multisort($array[$ii][$nextArrayKey], $key, $nextArrayKey);
             }
             $ret[$ii]=$array[$ii];
         }
-        return $ret;
+        $array = $ret;
     }
 
 
