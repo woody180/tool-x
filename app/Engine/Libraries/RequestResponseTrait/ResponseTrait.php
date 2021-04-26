@@ -10,7 +10,7 @@ trait ResponseTrait {
     // Respond as JSON
     public function send($obj) {
         header("Content-Type: application/json; charset=UTF-8");
-        echo \App\Helpers\Library::toJSON($obj);
+        echo \App\Engine\Libraries\Library::toJSON($obj);
     }
     
     

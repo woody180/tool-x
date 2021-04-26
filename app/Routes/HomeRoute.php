@@ -1,15 +1,15 @@
 <?php
 
-use App\Libraries\Router;
-use App\Helpers\Library;
+use App\Engine\Libraries\Router;
+use App\Engine\Libraries\Library;
 
 $router = Router::getInstance();
 
 $router->get('/', function($req, $res) {
     
     $res->render('welcome', [
-        'title' => 'title',
-        'content' => 'something'
+        'title' => 'APP Title',
+        'description' => 'This is the APP description'
     ]);
 });
 

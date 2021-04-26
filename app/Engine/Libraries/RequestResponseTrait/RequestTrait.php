@@ -35,7 +35,7 @@ trait RequestTrait {
         $reqString = file_get_contents('php://input');
         $data = [];
 
-        if (!empty($reqString) && \App\Helpers\Library::isJSON($reqString)) {
+        if (!empty($reqString) && \App\Engine\Libraries\Library::isJSON($reqString)) {
             $data = json_decode($reqString);
         } else {
             parse_str($reqString, $data);

@@ -1,4 +1,4 @@
-<?php namespace App\Helpers;
+<?php namespace App\Engine\Libraries;
 
 class Library {
 
