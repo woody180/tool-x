@@ -5,7 +5,7 @@ Go to the app/Routes directory. Create route file add add two lines to it...
 ```
 <?php
 
-use App\Libraries\Router;
+use App\Engine\Libraries\Router;
 $router = Router::getInstance();
 ```
 
@@ -50,7 +50,7 @@ Rotues will be search in app\Routes\Back and app\Routes\Front - automatically.
 
 # Middlewares
 
-Middleware file has to be inside the ```app/Rotutes``` directory. It is a third parameter of the $router http verb method.
+Middleware Files have to be inside the ```app/Routes``` directory. It is a third parameter of the $router http verb method.
 
 ```
 $router->get('url', 'callback or Controller@method', 'middleware')
@@ -74,9 +74,9 @@ Views are under ```app/Views``` directory. It's possible to render them from rou
 
 # Validation
 
-Validation seats under ```App\Libraries\Validation``` namespace. 
+Validation seats under ```App\Engine\Libraries\Validation``` namespace. 
 
-1. Use validation - ``` use  App\Libraries\Validation;```
+1. Use validation - ``` use  App\Engine\Libraries\Validation;```
 2. Initialize - ``` $validation = new Validation(); ```
 3. Take a look at example below
 
