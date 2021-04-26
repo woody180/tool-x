@@ -1,4 +1,4 @@
-<?php namespace App\Database;
+<?php namespace App\Engine\Database;
 
 use RedBeanPHP\Facade as R;
 
