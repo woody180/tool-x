@@ -74,7 +74,7 @@ CONST CUSTOM_HELPERS = ['myCustomHelperOne', 'myCustomHelperTwo'];
 ```
 
 ## Loading helper locally
-Add custom helper inside the route file using **App\Engine\Libraries\Library** Library class. Watch example below.
+Add custom helper inside the route file using **App\Engine\Libraries\Library** Library class. Take a look at the example below.
 
 ```
 use App\Engine\Libraries\Router;
