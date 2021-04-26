@@ -62,6 +62,38 @@ Middleware file name must be the same as function name inside!
 
 Middleware function receives two arguments inside as ```$request``` and ```$response```. They are the same arguments as inside the ```$router``` verb method (get, post..)
 
+# Custom helper files
+Helper files are located inside **app/Helpers** directory and all your custom helpers must located there.
+
+To load custom helpers there are two ways - loading them globally and for individual route.
+
+## Loading helper globally 
+Go to the **app/Config/helpers.php** Directory and add helper file names in to the array, without extention names (.php)
+```
+CONST CUSTOM_HELPERS = ['myCustomHelperOne', 'myCustomHelperTwo'];
+```
+
+## Loading helper locally
+Add custom helper inside the route file using **App\Engine\Libraries\Library** Library class. Watch example below.
+
+```
+use App\Engine\Libraries\Router;
+use App\Engine\Libraries\Library;
+
+$router = Router::getInstance();
+
+$router->get('/', function($req, $res) {
+
+    // Loading custom helpers
+    Library::helpers(['myCustomHelperOne', 'myCustomHelperTwo']);
+    
+    $res->render('welcome', [
+        'title' => 'APP Title',
+        'description' => 'This is the APP description'
+    ]);
+});
+```
+
 # Render views
 
 Views are under ```app/Views``` directory. It's possible to render them from router as well as from controller file. The render method is under router/controller ```$response``` argument
