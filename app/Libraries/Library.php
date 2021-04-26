@@ -1,6 +1,18 @@
 <?php namespace App\Helpers;
 
 class Library {
+
+
+    // Loading custon helper files
+    public static function helpers(array $arrayPaths) {
+
+        foreach ($arrayPaths as $path) {
+            if (!file_exists(APPROOT . "/Helpers/{$path}.php")) die("Wrong helper file path for - <b>{$path}.php</b>");
+
+            require_once APPROOT . "/Helpers/{$path}.php";
+        }
+    }
+
     // Page not found
     public static function notFound($params = ["code" => 404, "url" => NULL, "text" => NULL]) {
 

@@ -5,6 +5,7 @@ require_once 'Config/urls.php';
 require_once 'Config/database.php';
 require_once 'Config/app.php';
 require_once 'Config/routes.php';
+require_once 'Config/helpers.php';
 
 // Display errors
 if (ERROR_HANDLING) 
@@ -13,7 +14,14 @@ else
     ini_set('display_errors', 0);
 
 // Helper library
-require_once 'Helpers/Library.php';
+if (!empty(CUSTOM_HELPERS)) {
+    foreach (CUSTOM_HELPERS as $helperFile) {
+        if (!file_exists(APPROOT . "/Helpers/{$helperFile}.php")) die("Wrong helper file path for - <b>{$helperFile}.php</b>");
+
+        require_once APPROOT . "/Helpers/{$helperFile}.php";
+    }
+}
+
 
 // Composer autoload
 require_once 'Helpers/vendor/autoload.php';
@@ -28,6 +36,7 @@ if (DATABASE) {
 require_once 'Libraries/Validation.php';
 
 // Router
+require_once 'Libraries/Library.php';
 require_once 'Libraries/RequestResponseTrait/RequestTrait.php';
 require_once 'Libraries/RequestResponseTrait/ResponseTrait.php';
 require_once 'Libraries/Router.php';
