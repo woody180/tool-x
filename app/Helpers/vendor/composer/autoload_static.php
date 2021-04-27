@@ -4,26 +4,8 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita6a0a49883780b58a1a1495bdab2cc26
+class ComposerStaticInitbe9a3927d2ffb091b461e4012d3ca89e
 {
-    public static $files = array (
-        '5640faacc2b60a961e5376b0effdd7ef' => __DIR__ . '/..' . '/formr/formr/class.formr.php',
-    );
-
-    public static $prefixLengthsPsr4 = array (
-        'L' => 
-        array (
-            'League\\Plates\\' => 14,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'League\\Plates\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/league/plates/src',
-        ),
-    );
-
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
@@ -31,9 +13,7 @@ class ComposerStaticInita6a0a49883780b58a1a1495bdab2cc26
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita6a0a49883780b58a1a1495bdab2cc26::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita6a0a49883780b58a1a1495bdab2cc26::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInita6a0a49883780b58a1a1495bdab2cc26::$classMap;
+            $loader->classMap = ComposerStaticInitbe9a3927d2ffb091b461e4012d3ca89e::$classMap;
 
         }, null, ClassLoader::class);
     }

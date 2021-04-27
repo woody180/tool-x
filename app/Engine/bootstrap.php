@@ -22,6 +22,20 @@ if (!empty(CUSTOM_HELPERS)) {
     }
 }
 
+// Include template engine
+require_once APPROOT . "/Engine/TemplateEngine/Extension/ExtensionInterface.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Data.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Directory.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/FileExtension.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Folders.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Func.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Functions.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Name.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Template.php";
+require_once APPROOT . "/Engine/TemplateEngine/Extension/Asset.php";
+require_once APPROOT . "/Engine/TemplateEngine/Extension/URI.php";
+require_once APPROOT . "/Engine/TemplateEngine/Engine.php";
+
 
 // Composer autoload
 require_once APPROOT . '/Helpers/vendor/autoload.php';
@@ -31,6 +45,8 @@ if (DATABASE) {
 
     new \App\Engine\Database\Connection();
 }
+
+
 
 // Validation library
 require_once APPROOT . '/Engine/Libraries/Validation.php';
