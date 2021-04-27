@@ -38,14 +38,15 @@ require_once APPROOT . "/Engine/TemplateEngine/Engine.php";
 
 
 // Composer autoload
-require_once APPROOT . '/Helpers/vendor/autoload.php';
-if (DATABASE) {
-    require_once APPROOT . '/Engine/Libraries/rb.php';
-    require_once APPROOT . '/Engine/Database/Connection.php';
+if (file_exists(APPROOT . '/Helpers/vendor/autoload.php')) {
+    require_once APPROOT . '/Helpers/vendor/autoload.php';
+    if (DATABASE) {
+        require_once APPROOT . '/Engine/Libraries/rb.php';
+        require_once APPROOT . '/Engine/Database/Connection.php';
 
-    new \App\Engine\Database\Connection();
+        new \App\Engine\Database\Connection();
+    }
 }
-
 
 
 // Validation library
