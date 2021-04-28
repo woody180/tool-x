@@ -51,96 +51,233 @@ class Validation {
             preg_match('/min([\[](.*)[\]])/', $param, $match);
             $num = $match[2];
             
-            if (!empty($bodyVal) && mb_strlen($bodyVal) < $num)
-                $this->errors[$name][] = "$name field must has at least $num characters.";
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if (mb_strlen($bodyVal) < $num)
+                        $this->errors[$name][] = "$name field must has at least $num characters.";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if (mb_strlen($val) < $num)
+                            $this->errors[$name][] = "$name field must has at least $num characters.";
+                    }
+                }
+            }
+            
+            
         }
         
         if (preg_match('/max\[.*\]/', $param)) {
             preg_match('/max([\[](.*)[\]])/', $param, $match);
             $num = $match[2];
             
-            if (!empty($bodyVal) && mb_strlen($bodyVal) > $num)
-                $this->errors[$name][] = "$name field maximum characters constraint is - $num.";
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if (mb_strlen($bodyVal) > $num)
+                        $this->errors[$name][] = "$name field maximum characters constraint is - $num.";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if (mb_strlen($val) > $num)
+                            $this->errors[$name][] = "$name field maximum characters constraint is - $num.";
+                    }
+                }
+            }
+            
+            
         }
         
         if ($param === 'required') {
 
-            if (strlen($bodyVal) < 1) 
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if (strlen($bodyVal) < 1) 
+                        $this->errors[$name][] = "$name field can't be empty.";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if (strlen($val) < 1) 
+                            $this->errors[$name][] = "$name field can't be empty.";
+                    }
+                }
+            } else {
                 $this->errors[$name][] = "$name field can't be empty.";
+            }
         }
         
         
         if ($param === 'valid_email') {
-            if (!empty($bodyVal) && !filter_var($bodyVal, FILTER_VALIDATE_EMAIL))
-                $this->errors[$name][] = "$name is invalid email address!";
+            
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if (!filter_var($bodyVal, FILTER_VALIDATE_EMAIL))
+                        $this->errors[$name][] = "$name is invalid email address!";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if (!filter_var($val, FILTER_VALIDATE_EMAIL))
+                            $this->errors[$name][] = "$name is invalid email address!";
+                    }
+                }
+            }
+            
+            
         }
         
         
         if ($param === 'valid_url') {
             
-            $urlParts = explode('://', $bodyVal);
-            $partOne = $urlParts[0] ?? '';
-            $partTwo = $urlParts[1] ?? '';
-            $validParts = ['http', 'https', 'ftp'];
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    $urlParts = explode('://', $bodyVal);
+                    $partOne = $urlParts[0] ?? '';
+                    $partTwo = $urlParts[1] ?? '';
+                    $validParts = ['http', 'https', 'ftp'];
 
-            $str = '';
-            if (empty($partTwo)) {
-                $newUrl = $bodyVal;
-                $str = $this->str2url($newUrl);
-            } else {
-                $newUrl = $partTwo;
-                $str = $this->str2url($partTwo);
-            }
+                    $str = '';
+                    if (empty($partTwo)) {
+                        $newUrl = $bodyVal;
+                        $str = $this->str2url($newUrl);
+                    } else {
+                        $newUrl = $partTwo;
+                        $str = $this->str2url($partTwo);
+                    }
 
-            if (strcmp($newUrl, $str) < 0) {
-                $this->errors[$name][] = 'Url is invalid';
-            } else if (!empty($partTwo) && in_array($partOne, $validParts)) {
-                
-                if (!filter_var($bodyVal, FILTER_VALIDATE_URL)) {
-                    $this->errors[$name][] = 'Url is invalid';
+                    if (strcmp($newUrl, $str) < 0) {
+                        $this->errors[$name][] = 'Url is invalid';
+                    } else if (!empty($partTwo) && in_array($partOne, $validParts)) {
+
+                        if (!filter_var($bodyVal, FILTER_VALIDATE_URL)) {
+                            $this->errors[$name][] = 'Url is invalid';
+                        }
+                    } else if (!empty($partTwo) && !in_array($partOne, $validParts)) {
+                        $this->errors[$name][] = 'Url is invalid';
+                    }
+                } else {
+                    
+                    foreach ($bodyVal as $val) {
+                        
+                        $urlParts = explode('://', $val);
+                        $partOne = $urlParts[0] ?? '';
+                        $partTwo = $urlParts[1] ?? '';
+                        $validParts = ['http', 'https', 'ftp'];
+
+                        $str = '';
+                        if (empty($partTwo)) {
+                            $newUrl = $val;
+                            $str = $this->str2url($newUrl);
+                        } else {
+                            $newUrl = $partTwo;
+                            $str = $this->str2url($partTwo);
+                        }
+
+                        if (strcmp($newUrl, $str) < 0) {
+                            $this->errors[$name][] = 'Url is invalid';
+                        } else if (!empty($partTwo) && in_array($partOne, $validParts)) {
+
+                            if (!filter_var($val, FILTER_VALIDATE_URL)) {
+                                $this->errors[$name][] = 'Url is invalid';
+                            }
+                        } else if (!empty($partTwo) && !in_array($partOne, $validParts)) {
+                            $this->errors[$name][] = 'Url is invalid';
+                        }
+                    }
                 }
-            } else if (!empty($partTwo) && !in_array($partOne, $validParts)) {
-                $this->errors[$name][] = 'Url is invalid';
             }
         }
 
 
         if ($param === 'valid_slug') {
 
-            $str = $this->str2url($bodyVal);
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    $str = $this->str2url($bodyVal);
 
-            if (!empty($bodyVal) && $str !== $bodyVal)
-                $this->errors[$name][] = "Slug is invalid!";
+                    if ($str !== $bodyVal)
+                        $this->errors[$name][] = "Slug is invalid!";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        
+                        $str = $this->str2url($val);
+                        
+                        if ($str !== $val)
+                            $this->errors[$name][] = "Slug is invalid!";
+                    }
+                }
+            }
         }
         
         
         if ($param === 'alpha') {
-            if ( !empty($bodyVal) && !preg_match('/^[a-zA-Zა-ჰа-яА-Я()]+$/', $bodyVal))
-                $this->errors[$name][] = "$name - Only alphabetical characters are allowed!";
+            
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if ( !preg_match('/^[a-zA-Zა-ჰа-яА-Я()]+$/', $bodyVal))
+                        $this->errors[$name][] = "$name - Only alphabetical characters are allowed!";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if ( !preg_match('/^[a-zA-Zა-ჰа-яА-Я()]+$/', $val))
+                            $this->errors[$name][] = "$name - Only alphabetical characters are allowed!";    
+                    }
+                }
+            }
+            
+            
         }
         
         
         if ($param === 'alpha_num') {
             
-            if ( !empty($bodyVal) && !preg_match('/^[a-zA-Zა-ჰа-яА-Я0-9()]+$/', $bodyVal))
-                $this->errors[$name][] = "$name - Only alphabetical and numeric characters are allowed!";
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if (!preg_match('/^[a-zA-Zა-ჰа-яА-Я0-9()]+$/', $bodyVal))
+                        $this->errors[$name][] = "$name - Only alphabetical and numeric characters are allowed!";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if (!preg_match('/^[a-zA-Zა-ჰа-яА-Я0-9()]+$/', $val))
+                            $this->errors[$name][] = "$name - Only alphabetical and numeric characters are allowed!";
+                    }
+                }
+            }
         }
         
         
         if ($param === 'valid_input') {
             
-            $str = strip_tags($bodyVal);
+            if (!empty($bodyVal)) {
+                
+                if (!is_array($bodyVal)) {
+                    $str = strip_tags($bodyVal);
             
-            if (!empty($bodyVal) && $str != $bodyVal)
-                $this->errors[$name][] = "None secure characters added.";
+                    if ($str != $bodyVal)
+                        $this->errors[$name][] = "None secure characters added.";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        $str = strip_tags($val);
+            
+                        if ($str != $val)
+                            $this->errors[$name][] = "None secure characters added.";
+                    }
+                }
+            }
+            
+            
         }
         
         
         if ($param === 'numeric') {
             
-            if (!empty($bodyVal) && !filter_var($bodyVal, FILTER_VALIDATE_INT)) {
-                $this->errors[$name][] = "$name - Only numbers are allowed!";
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if (!filter_var($bodyVal, FILTER_VALIDATE_INT)) {
+                        $this->errors[$name][] = "$name - Only numbers are allowed!";
+                    }
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if (!filter_var($val, FILTER_VALIDATE_INT)) {
+                            $this->errors[$name][] = "$name - Only numbers are allowed!";
+                        }
+                    }
+                }
             }
+            
+            
         }
         
         
