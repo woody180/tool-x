@@ -7,7 +7,7 @@ class PagesController {
         
         return $res->render('welcome', [
             'title' => 'Heading',
-            'content' => 'Something like content'
+            'description' => 'Something like content'
         ]);
     }
 }

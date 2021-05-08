@@ -22,15 +22,16 @@ trait RequestTrait {
         // Get request method
         $this->getMethod = strtolower($_SERVER["REQUEST_METHOD"]);
     }
-    
-    
-    // Request object
-    private function getRequest() {
-      
-        // Construct request
-        $this->constructRequest();
-        
-        
+
+
+    // Get url segment
+    public function getSegment(int $index) {
+        return $this->urlParams[$index - 1] ?? null;
+    }
+
+
+    public function body() {
+                
         // Request data
         $reqString = file_get_contents('php://input');
         $data = [];
@@ -45,8 +46,32 @@ trait RequestTrait {
         // Append post request to body
         foreach ($_POST as $key => $val)
             $data[$key] = $val;
-            
-        
+
+
+        return $data;
+    }
+
+
+    // Url
+    public function url() {
+        return $this->url;
+    }
+
+
+    // Url segments array
+    public function urlSegments() {
+        return $this->urlParams;
+    }
+
+
+    // Get method
+    public function getMethod() {
+        return $this->getMethod;
+    }
+
+
+    // Get query
+    public function query() {
         // Query string
         preg_match_all('/[\?](.*)[\/]?+/', CURRENT_URL, $queryString);
         $queryStr = null;
@@ -57,18 +82,40 @@ trait RequestTrait {
         } else {
             $queryArr = null;
         }
-        
-        
-        $paramsObj = new stdClass();
-        $paramsObj->body = $data;
-        $paramsObj->url = $this->url;
-        $paramsObj->urlSegments = $this->urlParams;
-        $paramsObj->getMethod = $this->getMethod;
-        $paramsObj->query = $queryArr;
-        $paramsObj->queryStr = $queryStr;
-        $paramsObj->files = isset($_FILES['files']) ? $_FILES['files'] : $_FILES;
-        
 
-        return $paramsObj;
+        return $queryArr;
+    }
+
+
+    // Get query string
+    public function queryStr() {
+        // Query string
+        preg_match_all('/[\?](.*)[\/]?+/', CURRENT_URL, $queryString);
+        $queryStr = null;
+
+        if ( isset($queryString[0]) && isset($queryString[0][0]) ) {
+            parse_str($queryString[1][0], $queryArr);
+            $queryStr = $queryString[0][0];
+        } else {
+            $queryArr = null;
+        }
+
+        return $queryStr;
+    }
+
+
+    // Get files
+    public function files() {
+        return isset($_FILES['files']) ? $_FILES['files'] : $_FILES;
+    }
+    
+    
+    // Request object
+    private function getRequest() {
+
+        // Construct request
+        $this->constructRequest();
+
+        return $this;
     }
 }

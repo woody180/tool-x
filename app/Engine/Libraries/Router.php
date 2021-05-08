@@ -53,7 +53,7 @@ class Router {
     protected function checkPatternMatch() {
         $routes = [];
 
-        foreach ($this->routes[$this->request->getMethod] as $route => $method) {
+        foreach ($this->routes[$this->request->getMethod()] as $route => $method) {
             $url = str_replace('/', '\/', $route);
             $url = str_replace('(:continue)', '[\w\-_].*', $url);           // Continues segment
             $url = str_replace('(:num)', '\d+', $url);                      // Only numbers
@@ -63,14 +63,14 @@ class Router {
             $url = str_replace('(:segment)', '[\w\-_]+', $url);             // Only alpha, num, dashes, lowdashes and numbers
 
             // Push to new routes array
-            $routes[$this->request->getMethod][$url] = $method;
+            $routes[$this->request->getMethod()][$url] = $method;
         }
 
         // Find requested url
-        foreach ($routes[$this->request->getMethod] as $route => $method) {
+        foreach ($routes[$this->request->getMethod()] as $route => $method) {
 
-            $queryStr = !empty($this->request->query) ? $this->request->queryStr : null;
-            $compareTo = $queryStr ? explode($queryStr, $this->request->url)[0] : $this->request->url;
+            $queryStr = !empty($this->request->query()) ? $this->request->queryStr() : null;
+            $compareTo = $queryStr ? explode($queryStr, $this->request->url())[0] : $this->request->url();
             $compareTo = empty($compareTo) ? '/' : $compareTo;
             
             if (preg_match("/" . $route . "/", $compareTo, $match)) {
@@ -105,8 +105,9 @@ class Router {
     
     
     public function __destruct() {
+
         // Check if method exists inside the router
-        if (array_key_exists($this->request->getMethod, $this->routes)) {
+        if (array_key_exists($this->request->getMethod(), $this->routes)) {
 
             // Check if user exists inside the routes method
             
@@ -134,11 +135,11 @@ class Router {
                     $this->currentController = $controllerMethodArray[0];
 
                     // Check if controller file exists
-                    if (!file_exists(dirname(__DIR__) . "/Controllers/{$this->currentController}.php"))
+                    if (!file_exists(APPROOT . "/Controllers/{$this->currentController}.php"))
                         Library::notFound();
 
                     // Require controller file
-                    require_once dirname(__DIR__) . "/Controllers/{$this->currentController}.php";
+                    require_once APPROOT . "/Controllers/{$this->currentController}.php";
 
                     // Instantiate controller
                     $controller = explode('/', $this->currentController);
