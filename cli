@@ -33,6 +33,7 @@ class Cli {
 
         // Check dir
         if (preg_match('/[\/]/', $fileName)) {
+
             $directoryArray = explode('/', $fileName);
             $index = array_key_last($directoryArray);
             $fileName = $directoryArray[$index];
@@ -42,13 +43,19 @@ class Cli {
             // Construct path
             $path = __DIR__ . "/app/{$type}";
 
-            // Create file
-            mkdir($path, 0777, true);
+            if (!is_dir($path)) {
+
+                // Create file
+                mkdir($path, 0777, true);
+            }
+
         }
 
         
         // Create file with content
         file_put_contents(__DIR__ . "/app/{$type}/{$fileName}.php", $boilerPlate);
+
+        echo "✔ - $fileName done! \n";
     }
 
 
