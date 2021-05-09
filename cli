@@ -26,7 +26,7 @@ class Cli {
 
     private static function make(string $fileType, string $fileName, string $param = null) {
 
-        if (!is_dir(__DIR__ . "app/" . ucfirst($fileType))) die(self::$messages);
+        if (!is_dir(__DIR__ . "/app/" . ucfirst($fileType))) die(self::$messages);
 
         $boilerPlate = call_user_func(['Cli', $fileType], $fileName, $param);
 
