@@ -142,3 +142,10 @@ $router->post('api/one', function($req, $res) {
 8. max[]
 9. required
 10. valid_input
+
+# CLI
+
+It is possible to create routes and controllers using CLI commands
+
+- Create route - ``` php cli make:routes filename httpVerb ```
+- Create controller - ``` php cli make:controllers filename methodName ```

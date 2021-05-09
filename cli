@@ -1,0 +1,75 @@
+<?php
+
+class Cli {
+
+    private static $command_array = NULL;
+    private static $messages;
+
+    public static function construct($argv) {
+
+        self::$messages = "😤 try \n ➡  php cli make:controllers blog something \n ➡  php cli make:routes blog post";
+
+        if ( isset($argv[1]) ) {
+            if (preg_match('/:/', $argv[1])) {
+
+                $argv_split = explode(':', $argv[1]);
+
+                if (!isset($argv[2])) die(self::$messages);
+                
+                call_user_func(['Cli', $argv_split[0]], $argv_split[1], $argv[2], $argv[3] ?? '');
+            }
+        } else {
+            echo self::$messages;
+        }
+    }
+
+
+    private static function make(string $fileType, string $fileName, string $param = null) {
+
+        if (!is_dir(__DIR__ . "app/" . ucfirst($fileType))) die(self::$messages);
+
+        $boilerPlate = call_user_func(['Cli', $fileType], $fileName, $param);
+
+        file_put_contents(__DIR__ . "/app/" . ucfirst($fileType) . "/{$fileName}.php", $boilerPlate);
+    }
+
+
+
+    // Boilerplate for routes
+    private static function routes($fileName, $param = 'get') {
+        return "<?php
+
+use App\Engine\Libraries\Router;
+use App\Engine\Libraries\Library;
+
+\$router = Router::getInstance();
+
+\$router->{$param}('{$fileName}', function(\$req, \$res) {
+   
+});
+        ";
+    }
+
+
+    // BloilerPlate for controller
+    private static function controllers($fileName, $param = null) {
+
+        $param = !$param ? $fileName : $param;
+
+return "<?php
+
+use App\Engine\Libraries\Library;
+
+class {$fileName}Controller {
+    
+    public function {$param}(\$req, \$res) {
+       
+    }
+}
+        ";
+    }
+
+}
+
+
+Cli::construct($argv);
