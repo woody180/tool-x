@@ -28,9 +28,6 @@ class Cli {
 
         $type = ucfirst($fileType);
 
-        // Get file content
-        $boilerPlate = call_user_func(['Cli', $fileType], $fileName, $param);
-
         // Check dir
         if (preg_match('/[\/]/', $fileName)) {
 
@@ -48,12 +45,15 @@ class Cli {
                 // Create file
                 mkdir($path, 0777, true);
             }
-
         }
+
+
+        // Get file content
+        $boilerPlate = call_user_func(['Cli', ucfirst($fileType)], ucfirst($fileName), $type, $param);
 
         
         // Create file with content
-        file_put_contents(__DIR__ . "/app/{$type}/{$fileName}.php", $boilerPlate);
+        file_put_contents(__DIR__ . "/app/{$type}/". ucfirst($fileName) .".php", $boilerPlate);
 
         echo "✔ - $fileName done! \n";
     }
@@ -61,7 +61,7 @@ class Cli {
 
 
     // Boilerplate for routes
-    private static function routes($fileName, $param) {
+    private static function routes($fileName, $type, $param) {
 
         if (!$param) $param = 'get';
 
@@ -72,7 +72,7 @@ use App\Engine\Libraries\Library;
 
 \$router = Router::getInstance();
 
-\$router->{$param}('{$fileName}', function(\$req, \$res) {
+\$router->{$param}('". strtolower($fileName) ."', function(\$req, \$res) {
    
 });
         ";
@@ -80,15 +80,16 @@ use App\Engine\Libraries\Library;
 
 
     // BloilerPlate for controller
-    private static function controllers($fileName, $param = null) {
+    private static function controllers($fileName, $type, $param = null) {
 
         $param = !$param ? $fileName : $param;
+        $type = str_replace('/', '\\', $type);
 
-return "<?php
+return "<?php  namespace App\\$type;
 
 use App\Engine\Libraries\Library;
 
-class {$fileName}Controller {
+class {$fileName} {
     
     public function {$param}(\$req, \$res) {
        
