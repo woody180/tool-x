@@ -26,26 +26,29 @@ class Cli {
 
     private static function make(string $fileType, string $fileName, string $param = null) {
 
-        $directory = $fileType;
+        $type = ucfirst($fileType);
 
-        // Prepare variables
-        $fileType = ucfirst($fileType);
-        
-        if (preg_match('/[\/]/', $fileType)) {
-            $fileType = explode('/', $fileType)[0];
-            $directory = explode('/', $directory);
-            array_splice($directory, 0, 1);
-            $directory = join('/', $directory);
-
-            $directory = $fileType . '/' . $directory;
-        }
-        
-
-        if (!is_dir(__DIR__ . "/app/" . $directory)) mkdir(__DIR__ . "/app/$directory");
-
+        // Get file content
         $boilerPlate = call_user_func(['Cli', $fileType], $fileName, $param);
 
-        file_put_contents(__DIR__ . "/app/{$directory}/" . "/{$fileName}.php", $boilerPlate);
+        // Check dir
+        if (preg_match('/[\/]/', $fileName)) {
+            $directoryArray = explode('/', $fileName);
+            $index = array_key_last($directoryArray);
+            $fileName = $directoryArray[$index];
+            array_splice($directoryArray, $index, 1);
+            $type .= '/' . join('/', $directoryArray); // New url from type
+
+            // Construct path
+            $path = __DIR__ . "/app/{$type}";
+
+            // Create file
+            mkdir($path, 0777, true);
+        }
+
+        
+        // Create file with content
+        file_put_contents(__DIR__ . "/app/{$type}/{$fileName}.php", $boilerPlate);
     }
 
 
