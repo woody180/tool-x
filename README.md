@@ -143,6 +143,22 @@ $router->post('api/one', function($req, $res) {
 9. required
 10. valid_input
 
+# Pagination
+
+```
+$totalPages = R::count('pages');
+$currentPage = $_GET["page"] ?? 1;
+if ($currentPage < 1 OR $currentPage > $totalPages) $currentPage = 1;
+$limit = 12;
+$offset = ($currentPage - 1) * $limit;  
+$pagingData = Library::pager([
+    'total' => $totalPages,
+    'limit' => $limit,
+    'current' => $currentPage
+]); 
+// $pages = R::find("pages", "order by timestamp asc limit $limit offset $offset");
+```
+
 # CLI
 
 It is possible to create routes and controllers using CLI commands
