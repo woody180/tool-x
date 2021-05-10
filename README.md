@@ -156,7 +156,7 @@ $pagingData = Library::pager([
     'limit' => $limit,
     'current' => $currentPage
 ]); 
-// $pages = R::find("pages", "order by timestamp asc limit $limit offset $offset");
+$pages = R::find("pages", "order by timestamp asc limit $limit offset $offset");
 ```
 
 # CLI
