@@ -101,7 +101,39 @@ class Router {
         $function = end($arr);
         
         $function($this->getRequest(), $this->getResponse());
-    }    
+    }
+
+
+    // File namespace extractor
+    protected function getNamespaceByFileContent ($src) {
+        $tokens = token_get_all($src);
+        $count = count($tokens);
+        $i = 0;
+        $namespace = '';
+        $namespace_ok = false;
+        while ($i < $count) {
+            $token = $tokens[$i];
+            if (is_array($token) && $token[0] === T_NAMESPACE) {
+                // Found namespace declaration
+                while (++$i < $count) {
+                    if ($tokens[$i] === ';') {
+                        $namespace_ok = true;
+                        $namespace = trim($namespace);
+                        break;
+                    }
+                    $namespace .= is_array($tokens[$i]) ? $tokens[$i][1] : $tokens[$i];
+                }
+                break;
+            }
+            $i++;
+        }
+    
+        if (!$namespace_ok) {
+            return null;
+        } else {
+            return $namespace;
+        }
+    }
     
     
     public function __destruct() {
@@ -139,12 +171,15 @@ class Router {
                         Library::notFound();
 
                     // Require controller file
-                    require_once APPROOT . "/Controllers/{$this->currentController}.php";
+                    require_once APPROOT . "/Controllers/{$this->currentController}.php"; // Include file
+                    $src = file_get_contents(APPROOT . "/Controllers/{$this->currentController}.php"); // Extract file
 
                     // Instantiate controller
                     $controller = explode('/', $this->currentController);
                     $this->currentController = end($controller);
-                    $this->currentController = new $this->currentController();
+                    $namespace = $this->getNamespaceByFileContent($src) . '\\' . $this->currentController;
+
+                    $this->currentController = new $namespace();
 
                     // Get method
                     $this->currentMethod = $controllerMethodArray[1];
