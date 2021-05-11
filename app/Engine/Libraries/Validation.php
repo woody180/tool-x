@@ -108,16 +108,14 @@ class Validation {
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if (!filter_var($bodyVal, FILTER_VALIDATE_EMAIL))
-                        $this->errors[$name][] = "$name is invalid email address!";
+                        $this->errors[$name][] = "Invalid email address!";
                 } else {
                     foreach ($bodyVal as $val) {
                         if (!filter_var($val, FILTER_VALIDATE_EMAIL))
-                            $this->errors[$name][] = "$name is invalid email address!";
+                            $this->errors[$name][] = "Invalid email address!";
                     }
                 }
             }
-            
-            
         }
         
         
