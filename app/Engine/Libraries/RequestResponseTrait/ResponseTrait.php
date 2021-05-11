@@ -26,4 +26,10 @@ trait ResponseTrait {
         $templates = new League\Plates\Engine(APPROOT . "/Views");
         echo $templates->render($viewPath, $arguments);
     }
+
+
+    // Redirect
+    public function redirect(string $url) {
+        return header('Location: ' . $url);
+    }
 }
