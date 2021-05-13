@@ -39,7 +39,7 @@ trait RequestTrait {
     }
 
 
-    public function body() {
+    public function body(string $index = null) {
                 
         // Request data
         $reqString = file_get_contents('php://input');
@@ -58,6 +58,9 @@ trait RequestTrait {
             $data[$key] = $val;
 
 
+        if ($index)
+            return $data[$index] ?? null;
+        
         return $data;
     }
 
