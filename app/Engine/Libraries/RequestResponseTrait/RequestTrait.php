@@ -51,6 +51,7 @@ trait RequestTrait {
             parse_str($reqString, $data);
         }
 
+        if (isset($data['_method'])) unset($data['_method']);
 
         // Append post request to body
         foreach ($_POST as $key => $val)
