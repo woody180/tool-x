@@ -115,8 +115,12 @@ trait RequestTrait {
 
 
     // Get files
-    public function files() {
-        return isset($_FILES['files']) ? $_FILES['files'] : $_FILES;
+    public function files(string $key = null) {
+        if ($key) {
+            return $_FILES[$key] ?? null;
+        }
+        
+        return $_FILES;
     }
     
     
