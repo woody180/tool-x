@@ -21,6 +21,15 @@ trait RequestTrait {
         
         // Get request method
         $this->getMethod = strtolower($_SERVER["REQUEST_METHOD"]);
+
+        $methords = ['put', 'patch', 'delete'];
+
+        foreach ($_POST as $key => $val) {
+            if ($key == '_method' && gettype($val) == 'string' && in_array(strtolower($val), $methords)) {
+                $this->getMethod = strtolower($val);
+                unset($_POST['_method']);
+            }
+        }
     }
 
 
