@@ -91,7 +91,7 @@ use App\Engine\Libraries\Library;
 
 class {$fileName} {
     
-    public function {$param}(\$req, \$res) {
+    public function index(\$req, \$res) {
        
     }
 }
