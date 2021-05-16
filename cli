@@ -55,8 +55,8 @@ class Cli {
 
                 // Create database
                 $recordName = R::dispense($tableName);
-                $recordName->title = $fileName . ' title';
-                $recordName->url = $fileName . '-url';
+                $recordName->title = $tableName . ' title';
+                $recordName->url = $tableName . '-url';
                 $recordName->thumbnail = null;
                 $recordName->ordering = 1;
                 $recordName->timestamp = time();
