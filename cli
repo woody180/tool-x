@@ -266,7 +266,6 @@ class {$fileName} {
                         <th class="uk-table-shrink">Thumb</th>
                         <th class="uk-table-expand">Name</th>
                         <th class="uk-table-shrink uk-text-truncate">Sort</th>
-                        <th class="uk-table-shrink uk-text-truncate">Open</th>
                         <th class="uk-table-shrink uk-text-truncate">Edit</th>
                         <th class="uk-table-shrink">Delete</th>
                     </tr>
@@ -291,13 +290,6 @@ class {$fileName} {
                         </td>
 
                         <td> <input style="width: 60px" class="'.$viewName.'-ordering uk-input" name="ordering" type="number" value="<?= $item->ordering ?>" /> </td>
-                        <td>
-                            <?php if ($item->url): ?>
-                                <a href="<?= $item->url ?>" style="background-color: #d8d8d8; color: black;" class="uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$routeUrl.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: link; ratio: .7"> </a>
-                            <?php else: ?>
-                                <a href="#" style="background-color: #d8d8d8; color: black; opacity: .5;" class="uk-disabled uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$routeUrl.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: link; ratio: .7"> </a>
-                            <?php endif; ?>
-                        </td>
                         <td> <a href="<?= URLROOT . "/'.$routeUrl.'/{$item->id}/edit" ?>" style="background-color: #d8d8d8; color: black;" class="uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$routeUrl.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: pencil; ratio: .7"> </a></td>
                         <td><input class="uk-padding-small uk-border-circle uk-checkbox uk-icon-button" type="checkbox" name="delete[]" value="<?= $item->id ?>"></td>
                     </tr>
