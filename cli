@@ -484,6 +484,7 @@ $router->delete(\''.strtolower($pathToController).'/(:segment)\',      "'.$pathT
     private static function restControllerClean(string $controllerName) {
 
         $controllerNameArr = explode('/', $controllerName);
+        $count = count($controllerNameArr) + 1;
         $lastIndex = array_key_last($controllerNameArr);
         $filename = end($controllerNameArr);
 
@@ -523,25 +524,25 @@ class '.$filename.' {
 
     // Show view
     public function show($req, $res) {
-        $id = $req->getSegment(2);
+        $id = $req->getSegment('.$count.');
     }
 
 
     // Edit view
     public function edit($req, $res) {
-        $id = $req->getSegment(2);
+        $id = $req->getSegment('.$count.');
     }
 
 
     // Update
     public function update($req, $res) {
-        $id = $req->getSegment(2);
+        $id = $req->getSegment('.$count.');
     }
 
 
     // Delete
     public function delete($req, $res) {
-       
+        $id = $req->getSegment('.$count.');
     }
 
 }
@@ -553,6 +554,7 @@ class '.$filename.' {
     private static function restController(string $controllerName) {
 
         $controllerNameArr = explode('/', $controllerName);
+        $count = count($controllerNameArr) + 1;
         $lastIndex = array_key_last($controllerNameArr);
         $filename = end($controllerNameArr);
         
@@ -625,7 +627,7 @@ class '.$filename.' {
     // Show view
     public function show($req, $res) {
 
-        $id = $req->getSegment(2);
+        $id = $req->getSegment('.$count.');
 
         $'.$filename.' = \R::load("'.strtolower($filename).'", $id);
 
@@ -636,7 +638,7 @@ class '.$filename.' {
     // Edit view
     public function edit($req, $res) {
 
-        $id = $req->getSegment(2);
+        $id = $req->getSegment('.$count.');
 
         $'.$filename.' = \R::load("'.strtolower($filename).'", $id);
 
@@ -649,7 +651,7 @@ class '.$filename.' {
     // Update
     public function update($req, $res) {
 
-        $id = $req->getSegment(2);
+        $id = $req->getSegment('.$count.');
 
         $body = $req->body();
 
@@ -666,7 +668,7 @@ class '.$filename.' {
     // Delete
     public function delete($req, $res) {
 
-        $id = $req->getSegment(2);
+        $id = $req->getSegment('.$count.');
         $body = $req->body("delete");
 
         foreach ($body as $id) {
