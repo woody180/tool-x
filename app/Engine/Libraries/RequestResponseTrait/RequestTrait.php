@@ -84,7 +84,7 @@ trait RequestTrait {
 
 
     // Get query
-    public function query() {
+    public function query(string $key = null) {
         // Query string
         preg_match_all('/[\?](.*)[\/]?+/', CURRENT_URL, $queryString);
         $queryStr = null;
@@ -96,7 +96,12 @@ trait RequestTrait {
             $queryArr = null;
         }
 
-        return $queryArr;
+        if ($key) {
+            return $queryArr[$key] ?? null;
+        } else {
+            return $queryArr;
+        }
+
     }
 
 

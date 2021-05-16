@@ -1,5 +1,11 @@
 <?php
 
+require_once __DIR__ . '/app/Config/urls.php';
+require_once __DIR__ . '/app/Config/database.php';
+require_once __DIR__ . '/app/Engine/Libraries/Library.php';
+require_once __DIR__ . '/app/Engine/Libraries/rb.php';
+require_once __DIR__ . '/app/Engine/Database/Connection.php';
+
 class Cli {
 
     private static $command_array = NULL;
@@ -7,7 +13,7 @@ class Cli {
 
     public static function construct($argv) {
 
-        self::$messages = "😤 try \n ➡  php cli make:controllers blog something \n ➡  php cli make:routes blog post";
+        self::$messages = "😤 try \n ➡  php cli make:controllers blog something \n ➡  php cli make:routes blog post \n ➡  php cli make:restful blog";
 
         if ( isset($argv[1]) ) {
             if (preg_match('/:/', $argv[1])) {
@@ -28,6 +34,61 @@ class Cli {
 
         $type = ucfirst($fileType);
 
+
+        // If type is restful
+        if ($fileType === 'restful') {
+
+            $build = $param === 'build' ? true : false;
+
+            if ($build) {
+                new \App\Engine\Database\Connection();
+
+                $tableName = null;
+                if (preg_match('/[\/]/', $fileName)) {
+                    $fileNameArr = explode('/', $fileName);
+                    $tableName = end($fileNameArr);
+                    $tableName = strtolower($tableName);
+                } else {
+                    $tableName = $fileName;
+                    $tableName = strtolower($tableName);
+                }
+
+                // Create database
+                $recordName = R::dispense($tableName);
+                $recordName->title = $fileName . ' title';
+                $recordName->url = $fileName . '-url';
+                $recordName->thumbnail = null;
+                $recordName->ordering = 1;
+                $recordName->timestamp = time();
+                R::store($recordName);
+            }
+            
+
+            if ($build) {
+
+                // Make views directory with view files
+                self::restView($fileName);
+            }
+
+            // Make controller directory with controller files
+            self::restRoute($fileName);
+
+            // Make routes directory with route files
+            if ($build) {
+
+                self::restController($fileName);
+            } else {
+                
+                self::restControllerClean($fileName);
+            }
+            
+            if ($build)
+                die("✔ - Routes, Views and Conttoller were created \n");
+            else
+                die("✔ - Restful Route and Conttoller were created \n");
+        }
+
+        
         // Check dir
         if (preg_match('/[\/]/', $fileName)) {
 
@@ -85,7 +146,7 @@ use App\Engine\Libraries\Library;
         $param = !$param ? $fileName : $param;
         $type = str_replace('/', '\\', $type);
 
-return "<?php  namespace App\\$type;
+return "<?php namespace App\\$type;
 
 use App\Engine\Libraries\Library;
 
@@ -96,6 +157,526 @@ class {$fileName} {
     }
 }
         ";
+    }
+
+
+
+
+    // Restful boilderlate
+    private static function restView(string $viewName) {
+        
+        // Check if partial folder exist
+        if (!is_dir(__DIR__ . "/app/Views/partials")) mkdir(__DIR__ . "/app/Views/partials");
+
+
+        $viewNameArr = explode('/', $viewName);
+        $lastIndex = array_key_last($viewNameArr);
+        $viewName = end($viewNameArr);
+
+        array_splice($viewNameArr, $lastIndex, 1);
+        $halfPath = join('/', $viewNameArr);
+        $pathToViews = "{$halfPath}/{$viewName}";
+        $path = __DIR__ . "/app/Views/" .$halfPath;
+
+
+        // Create backend layout file
+        file_put_contents(__DIR__ . "/app/Views/partials/restLayout.php", '<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- UIkit CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/css/uikit.min.css" />
+
+
+    <!-- jQuery JS -->
+    <script src="<?= PUBLIC_DIR ?>/filemanager/extend/js/jquery-3.6.0.min.js"></script>
+    <script src="<?= PUBLIC_DIR ?>/filemanager/extend/js/jquery-ui.js"></script>
+
+    <!-- UIkit JS -->
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.6.21/dist/js/uikit-icons.min.js"></script>
+
+    <?= $this->section("styles"); ?>
+    
+    <title><?= $title ?? APPNAME; ?></title>
+</head>
+<body style="background-color: #f4f7ff;">
+    <div class="uk-grid-collapse" uk-grid>
+
+        <!-- Sidebar section -->
+        <div class="uk-width-1-6@xl uk-width-1-5@l uk-width-1-4@s uk-background-secondary" uk-height-viewport="offset-top: true">
+            <div class="uk-padding uk-light" uk-sticky>
+                
+                <!-- Here comes sidebar navigation -->
+                <a href="#">Sidebar nav</a>
+                
+            </div>
+        </div>
+
+        <div class="uk-width-expand">
+        <header class="uk-background-default uk-box-shadow-small uk-padding uk-padding-remove-bottom uk-padding-remove-top uk-flex uk-flex-between uk-flex-middle" style="height: 60px;" uk-sticky>
+        
+            <form class="uk-search uk-search-navbar">
+                <span uk-search-icon></span>
+                <input class="uk-search-input" type="search" placeholder="Search">
+            </form>
+        
+        
+            <div class="uk-flex">
+                <a href="<?= URLROOT . "/'.$viewName.'/new" ?>" class="uk-icon-button uk-background-primary uk-light" uk-icon="icon: plus; ratio: .8;"></a>
+            </div>
+        
+        </header>
+            
+            <?= $this->section("mainSection"); ?>
+        </div>
+
+    </div>
+</body>
+</html>
+');
+
+        // Create rest directory for rest view
+        mkdir($path, 0777, true);
+
+        // Put views - list, add and edit files wtih content
+        // List
+        file_put_contents("{$path}/{$viewName}.php", '
+<?php $this->layout("partials/restLayout", ["title => $title"]) ?>
+
+<?php $this->start("mainSection") ?>
+    <div class="uk-padding">
+        <div class="uk-margin-medium-bottom">
+            <h1>'. ucfirst($viewName) .' list</h1>
+            <hr class="uk-divider-small">
+        </div>
+
+        <form action="<?= URLROOT . "/'.$viewName.'/1" ?>" method="POST" class="uk-overflow-auto">
+            
+            <input type="hidden" name="_method" value="delete">
+
+            <table class="uk-table uk-table-hover uk-table-middle uk-table-divider">
+
+                <thead>
+                    <tr>
+                        <th class="uk-table-shrink">Thumb</th>
+                        <th class="uk-table-expand">Name</th>
+                        <th class="uk-table-shrink uk-text-truncate">Sort</th>
+                        <th class="uk-table-shrink uk-text-truncate">Open</th>
+                        <th class="uk-table-shrink uk-text-truncate">Edit</th>
+                        <th class="uk-table-shrink">Delete</th>
+                    </tr>
+                </thead>
+
+                <?php foreach ($'.$viewName.' as $item): ?>
+                    <tr>
+                        <td href="<?= URLROOT . "/'.$viewName.'/{$item->id}" ?>" class="uk-border-circle uk-display-block uk-overflow-hidden uk-border-circle uk-margin-right">
+                            <a class="uk-display-block uk-border-circle uk-overflow-hidden" style="height: 60px; width: 60px;" href="<?= URLROOT . "/'.$viewName.'/{$item->id}" ?>">
+                                <?php if ($item->thumbnail): ?>
+                                    <img class="uk-height-1-1 uk-width-1-1 uk-display-block" src="<?= PUBLIC_DIR . "/tinyeditor/filemanager/files/$item->thumbnail" ?>" alt="<?= $item->title ?>">
+                                <?php else: ?>
+                                    <img class="uk-height-1-1 uk-width-1-1 uk-display-block" src="<?= PUBLIC_DIR . "/images/not-found.png" ?>" alt="<?= $item->title ?>">
+                                <?php endif; ?>
+                            </a>
+                        </td>
+                        
+                        <td class="uk-link-reset" href="<?= URLROOT . "/'.$viewName.'/$item->id" ?>">
+                            <a href="<?= URLROOT . "/'.$viewName.'/{$item->id}" ?>">
+                                <?= $item->title ?>
+                            </a>
+                        </td>
+
+                        <td> <input style="width: 60px" class="'.$viewName.'-ordering uk-input" name="ordering" type="number" value="<?= $item->ordering ?>" /> </td>
+                        <td>
+                            <?php if ($item->url): ?>
+                                <a href="<?= $item->url ?>" style="background-color: #d8d8d8; color: black;" class="uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$viewName.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: link; ratio: .7"> </a>
+                            <?php else: ?>
+                                <a href="#" style="background-color: #d8d8d8; color: black; opacity: .5;" class="uk-disabled uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$viewName.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: link; ratio: .7"> </a>
+                            <?php endif; ?>
+                        </td>
+                        <td> <a href="<?= URLROOT . "/'.$viewName.'/{$item->id}/edit" ?>" style="background-color: #d8d8d8; color: black;" class="uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$viewName.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: pencil; ratio: .7"> </a></td>
+                        <td><input class="uk-padding-small uk-border-circle uk-checkbox uk-icon-button" type="checkbox" name="delete[]" value="<?= $item->id ?>"></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+
+            <div class="uk-flex uk-flex-right">
+                <button class="uk-button uk-button-primary uk-border-rounded" type="submit">Delete selected items</button>
+            </div>
+        </form>
+
+        <?php if ($paging): ?>
+        <div class="uk-margin-top uk-flex uk-flex-center">
+            <?= $paging ?>
+        </div>
+        <?php endif; ?>
+    </div>
+
+<?php $this->stop() ?>
+        ');
+
+
+        // Add
+        file_put_contents("{$path}/{$viewName}_new.php", '<?php $this->layout("partials/restLayout", ["title => $title"]) ?>
+
+<?php $this->start("mainSection") ?>
+<div class="uk-padding">
+
+<h1>New '.$viewName.'</h1>
+<hr class="uk-divider-small">
+
+<div class="uk-margin">
+    <form enctype="multipart/form-data" action="<?= URLROOT . "/'.$viewName.'" ?>" method="POST" class="uk-child-width-1-2@s" uk-grid>
+
+        <div>
+            <label for="" class="uk-form-label">'.$viewName.' title</label>
+            <input type="text" name="title" class="uk-input" value="">
+        </div>
+        
+        <div>
+            <label for="" class="uk-form-label">'.$viewName.' url</label>
+            <input type="text" name="url" class="uk-input" value="">
+        </div>
+
+        <div class="uk-width-1-1 uk-flex">
+            <div class="uk-margin-right">
+                <label for="" class="uk-form-label">Thubmnail</label>
+                <input type="hidden" name="thumbnail" class="uk-input" value="">
+                
+                <div style="border: 1px solid #e5e5e5; height: 85px">
+                    <img style="object-fit: cover;" width="140" class="uk-display-block uk-height-1-1" src="<?= PUBLIC_DIR . "/images/not-found.png" ?>" alt="">
+                </div>
+            </div>
+
+            <div class="uk-width-expand uk-flex uk-flex-between uk-flex-column">
+                <label for="" class="uk-form-label">Upload thubmnail</label>
+                <div class="js-upload uk-placeholder uk-text-center uk-margin-remove">
+                    <span uk-icon="icon: cloud-upload"></span>
+                    <span class="uk-text-middle">Attach binaries by dropping them here or</span>
+                    <div uk-form-custom>
+                        <input type="hidden" name="thumbnail">
+                        <span id="open-file-manager" class="uk-link">selecting one</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="uk-width-1-1">
+            <button class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded" type="submit">Submit new '.$viewName.'</button>
+        </div>
+    
+    </form>
+</div>
+
+</div>
+
+<?php $this->stop() ?>
+        ');
+
+
+        // Edit
+        file_put_contents("{$path}/{$viewName}_edit.php", '<?php $this->layout("partials/restLayout", ["title => $title"]) ?>
+
+<?php $this->start("mainSection") ?>
+<div class="uk-padding">
+
+    <h1><?= $'.$viewName.'->title ?> - Edit '.$viewName.'</h1>
+    <hr class="uk-divider-small">
+
+    <div class="uk-margin">
+        <form enctype="multipart/form-data" action="<?= URLROOT . "/'.$viewName.'/{$'.$viewName.'->id}" ?>" method="POST" class="uk-child-width-1-2@s" uk-grid>
+
+            <input name="_method" type="hidden" value="PUT" />
+
+            <div>
+                <label for="" class="uk-form-label">'.ucfirst($viewName).' title</label>
+                <input type="text" name="title" class="uk-input" value="<?= $'.$viewName.'->title ?>">
+            </div>
+            
+            <div>
+                <label for="" class="uk-form-label">'.ucfirst($viewName).' url</label>
+                <input type="text" name="url" class="uk-input" value="<?= $'.$viewName.'->url ?>">
+            </div>
+            
+            <div class="uk-width-1-1 uk-flex">
+                <div class="uk-margin-right">
+                    <label for="" class="uk-form-label">Thubmnail</label>
+                    <input type="hidden" name="thumbnail" class="uk-input" value="<?= $'.$viewName.'->thumbnail ?>">
+                    
+                    <div style="border: 1px solid #e5e5e5; height: 85px">
+                        <?php if ($'.$viewName.'->thumbnail): ?>
+                            <img style="object-fit: cover;" width="140" class="uk-display-block uk-height-1-1" src="<?= PUBLIC_DIR . "/tinyeditor/filemanager/files/{$'.$viewName.'->thumbnail}" ?>" alt="<?= $'.$viewName.'->title ?>">
+                        <?php else: ?>
+                            <img style="object-fit: cover;" width="140" class="uk-display-block uk-height-1-1" src="<?= PUBLIC_DIR . "/images/not-found.png" ?>" alt="<?= $'.$viewName.'->title ?>">
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="uk-width-expand uk-flex uk-flex-between uk-flex-column">
+                    <label for="" class="uk-form-label">Upload thubmnail</label>
+                    <div class="js-upload uk-placeholder uk-text-center uk-margin-remove">
+                        <span uk-icon="icon: cloud-upload"></span>
+                        <span class="uk-text-middle">Attach binaries by dropping them here or</span>
+                        <div uk-form-custom>
+                            <input type="hidden" name="thumbnail">
+                            <span id="open-file-manager"  class="uk-link">selecting one</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="uk-width-1-1">
+                <button class="uk-button uk-button-primary uk-width-1-1 uk-border-rounded" type="submit">Submit changes</button>
+            </div>
+        
+        </form>
+    </div>
+
+</div>
+
+<?php $this->stop() ?>
+        ');
+
+    }
+
+
+    private static function restRoute(string $routeName) {
+
+        $routeNameArr = explode('/', $routeName);
+        $lastIndex = array_key_last($routeNameArr);
+        $filename = end($routeNameArr);
+
+        array_splice($routeNameArr, $lastIndex, 1);
+        $halfPath = join('/', $routeNameArr);
+        $pathToController = "{$halfPath}/{$filename}";
+        $path = __DIR__ . "/app/Routes/" .$halfPath;
+
+        // Make directory
+        mkdir($path, 0777, true);
+
+        // Create file with content
+        file_put_contents("{$path}/{$filename}.php", '<?php
+
+use App\Engine\Libraries\Router;
+use App\Engine\Libraries\Library;
+
+$router = Router::getInstance();
+
+$router->get(\''.strtolower($pathToController).'/new\',                "'.$pathToController.'@new");
+$router->post(\''.strtolower($pathToController).'\',                   "'.$pathToController.'@create");
+$router->get(\''.strtolower($pathToController).'\',                    "'.$pathToController.'@index");
+$router->get(\''.strtolower($pathToController).'/(:segment)\',         "'.$pathToController.'@show");
+$router->get(\''.strtolower($pathToController).'/(:segment)/edit\',    "'.$pathToController.'@edit");
+$router->put(\''.strtolower($pathToController).'/(:segment)\',         "'.$pathToController.'@update");
+$router->patch(\''.strtolower($pathToController).'/(:segment)\',       "'.$pathToController.'@update");
+$router->delete(\''.strtolower($pathToController).'/(:segment)\',      "'.$pathToController.'@delete");
+        ');
+    }
+
+
+
+    private static function restControllerClean(string $controllerName) {
+
+        $controllerNameArr = explode('/', $controllerName);
+        $lastIndex = array_key_last($controllerNameArr);
+        $filename = end($controllerNameArr);
+
+        array_splice($controllerNameArr, $lastIndex, 1);
+        $halfPath = join('/', $controllerNameArr);
+        $path = __DIR__ . "/app/Controllers/" . $halfPath;
+
+        // Make directory
+        mkdir($path, 0777, true);
+
+        $namespace = "Controllers/{$halfPath}";
+        $namespace = str_replace('/', '\\', $namespace);
+
+        file_put_contents("{$path}/{$filename}.php", '<?php namespace App\\'.$namespace.';
+
+use App\Engine\Libraries\Library;
+
+class '.$filename.' {
+    
+    // Add new view
+    public function new($req, $res) {
+        
+    }
+
+
+    // Create view
+    public function create($req, $res) {
+       
+    }
+
+
+    // All items
+    public function index($req, $res) {
+       
+    }
+
+
+    // Show view
+    public function show($req, $res) {
+        $id = $req->getSegment(2);
+    }
+
+
+    // Edit view
+    public function edit($req, $res) {
+        $id = $req->getSegment(2);
+    }
+
+
+    // Update
+    public function update($req, $res) {
+        $id = $req->getSegment(2);
+    }
+
+
+    // Delete
+    public function delete($req, $res) {
+       
+    }
+
+}
+        ');
+    }
+
+
+
+    private static function restController(string $controllerName) {
+
+        $controllerNameArr = explode('/', $controllerName);
+        $lastIndex = array_key_last($controllerNameArr);
+        $filename = end($controllerNameArr);
+        
+        array_splice($controllerNameArr, $lastIndex, 1);
+        $halfPath = join('/', $controllerNameArr);
+        $pathToViews = "{$halfPath}/{$filename}";
+        $path = __DIR__ . "/app/Controllers/" . $halfPath;
+
+        // Make directory
+        mkdir($path, 0777, true);
+
+        $namespace = "Controllers/{$halfPath}";
+        $namespace = str_replace('/', '\\', $namespace);
+
+        file_put_contents("{$path}/{$filename}.php", '<?php namespace App\\'.$namespace.';
+
+use App\Engine\Libraries\Library;
+
+class '.$filename.' {
+    
+    // Add new view
+    public function new($req, $res) {
+        
+        return $res->render("'.$pathToViews.'_new");
+    }
+
+
+    // Create view
+    public function create($req, $res) {
+        
+        $body = $req->body();
+        
+        $'.$filename.' = \R::dispense("'.strtolower($filename).'");
+        $'.$filename.'->ordering = 1;
+        $'.$filename.'->timestamp = time();
+        $'.$filename.'->import($body);
+
+        \R::store($'.$filename.');
+
+        return $res->redirect(URLROOT . "/'.$filename.'");
+    }
+
+
+    // All items
+    public function index($req, $res) {
+        
+        // Pagination
+        $totalPages = \R::count("'.strtolower($filename).'");
+        $currentPage = $req->query(\'page\');
+        if ($currentPage < 1 OR $currentPage > $totalPages) $currentPage = 1;
+        $limit = 12;
+        $offset = ($currentPage - 1) * $limit;
+    
+        $pagingData = Library::pager([
+            "total" => $totalPages,
+            "limit" => $limit,
+            "current" => $currentPage
+        ]);
+
+        $'.$filename.' = \R::findAll("'.strtolower($filename).'", "order by timestamp asc limit $limit offset $offset");
+        
+        return $res->render("'.$pathToViews.'", [
+            "'.$filename.'" => $'.$filename.',
+            "paging" => $totalPages > $limit ? $pagingData : null
+        ]);
+    }
+
+
+    // Show view
+    public function show($req, $res) {
+
+        $id = $req->getSegment(2);
+
+        $'.$filename.' = \R::load("'.strtolower($filename).'", $id);
+
+        Library::dd($'.$filename.');
+    }
+
+
+    // Edit view
+    public function edit($req, $res) {
+
+        $id = $req->getSegment(2);
+
+        $'.$filename.' = \R::load("'.strtolower($filename).'", $id);
+
+        return $res->render("'.$pathToViews.'_edit", [
+            "'.$filename.'" => $'.$filename.'
+        ]);
+    }
+
+
+    // Update
+    public function update($req, $res) {
+
+        $id = $req->getSegment(2);
+
+        $body = $req->body();
+
+        $'.$filename.' = \R::load("'.strtolower($filename).'", $id);
+
+        $'.$filename.'->import($body);
+
+        \R::store($'.$filename.');
+
+        return $res->redirect(URLROOT . "/'.$filename.'");
+    }
+
+
+    // Delete
+    public function delete($req, $res) {
+
+        $id = $req->getSegment(2);
+        $body = $req->body("delete");
+
+        foreach ($body as $id) {
+            $item = \R::load("'.strtolower($filename).'", $id);
+            \R::trash($item);
+        }
+
+        return $res->redirect(URLROOT . "/'.$filename.'");
+    }
+
+}
+        ');
     }
 
 }

@@ -80,12 +80,12 @@ foreach ($classes as $class) {
 // Additional route files
 foreach (ROUTES_PATH as $path) {
     $dir = APPROOT . "/Routes/{$path}";
-    if (!is_dir($dir)) die("<span style=\"color: red;\">Route path - \"$dir\" is not exist.</span>");
-    
-    $classes = glob(APPROOT . "/Routes/{$path}/*.php");
-    foreach ($classes as $class) {
-        $classPath = explode(APPROOT, $class)[1];
-        $className = pathinfo($classPath)['filename'];
-        include APPROOT . "$classPath";
+    if (is_dir($dir)) {
+        $classes = glob(APPROOT . "/Routes/{$path}/*.php");
+        foreach ($classes as $class) {
+            $classPath = explode(APPROOT, $class)[1];
+            $className = pathinfo($classPath)['filename'];
+            include APPROOT . "$classPath";
+        }
     }
 }
