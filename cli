@@ -176,6 +176,7 @@ class {$fileName} {
         array_splice($viewNameArr, $lastIndex, 1);
         $halfPath = join('/', $viewNameArr);
         $pathToViews = "{$halfPath}/{$viewName}";
+        $routeUrl = strtolower($pathToViews);
         $path = __DIR__ . "/app/Views/" .$halfPath;
 
 
@@ -226,7 +227,7 @@ class {$fileName} {
         
         
             <div class="uk-flex">
-                <a href="<?= URLROOT . "/'.$viewName.'/new" ?>" class="uk-icon-button uk-background-primary uk-light" uk-icon="icon: plus; ratio: .8;"></a>
+                <a href="<?= URLROOT . "/'.$routeUrl.'/new" ?>" class="uk-icon-button uk-background-primary uk-light" uk-icon="icon: plus; ratio: .8;"></a>
             </div>
         
         </header>
@@ -254,7 +255,7 @@ class {$fileName} {
             <hr class="uk-divider-small">
         </div>
 
-        <form action="<?= URLROOT . "/'.$viewName.'/1" ?>" method="POST" class="uk-overflow-auto">
+        <form action="<?= URLROOT . "/'.$routeUrl.'/1" ?>" method="POST" class="uk-overflow-auto">
             
             <input type="hidden" name="_method" value="delete">
 
@@ -273,8 +274,8 @@ class {$fileName} {
 
                 <?php foreach ($'.$viewName.' as $item): ?>
                     <tr>
-                        <td href="<?= URLROOT . "/'.$viewName.'/{$item->id}" ?>" class="uk-border-circle uk-display-block uk-overflow-hidden uk-border-circle uk-margin-right">
-                            <a class="uk-display-block uk-border-circle uk-overflow-hidden" style="height: 60px; width: 60px;" href="<?= URLROOT . "/'.$viewName.'/{$item->id}" ?>">
+                        <td href="<?= URLROOT . "/'.$routeUrl.'/{$item->id}" ?>" class="uk-border-circle uk-display-block uk-overflow-hidden uk-border-circle uk-margin-right">
+                            <a class="uk-display-block uk-border-circle uk-overflow-hidden" style="height: 60px; width: 60px;" href="<?= URLROOT . "/'.$routeUrl.'/{$item->id}" ?>">
                                 <?php if ($item->thumbnail): ?>
                                     <img class="uk-height-1-1 uk-width-1-1 uk-display-block" src="<?= PUBLIC_DIR . "/tinyeditor/filemanager/files/$item->thumbnail" ?>" alt="<?= $item->title ?>">
                                 <?php else: ?>
@@ -283,8 +284,8 @@ class {$fileName} {
                             </a>
                         </td>
                         
-                        <td class="uk-link-reset" href="<?= URLROOT . "/'.$viewName.'/$item->id" ?>">
-                            <a href="<?= URLROOT . "/'.$viewName.'/{$item->id}" ?>">
+                        <td class="uk-link-reset" href="<?= URLROOT . "/'.$routeUrl.'/$item->id" ?>">
+                            <a href="<?= URLROOT . "/'.$routeUrl.'/{$item->id}" ?>">
                                 <?= $item->title ?>
                             </a>
                         </td>
@@ -292,12 +293,12 @@ class {$fileName} {
                         <td> <input style="width: 60px" class="'.$viewName.'-ordering uk-input" name="ordering" type="number" value="<?= $item->ordering ?>" /> </td>
                         <td>
                             <?php if ($item->url): ?>
-                                <a href="<?= $item->url ?>" style="background-color: #d8d8d8; color: black;" class="uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$viewName.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: link; ratio: .7"> </a>
+                                <a href="<?= $item->url ?>" style="background-color: #d8d8d8; color: black;" class="uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$routeUrl.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: link; ratio: .7"> </a>
                             <?php else: ?>
-                                <a href="#" style="background-color: #d8d8d8; color: black; opacity: .5;" class="uk-disabled uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$viewName.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: link; ratio: .7"> </a>
+                                <a href="#" style="background-color: #d8d8d8; color: black; opacity: .5;" class="uk-disabled uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$routeUrl.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: link; ratio: .7"> </a>
                             <?php endif; ?>
                         </td>
-                        <td> <a href="<?= URLROOT . "/'.$viewName.'/{$item->id}/edit" ?>" style="background-color: #d8d8d8; color: black;" class="uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$viewName.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: pencil; ratio: .7"> </a></td>
+                        <td> <a href="<?= URLROOT . "/'.$routeUrl.'/{$item->id}/edit" ?>" style="background-color: #d8d8d8; color: black;" class="uk-icon-button uk-margin-right" href="<?= URLROOT . \'/'.$routeUrl.'/\' . $item->id . \'/edit\' ?>" uk-icon="icon: pencil; ratio: .7"> </a></td>
                         <td><input class="uk-padding-small uk-border-circle uk-checkbox uk-icon-button" type="checkbox" name="delete[]" value="<?= $item->id ?>"></td>
                     </tr>
                 <?php endforeach; ?>
@@ -329,7 +330,7 @@ class {$fileName} {
 <hr class="uk-divider-small">
 
 <div class="uk-margin">
-    <form enctype="multipart/form-data" action="<?= URLROOT . "/'.$viewName.'" ?>" method="POST" class="uk-child-width-1-2@s" uk-grid>
+    <form enctype="multipart/form-data" action="<?= URLROOT . "/'.$routeUrl.'" ?>" method="POST" class="uk-child-width-1-2@s" uk-grid>
 
         <div>
             <label for="" class="uk-form-label">'.$viewName.' title</label>
@@ -388,7 +389,7 @@ class {$fileName} {
     <hr class="uk-divider-small">
 
     <div class="uk-margin">
-        <form enctype="multipart/form-data" action="<?= URLROOT . "/'.$viewName.'/{$'.$viewName.'->id}" ?>" method="POST" class="uk-child-width-1-2@s" uk-grid>
+        <form enctype="multipart/form-data" action="<?= URLROOT . "/'.$routeUrl.'/{$'.$viewName.'->id}" ?>" method="POST" class="uk-child-width-1-2@s" uk-grid>
 
             <input name="_method" type="hidden" value="PUT" />
 
@@ -558,6 +559,7 @@ class '.$filename.' {
         array_splice($controllerNameArr, $lastIndex, 1);
         $halfPath = join('/', $controllerNameArr);
         $pathToViews = "{$halfPath}/{$filename}";
+        $routeUrl = strtolower($pathToViews);
         $path = __DIR__ . "/app/Controllers/" . $halfPath;
 
         // Make directory
@@ -591,7 +593,7 @@ class '.$filename.' {
 
         \R::store($'.$filename.');
 
-        return $res->redirect(URLROOT . "/'.$filename.'");
+        return $res->redirect(URLROOT . "/'.$routeUrl.'");
     }
 
 
@@ -657,7 +659,7 @@ class '.$filename.' {
 
         \R::store($'.$filename.');
 
-        return $res->redirect(URLROOT . "/'.$filename.'");
+        return $res->redirect(URLROOT . "/'.$routeUrl.'");
     }
 
 
@@ -672,7 +674,7 @@ class '.$filename.' {
             \R::trash($item);
         }
 
-        return $res->redirect(URLROOT . "/'.$filename.'");
+        return $res->redirect(URLROOT . "/'.$routeUrl.'");
     }
 
 }

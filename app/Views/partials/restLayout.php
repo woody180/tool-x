@@ -44,7 +44,7 @@
         
         
             <div class="uk-flex">
-                <a href="<?= URLROOT . "/Articles/new" ?>" class="uk-icon-button uk-background-primary uk-light" uk-icon="icon: plus; ratio: .8;"></a>
+                <a href="<?= URLROOT . "/api/blog/articles/new" ?>" class="uk-icon-button uk-background-primary uk-light" uk-icon="icon: plus; ratio: .8;"></a>
             </div>
         
         </header>
