@@ -43,7 +43,7 @@ class Articles {
             "current" => $currentPage
         ]);
 
-        $Articles = \R::findAll("articles", "order by timestamp asc limit $limit offset $offset");
+        $Articles = \R::findAll("articles", "order by id desc limit $limit offset $offset");
         
         return $res->render("Api/Blog/Articles", [
             "Articles" => $Articles,

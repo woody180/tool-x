@@ -615,7 +615,7 @@ class '.$filename.' {
             "current" => $currentPage
         ]);
 
-        $'.$filename.' = \R::findAll("'.strtolower($filename).'", "order by timestamp asc limit $limit offset $offset");
+        $'.$filename.' = \R::findAll("'.strtolower($filename).'", "order by id desc limit $limit offset $offset");
         
         return $res->render("'.$pathToViews.'", [
             "'.$filename.'" => $'.$filename.',
