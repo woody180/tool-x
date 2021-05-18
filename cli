@@ -490,7 +490,7 @@ $router->delete(\''.strtolower($pathToController).'/(:segment)\',      "'.$pathT
         if (!is_dir($path))
             mkdir($path, 0777, true);
 
-        $namespace = "Controllers/{$halfPath}";
+        $namespace = !empty($halfPath) ? "Controllers/{$halfPath}" : "Controllers";
         $namespace = str_replace('/', '\\', $namespace);
 
         file_put_contents("{$path}/{$filename}.php", '<?php namespace App\\'.$namespace.';
@@ -558,11 +558,13 @@ class '.$filename.' {
         $pathToViews = "{$halfPath}/{$filename}";
         $routeUrl = strtolower($pathToViews);
         $path = __DIR__ . "/app/Controllers/" . $halfPath;
-
+        
         // Make directory
-        mkdir($path, 0777, true);
+        if (!is_dir($path))
+            mkdir($path, 0777, true);
+        
 
-        $namespace = "Controllers/{$halfPath}";
+        $namespace = !empty($halfPath) ? "Controllers/{$halfPath}" : "Controllers";
         $namespace = str_replace('/', '\\', $namespace);
 
         file_put_contents("{$path}/{$filename}.php", '<?php namespace App\\'.$namespace.';
