@@ -34,8 +34,17 @@ trait RequestTrait {
 
 
     // Get url segment
-    public function getSegment(int $index) {
-        return $this->urlParams[$index - 1] ?? null;
+    public function getSegment(int $index, bool $withQeuryString = false) {
+        
+        $param = $this->urlParams[$index - 1] ?? null;
+        
+        if (!$param) return null;
+        
+        if ($withQeuryString) {
+            return $param;
+        } else {
+            return explode('?', $param)[0];
+        }
     }
 
 
