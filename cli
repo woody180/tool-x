@@ -441,16 +441,18 @@ class {$fileName} {
     private static function restRoute(string $routeName) {
 
         $routeNameArr = explode('/', $routeName);
+        
         $lastIndex = array_key_last($routeNameArr);
         $filename = end($routeNameArr);
-
         array_splice($routeNameArr, $lastIndex, 1);
         $halfPath = join('/', $routeNameArr);
         $pathToController = "{$halfPath}/{$filename}";
         $path = __DIR__ . "/app/Routes/" .$halfPath;
-
+        
         // Make directory
-        mkdir($path, 0777, true);
+        if (!is_dir($path))
+            mkdir($path, 0777, true);
+        
 
         // Create file with content
         file_put_contents("{$path}/{$filename}.php", '<?php
@@ -485,7 +487,8 @@ $router->delete(\''.strtolower($pathToController).'/(:segment)\',      "'.$pathT
         $path = __DIR__ . "/app/Controllers/" . $halfPath;
 
         // Make directory
-        mkdir($path, 0777, true);
+        if (!is_dir($path))
+            mkdir($path, 0777, true);
 
         $namespace = "Controllers/{$halfPath}";
         $namespace = str_replace('/', '\\', $namespace);
