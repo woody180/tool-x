@@ -1,7 +1,7 @@
 <?php
 
 // Configurations
-require_once dirname(__DIR__) . '../Config/urls.php';
+require_once dirname(__DIR__) . '/Config/urls.php';
 require_once APPROOT . '/Config/database.php';
 require_once APPROOT . '/Config/app.php';
 require_once APPROOT . '/Config/routes.php';
