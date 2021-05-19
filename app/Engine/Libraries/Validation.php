@@ -17,10 +17,10 @@
  * $valiate = $validation
             ->with($body)
             ->rules([
-                'name' => 'required|alpha',
-                'username' => 'required|min[4]|max[20]alpha_num',
-                'email' => 'valid_email|min[5]',
-                'password' => 'min[5]'
+                'name|Name' => 'required|alpha',
+                'username|UserName' => 'required|min[4]|max[20]alpha_num',
+                'email|eMail' => 'valid_email|min[5]',
+                'password|Password' => 'min[5]'
             ])
             ->validate();
  * 
@@ -45,7 +45,9 @@ class Validation {
     }
     
     
-    private function makeValid(string $param, string $name, $bodyVal) {
+    private function makeValid(string $param, string $name, $bodyVal, $realName = null) {
+        
+        $readableName = $realName ? $realName : $name;
         
         if (preg_match('/min\[.*\]/', $param)) {
             preg_match('/min([\[](.*)[\]])/', $param, $match);
@@ -54,11 +56,11 @@ class Validation {
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if (mb_strlen($bodyVal) < $num)
-                        $this->errors[$name][] = "$name field must has at least $num characters.";
+                        $this->errors[$name][] = "$readableName field must contain at least $num characters.";
                 } else {
                     foreach ($bodyVal as $val) {
                         if (mb_strlen($val) < $num)
-                            $this->errors[$name][] = "$name field must has at least $num characters.";
+                            $this->errors[$name][] = "$readableName field must contain at least $num characters.";
                     }
                 }
             }
@@ -73,11 +75,11 @@ class Validation {
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if (mb_strlen($bodyVal) > $num)
-                        $this->errors[$name][] = "$name field maximum characters constraint is - $num.";
+                        $this->errors[$name][] = "$readableName field maximum characters constraint is - $num.";
                 } else {
                     foreach ($bodyVal as $val) {
                         if (mb_strlen($val) > $num)
-                            $this->errors[$name][] = "$name field maximum characters constraint is - $num.";
+                            $this->errors[$name][] = "$readableName field maximum characters constraint is - $num.";
                     }
                 }
             }
@@ -90,15 +92,15 @@ class Validation {
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if (strlen($bodyVal) < 1) 
-                        $this->errors[$name][] = "$name field can't be empty.";
+                        $this->errors[$name][] = "$readableName field can't be empty.";
                 } else {
                     foreach ($bodyVal as $val) {
                         if (strlen($val) < 1) 
-                            $this->errors[$name][] = "$name field can't be empty.";
+                            $this->errors[$name][] = "$readableName field can't be empty.";
                     }
                 }
             } else {
-                $this->errors[$name][] = "$name field can't be empty.";
+                $this->errors[$name][] = "$readableName field can't be empty.";
             }
         }
         
@@ -188,14 +190,14 @@ class Validation {
                     $str = $this->str2url($bodyVal);
 
                     if ($str !== $bodyVal)
-                        $this->errors[$name][] = "Slug is invalid!";
+                        $this->errors[$readableName][] = "Slug is invalid!";
                 } else {
                     foreach ($bodyVal as $val) {
                         
                         $str = $this->str2url($val);
                         
                         if ($str !== $val)
-                            $this->errors[$name][] = "Slug is invalid!";
+                            $this->errors[$readableName][] = "Slug is invalid!";
                     }
                 }
             }
@@ -207,11 +209,11 @@ class Validation {
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if ( !preg_match('/^[a-zA-Zა-ჰа-яА-Я()]+$/', $bodyVal))
-                        $this->errors[$name][] = "$name - Only alphabetical characters are allowed!";
+                        $this->errors[$name][] = "$readableName - Only alphabetical characters are allowed!";
                 } else {
                     foreach ($bodyVal as $val) {
                         if ( !preg_match('/^[a-zA-Zა-ჰа-яА-Я()]+$/', $val))
-                            $this->errors[$name][] = "$name - Only alphabetical characters are allowed!";    
+                            $this->errors[$name][] = "$readableName - Only alphabetical characters are allowed!";    
                     }
                 }
             }
@@ -225,11 +227,11 @@ class Validation {
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if (!preg_match('/^[a-zA-Zა-ჰа-яА-Я0-9()]+$/', $bodyVal))
-                        $this->errors[$name][] = "$name - Only alphabetical and numeric characters are allowed!";
+                        $this->errors[$name][] = "$readableName - Only alphabetical and numeric characters are allowed!";
                 } else {
                     foreach ($bodyVal as $val) {
                         if (!preg_match('/^[a-zA-Zა-ჰа-яА-Я0-9()]+$/', $val))
-                            $this->errors[$name][] = "$name - Only alphabetical and numeric characters are allowed!";
+                            $this->errors[$name][] = "$readableName - Only alphabetical and numeric characters are allowed!";
                     }
                 }
             }
@@ -264,12 +266,12 @@ class Validation {
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if (!filter_var($bodyVal, FILTER_VALIDATE_INT)) {
-                        $this->errors[$name][] = "$name - Only numbers are allowed!";
+                        $this->errors[$name][] = "$readableName - Only numbers are allowed!";
                     }
                 } else {
                     foreach ($bodyVal as $val) {
                         if (!filter_var($val, FILTER_VALIDATE_INT)) {
-                            $this->errors[$name][] = "$name - Only numbers are allowed!";
+                            $this->errors[$name][] = "$readableName - Only numbers are allowed!";
                         }
                     }
                 }
@@ -406,10 +408,16 @@ class Validation {
     public function validate() {
         
         foreach ($this->rules as $name => $rule) {
+            $realName = null;
+            if (preg_match('/(.*)[|](.*)/', $name, $match)) {
+                $name = $match[1];
+                $realName = $match[2];
+            }
+            
             $ruleParts = $this->rulesEncode($rule);
             
             foreach ($ruleParts as $rp) {
-                $this->makeValid($rp, $name, $this->body[$name]);
+                $this->makeValid($rp, $name, $this->body[$name], $realName);
             }
         }
         
