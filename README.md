@@ -122,10 +122,10 @@ $router->post('api/one', function($req, $res) {
     $valiate = $validation
             ->with($body)
             ->rules([
-                'name' => 'required|alpha',
-                'username' => 'required|min[4]|max[20]|alpha_num',
-                'email' => 'valid_email|min[5]',
-                'password' => 'min[5]'
+                'name|Name' => 'required|alpha',
+                'username|UserName' => 'required|min[4]|max[20]|alpha_num',
+                'email|eMail' => 'valid_email|min[5]',
+                'password|Password' => 'min[5]'
             ])
             ->validate();
 });
@@ -165,3 +165,4 @@ It is possible to create routes and controllers using CLI commands
 
 - Create route - ``` php cli make:routes filename httpVerb ```
 - Create controller - ``` php cli make:controllers filename methodName ```
+- Create restful routes and controllers - ``` php cli make:restful Blog/Articles ```
