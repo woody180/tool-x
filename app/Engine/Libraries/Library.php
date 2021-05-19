@@ -1,6 +1,23 @@
 <?php namespace App\Engine\Libraries;
 
 class Library {
+    
+    
+    // Forms
+    public static function getForm(string $val) {
+        
+        if (self::hasFlashData('form'))
+            return self::getFlashData('form')->{$val};
+        else 
+            return null;
+    }
+    
+    public static function setForm(array $data) {
+        
+        self::setFlashData('form', $data);
+    }
+    
+    
 
 
     // Loading custon helper files
