@@ -236,7 +236,8 @@ class {$fileName} {
 ');
 
         // Create rest directory for rest view
-        mkdir($path, 0777, true);
+        if (!is_dir($path))
+            mkdir($path, 0777, true);
 
         // Put views - list, add and edit files wtih content
         // List
