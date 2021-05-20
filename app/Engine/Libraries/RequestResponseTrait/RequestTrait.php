@@ -66,11 +66,34 @@ trait RequestTrait {
         foreach ($_POST as $key => $val)
             $data[$key] = $val;
 
+        // If csrf protection is enabled
+        if (CSRF_PROTECTION && $this->getMethod() === 'post') {
 
-        if ($index)
-            return $data[$index] ?? null;
+            // If token not comes with request
+            if (!isset($data['csrf_token'])) return \App\Engine\Libraries\Library::notFound(['code' => 403]);
+
+            // Send token not match to stored token
+            if ($data['csrf_token'] != $_SESSION['csrf_token']) return \App\Engine\Libraries\Library::notFound(['code' => 403]);
+
+            // Generate new csrf token
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+            // Remove csrf token from incoming request
+            array_splice($data, array_search('csrf_token', $data), 1);
+
+            // Send data back
+            if ($index)
+                return $data[$index] ?? null;
+            
+            return $data;
+
+        } else {
+            if ($index)
+                return $data[$index] ?? null;
+            
+            return $data;
+        }
         
-        return $data;
     }
 
 

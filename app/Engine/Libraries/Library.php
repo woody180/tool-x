@@ -1,6 +1,18 @@
 <?php namespace App\Engine\Libraries;
 
 class Library {
+
+
+    // CSRF Field
+    public static function csrf_field() {
+        return "<input type=\"hidden\" name=\"csrf_token\" value=\"".$_SESSION['csrf_token']."\" />";
+    }
+
+
+    // CSRF Hash
+    public static function csrf_hash() {
+        return $_SESSION['csrf_token'];
+    }
     
     
     // Forms

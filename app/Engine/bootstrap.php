@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 // Configurations
 require_once dirname(__DIR__) . '/Config/urls.php';
 require_once APPROOT . '/Config/database.php';
@@ -57,6 +59,12 @@ require_once APPROOT . '/Engine/Libraries/Library.php';
 require_once APPROOT . '/Engine/Libraries/RequestResponseTrait/RequestTrait.php';
 require_once APPROOT . '/Engine/Libraries/RequestResponseTrait/ResponseTrait.php';
 require_once APPROOT . '/Engine/Libraries/Router.php';
+
+// CSRF Protection
+if (CSRF_PROTECTION) {
+    if (!isset($_SESSION['csrf_token'])) 
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
 // Redirect to HTTPS
 if (FORCE_SECURE_REQUESTS) {
