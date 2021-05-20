@@ -9,4 +9,4 @@
 */
 
 
-CONST CUSTOM_HELPERS = [];
+CONST CUSTOM_HELPERS = ['urlSegments/urlSegments'];
