@@ -1,5 +1,7 @@
 <?php
 
+use App\Engine\Libraries\Library;
+
 trait RequestTrait {
     
     private $getMethod;
@@ -79,7 +81,7 @@ trait RequestTrait {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
             // Remove csrf token from incoming request
-            array_splice($data, array_search('csrf_token', $data), 1);
+            unset($data['csrf_token']);
 
             // Send data back
             if ($index)
