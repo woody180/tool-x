@@ -57,7 +57,7 @@ trait RequestTrait {
         $data = [];
 
         if (!empty($reqString) && \App\Engine\Libraries\Library::isJSON($reqString)) {
-            $data = json_decode($reqString);
+            $data = json_decode($reqString, true);
         } else {
             parse_str($reqString, $data);
         }
