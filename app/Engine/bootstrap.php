@@ -15,6 +15,11 @@ if (ERROR_HANDLING)
 else
     ini_set('display_errors', 0);
 
+
+// Base helper files
+require_once APPROOT . "/Engine/Helpers/engineUrlHelpers.php";
+
+
 // Helper library
 if (!empty(CUSTOM_HELPERS)) {
     foreach (CUSTOM_HELPERS as $helperFile) {
