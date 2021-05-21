@@ -47,6 +47,26 @@ Add route path without app\Routes directory
 
 Rotues will be search in app\Routes\Back and app\Routes\Front - automatically.
 
+# Method spoofing
+In some cases it is necessary use put, patch or some other request. In this case you can trait post request as some other.
+
+Check example
+```
+<form action="" method="POST">
+    <input name="_method" type="hidden" value="PUT" />
+</form>
+```
+
+# CSRF Protection
+Turn CSRF protection on from - app/Config/app.php and set **CSRF_PROTECTION** to **TRUE**
+
+To add CSRF field to your form add following...
+```
+<form method="post">
+    <?= \App\Engine\Libraries\Library::csrf_field(); ?>
+</form>
+```
+
 
 # Middlewares
 
