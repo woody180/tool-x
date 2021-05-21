@@ -134,26 +134,6 @@ class Router {
             return $namespace;
         }
     }
-
-
-    // Check token
-    protected function checkToken() {
-
-        if (CSRF_PROTECTION && $this->request->getMethod() === 'post') {
-                        
-            // If token inside the request body
-            if (!$this->body('csrf_token')) return Library::notFound(['code' => 403]);
-
-            // Compare tokens
-            if ($this->body('csrf_token') != $_SESSION['csrf_token']) return Library::notFound(['code' => 403]);
-
-            // Generate new token
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
-            // Remove token from request body
-            unset($this->body()['csrf_token']);
-        }
-    }
     
     
     public function __destruct() {
@@ -173,9 +153,6 @@ class Router {
                 
                 // Check if $callback is callable
                 if (is_callable($callback[0])) {
-
-                    // Check token
-                    $this->checkToken();
 
                     // Check if route has some middleware
                     if ($callback[1]) $this->runMiddleware($callback[1]);
@@ -211,9 +188,6 @@ class Router {
                     if (!method_exists($this->currentController, $this->currentMethod))
                         Library::notFound();
 
-                    // Check token
-                    $this->checkToken();
-                    
                     // Check if route has some middleware
                     if ($callback[1]) $this->runMiddleware($callback[1]);
 

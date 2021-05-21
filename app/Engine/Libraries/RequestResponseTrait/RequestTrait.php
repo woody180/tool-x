@@ -69,6 +69,21 @@ trait RequestTrait {
             $data[$key] = $val;
 
 
+        if (CSRF_PROTECTION && $this->request->getMethod() === 'post') {
+                    
+            // If token inside the request body
+            if (!isset($data['csrf_token'])) return Library::notFound(['code' => 403]);
+
+            // Compare tokens
+            if ($data['csrf_token'] != $_SESSION['csrf_token']) return Library::notFound(['code' => 403]);
+
+            // Generate new token
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+            unset($data['csrf_token']);
+        }
+
+
         if ($index)
             return $data[$index] ?? null;
         
