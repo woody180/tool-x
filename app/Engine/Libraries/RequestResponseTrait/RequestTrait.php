@@ -77,9 +77,6 @@ trait RequestTrait {
             // Compare tokens
             if ($data['csrf_token'] != $_SESSION['csrf_token']) return Library::notFound(['code' => 403]);
 
-            // Generate new token
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-
             unset($data['csrf_token']);
         }
 
