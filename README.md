@@ -56,17 +56,78 @@ Check example
     <input name="_method" type="hidden" value="PUT" />
 </form>
 ```
+Or add function
+```
+<form action="" method="POST">
+    <?= setMethld("PUT") ?>
+</form>
+```
 
 # CSRF Protection
+
+## CSRF hidden field
 Turn CSRF protection on from - app/Config/app.php and set **CSRF_PROTECTION** to **TRUE**
 
 To add CSRF field to your form add following...
 ```
 <form method="post">
-    <?= \App\Engine\Libraries\Library::csrf_field(); ?>
+    <?= csrf_field(); ?>
 </form>
 ```
 
+## Check CSRF value / hash
+```
+<?= csrf_hash() ?>
+```
+
+# Form helpers
+Prevents losing form field values.
+
+```
+<form method="post">
+
+    <?= csrf_field() ?>
+
+    <input name="fullname"  value="<?= getForm('fullname') ?>" />
+    <input name="username"  value="<?= getForm('username') ?>" />
+    <input name="email"     value="<?= getForm('email') ?>" />
+    <input name="password"  value="" />
+
+    <button type="submit">Submit form</button>
+</form>
+```
+
+Before using **getForm** helper function, you must set if from controller or router.
+
+```
+$router->post('users/register', function($req, $res) {
+    
+    // Storing request body with setForm function
+    setForm($res->send($req->body()));
+
+    // Redirect back to login view
+    return $res->redirect(baseUrl('users/login'));
+});
+```
+
+# URL helpers
+## Get base url
+
+To get progect base url, use - **baseUrl()** function. It takes optional parametes where you can add new url based on base url. See example
+
+```
+<?= baseUrl() ?>                <!-- http://sitename.com -->
+<?= baseUrl('users/login') ?>   <!-- http://sitename.com/users/login -->
+```
+
+## URL segments
+To get url without site base url with function **getSegments()**. It takes optional parametes where you can set url indexes. 
+
+For example you current url is **http://sitename.com/users/login**:
+```
+<?= getSegments() ?>    <!-- returns - users/login -->
+<?= getSegments(2) ?>   <!-- returns - login -->
+```
 
 # Middlewares
 
