@@ -21,3 +21,10 @@ function baseUrl(string $url = null) {
     else
         return URLROOT;
 }
+
+
+function assetsUrl(string $url = null) {
+
+    $publicUrl = $url ? '/' . $url : '';
+    return PUBLIC_DIR . $publicUrl;
+}
