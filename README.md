@@ -95,13 +95,13 @@ Prevents losing form field values with **getForm('field_name')** function.
 </form>
 ```
 
-Before using **getForm** helper function, you must set if from controller or router.
+Before using **getForm** helper function, you must set if from controller or router using **setForm($requestBody)** function. As a parameter it takes request body.
 
 ```
 $router->post('users/register', function($req, $res) {
     
     // Storing request body with setForm function
-    setForm($res->send($req->body()));
+    setForm($req->body());
 
     // Redirect back to login view
     return $res->redirect(baseUrl('users/login'));
