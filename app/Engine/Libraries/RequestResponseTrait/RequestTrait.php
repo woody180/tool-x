@@ -78,6 +78,7 @@ trait RequestTrait {
             if ($data['csrf_token'] != $_SESSION['csrf_token']) return Library::notFound(['code' => 403]);
 
             unset($data['csrf_token']);
+            unset($_SESSION['csrf_token']);
         }
 
 
