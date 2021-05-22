@@ -29,3 +29,9 @@ function setForm(array $data) {
     
     Library::setFlashData('form', $data);
 }
+
+
+// Method spoofing
+function setMethld(string $method) {
+    return '<input name="_method" type="hidden" value="'.$method.'" />';
+}
