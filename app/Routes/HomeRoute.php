@@ -20,4 +20,4 @@ $router->post('/', function($req, $res) {
 });
 
 
-$router->get('one', 'PagesController@home');
+$router->get('some/one/is/here', 'PagesController@home');

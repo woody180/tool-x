@@ -1,14 +1,16 @@
 <?php
 
 // Url segments
+
 function urlSegments($index = null) {
     
     $url = explode(URLROOT, CURRENT_URL)[1];
     
-    if ($index)
-        return explode('/', $url)[$index] ?? null;
-    else
-       return $url; 
+    if ($index) return explode('/', $url)[$index] ?? null;
+ 
+
+    preg_match('/[\/](.*)/', $url, $match);
+    return $match[1];
 }
 
 
