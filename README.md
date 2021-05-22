@@ -81,12 +81,10 @@ To add CSRF field to your form add following...
 ```
 
 # Form helpers
-Prevents losing form field values.
+Prevents losing form field values with **getForm('field_name')** function.
 
 ```
 <form method="post">
-
-    <?= csrf_field() ?>
 
     <input name="fullname"  value="<?= getForm('fullname') ?>" />
     <input name="username"  value="<?= getForm('username') ?>" />
