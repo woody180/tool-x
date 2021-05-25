@@ -15,7 +15,7 @@ $router->get('/', function($req, $res) {
 });
 
 
-$router->post('/', function($req, $res) {
+$router->post('create', function($req, $res) {
     $res->send($req->body());
 });
 

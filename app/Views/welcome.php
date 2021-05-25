@@ -6,7 +6,22 @@
         <?= $description ?>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo asperiores beatae officia accusamus quibusdam nobis ipsum repudiandae. Corporis odit voluptatem eveniet modi unde, nam fuga blanditiis harum, ut delectus optio.</p>    
     
-        <b><?= urlSegments() ?></b>
+        
+        <form action="<?= baseUrl('create') ?>" method="post">
+        
+            <?= csrf_field() ?>
+
+            <div>
+                <p><input type="text" name="one"></p>
+            </div>
+
+            <div>        
+                <p><input type="text" name="two"></p>
+            </div>
+
+            <button type="submit">Submit</button>
+
+        </form>
     </div>
 </section>
 

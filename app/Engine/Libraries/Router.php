@@ -159,8 +159,6 @@ class Router {
 
                     call_user_func($callback[0], $this->getRequest(), $this->getResponse());
 
-                    // Apply new CSRF token
-                    if (CSRF_PROTECTION && $this->request->getMethod() === 'post') $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
                 } else {
 
                     // Controller & method array
@@ -197,8 +195,6 @@ class Router {
                     // Call method and apply arguments
                     call_user_func_array([$this->currentController, $this->currentMethod], [$this->getRequest(), $this->getResponse()]);
 
-                    // Apply new CSRF token
-                    if (CSRF_PROTECTION && $this->request->getMethod() === 'post') $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
                 }
             } else {
 
