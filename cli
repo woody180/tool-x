@@ -458,14 +458,14 @@ use App\Engine\Libraries\Library;
 
 $router = Router::getInstance();
 
-$router->get(\''.strtolower($pathToController).'/new\',                "'.$pathToController.'@new");
-$router->post(\''.strtolower($pathToController).'\',                   "'.$pathToController.'@create");
-$router->get(\''.strtolower($pathToController).'\',                    "'.$pathToController.'@index");
-$router->get(\''.strtolower($pathToController).'/(:segment)\',         "'.$pathToController.'@show");
-$router->get(\''.strtolower($pathToController).'/(:segment)/edit\',    "'.$pathToController.'@edit");
-$router->put(\''.strtolower($pathToController).'/(:segment)\',         "'.$pathToController.'@update");
-$router->patch(\''.strtolower($pathToController).'/(:segment)\',       "'.$pathToController.'@update");
-$router->delete(\''.strtolower($pathToController).'/(:segment)\',      "'.$pathToController.'@delete");
+$router->get(\''.strtolower($pathToController).'/new\',                \''.$pathToController.'@new\');
+$router->post(\''.strtolower($pathToController).'\',                   \''.$pathToController.'@create\');
+$router->get(\''.strtolower($pathToController).'\',                    \''.$pathToController.'@index\');
+$router->get(\''.strtolower($pathToController).'/(:segment)\',         \''.$pathToController.'@show\');
+$router->get(\''.strtolower($pathToController).'/(:segment)/edit\',    \''.$pathToController.'@edit\');
+$router->put(\''.strtolower($pathToController).'/(:segment)\',         \''.$pathToController.'@update\');
+$router->patch(\''.strtolower($pathToController).'/(:segment)\',       \''.$pathToController.'@update\');
+$router->delete(\''.strtolower($pathToController).'/(:segment)\',      \''.$pathToController.'@delete\');
         ');
     }
 
