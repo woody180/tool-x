@@ -222,6 +222,22 @@ $router->post('api/one', function($req, $res) {
 9. required
 10. valid_input
 
+## Field error message
+```
+<form>
+    <div>
+
+        <input name="username" />
+
+        <?php if ($library::hasFlashData('errors')): ?>
+            <p class="uk-margin-remove uk-text-danger uk-text-small"><?= implode(', ', 
+            $library::getFlashData('errors')->name ?? []) ?></p>
+        <?php endif; ?>
+
+    </div>
+</form>
+```
+
 # Pagination
 
 ```
