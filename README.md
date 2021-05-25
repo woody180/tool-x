@@ -231,7 +231,7 @@ $router->post('api/one', function($req, $res) {
 
         <?php if ($library::hasFlashData('errors')): ?>
             <p class="uk-margin-remove uk-text-danger uk-text-small"><?= implode(', ', 
-            $library::getFlashData('errors')->name ?? []) ?></p>
+            $library::getFlashData('errors')->username ?? []) ?></p>
         <?php endif; ?>
 
     </div>
