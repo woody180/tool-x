@@ -33,6 +33,8 @@ trait RequestTrait {
                 unset($_POST['_method']);
             }
         }
+        
+        $this->body();
     }
 
 
@@ -70,7 +72,7 @@ trait RequestTrait {
             $data[$key] = $val;
 
 
-        if (CSRF_PROTECTION && $this->request->getMethod() === 'post' && !$this->isDone) {
+        if (CSRF_PROTECTION && $this->getMethod() === 'post' && !$this->isDone) {
                     
             // If token inside the request body
             if (!isset($data['csrf_token'])) return Library::notFound(['code' => 403]);
