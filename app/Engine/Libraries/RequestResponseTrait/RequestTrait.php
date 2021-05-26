@@ -8,6 +8,7 @@ trait RequestTrait {
     private $request;
     private $urlParams;
     private $url;
+    private $isDone = false;
     
     
     // Construct request url data...
@@ -69,7 +70,7 @@ trait RequestTrait {
             $data[$key] = $val;
 
 
-        if (CSRF_PROTECTION && $this->request->getMethod() === 'post') {
+        if (CSRF_PROTECTION && $this->request->getMethod() === 'post' && !$this->isDone) {
                     
             // If token inside the request body
             if (!isset($data['csrf_token'])) return Library::notFound(['code' => 403]);
@@ -77,9 +78,12 @@ trait RequestTrait {
             // Compare tokens
             if ($data['csrf_token'] != $_SESSION['csrf_token']) return Library::notFound(['code' => 403]);
 
-            unset($data['csrf_token']);
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+            $this->isDone = true;
         }
+
+        if (isset($data['csrf_token'])) unset($data['csrf_token']);
 
 
         if ($index)
