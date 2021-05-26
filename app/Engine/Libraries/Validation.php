@@ -417,6 +417,7 @@ class Validation {
             $ruleParts = $this->rulesEncode($rule);
             
             foreach ($ruleParts as $rp) {
+                if (!isset($this->body[$name])) $this->body[$name] = null;
                 $this->makeValid($rp, $name, $this->body[$name], $realName);
             }
         }
