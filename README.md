@@ -59,7 +59,7 @@ Check example
 Or add function
 ```
 <form action="" method="POST">
-    <?= setMethld("PUT") ?>
+    <?= setMethod("PUT") ?>
 </form>
 ```
 

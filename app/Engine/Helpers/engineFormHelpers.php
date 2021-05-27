@@ -32,6 +32,6 @@ function setForm(array $data) {
 
 
 // Method spoofing
-function setMethld(string $method) {
+function setMethod(string $method) {
     return '<input name="_method" type="hidden" value="'.$method.'" />';
 }
