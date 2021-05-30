@@ -108,6 +108,49 @@ $router->post('users/register', function($req, $res) {
 });
 ```
 
+# Respons method
+
+You can find response variable in to the routes callback or inside the controller method callback as an arguments. Check out the example
+```
+<?php namespace App\Controllers\Items;
+
+use App\Engine\Libraries\Library;
+use App\Engine\Libraries\Validation;
+use \R as R;
+
+class ItemsController {
+    public function new($req, $res) {
+        
+        return $res->redirectBack();
+    }
+}
+
+```
+
+## Avalable request method 
+### Request
+| Method      | Description |
+| ----------- | ----------- |
+|$req->body()|Getting request body|
+|$req->getSegment(int 2)|Getting segment of the url|
+|$req->urlSegments()|Getting segments of the url as array|
+|$req->getMethod()|Request method|
+|$req->query(string $key)|Query param|
+|$req->queryStr()|Query parameters as string|
+|$req->files()|Getting file request|
+
+
+## Avalable response methods
+### Response
+| Placeholders      | Description |
+| ----------- | ----------- |
+|$res->redirect(string $url)|Redirect someware|
+|$res->redirectBack()|Getting segment of the url|
+|$res->render(string $pathToView)|Rendering view|
+|$res->status(int $response_code)|Setting status code|
+|$res->send(array $data)|Sends back json data|
+
+
 # URL helpers
 ## Get base url
 

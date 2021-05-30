@@ -1,5 +1,7 @@
 <?php
 
+use App\Engine\Libraries\Library;
+
 trait ResponseTrait {
     
     public function getResponse() {
@@ -31,5 +33,16 @@ trait ResponseTrait {
     // Redirect
     public function redirect(string $url) {
         return header('Location: ' . $url);
+    }
+
+
+    // Redirect back
+    public function redirectBack() {
+
+        if (Library::hasFlashData('previous_url'))
+            return $this->redirect(URLROOT . "/" . Library::getFlashData('previous_url'));
+        else {
+            return $this->redirect(URLROOT);
+        }
     }
 }

@@ -33,7 +33,8 @@ trait RequestTrait {
                 unset($_POST['_method']);
             }
         }
-        
+
+        Library::setFlashData('previous_url', urlSegments());
         $this->body();
     }
 
