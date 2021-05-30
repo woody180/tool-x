@@ -108,9 +108,9 @@ $router->post('users/register', function($req, $res) {
 });
 ```
 
-# Respons method
+# Request & Respons method
 
-You can find response variable in to the routes callback or inside the controller method callback as an arguments. Check out the example
+You can find **\$request** and **\$response** variables in to the routes callback or inside the controller method callback as an arguments. Check out the example
 ```
 <?php namespace App\Controllers\Items;
 
@@ -121,6 +121,7 @@ use \R as R;
 class ItemsController {
     public function new($req, $res) {
         
+        // Request variable method
         return $res->redirectBack();
     }
 }
