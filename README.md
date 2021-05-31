@@ -128,11 +128,11 @@ class ItemsController {
 
 ```
 
-## Avalable request method 
+## Avalable request methods
 ### Request
-| Method      | Description |
+| Methods     | Description |
 | ----------- | ----------- |
-|$req->body()|Getting request body|
+|$req->body()|Getting request body. Takes optional string argument.|
 |$req->getSegment(int 2)|Getting segment of the url|
 |$req->urlSegments()|Getting segments of the url as array|
 |$req->getMethod()|Request method|
@@ -143,7 +143,7 @@ class ItemsController {
 
 ## Avalable response methods
 ### Response
-| Placeholders      | Description |
+| Methods      | Description |
 | ----------- | ----------- |
 |$res->redirect(string $url)|Redirect someware|
 |$res->redirectBack()|Getting segment of the url|
@@ -169,6 +169,10 @@ For example you current url is **http://sitename.com/users/login**:
 ```
 <?= getSegments() ?>    <!-- returns - users/login -->
 <?= getSegments(2) ?>   <!-- returns - login -->
+```
+## Getting query string
+```
+<?= query() // Takes optional numeric argument ?>
 ```
 
 # Middlewares
