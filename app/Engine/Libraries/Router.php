@@ -178,8 +178,15 @@ class Router {
                     // Instantiate controller
                     $controller = explode('/', $this->currentController);
                     $this->currentController = end($controller);
-                    $namespace = $this->getNamespaceByFileContent($src) . '\\' . $this->currentController;
+                    $checkNamespace = $this->getNamespaceByFileContent($src);
 
+                    // Check if namespace is inside the controller
+                    if (!$checkNamespace) die('Controller must has a namespace');
+
+                    // Get controller namespace
+                    $namespace = $checkNamespace . '\\' . $this->currentController;
+
+                    // Initialize controller
                     $this->currentController = new $namespace();
 
                     // Get method

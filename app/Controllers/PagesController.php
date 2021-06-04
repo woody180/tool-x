@@ -1,4 +1,4 @@
-<?php
+<?php namespace one\more\time;
 
 
 class PagesController {
