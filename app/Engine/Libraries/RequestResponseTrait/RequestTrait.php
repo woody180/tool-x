@@ -99,7 +99,11 @@ trait RequestTrait {
 
     // Url
     public function url() {
-        return $this->url;
+
+        $res = preg_replace('/[\/]?\?.*/', '', $this->url);
+        
+        if (!strlen($res)) return '/';
+        return $res;
     }
 
 
