@@ -1,7 +1,7 @@
 # Router
 ## Creating routes
 
-Go to the app/Routes directory. Create route file add add two lines to it...
+Go to the app/Routes directory. Create route file and add two lines to it...
 ```
 <?php
 
@@ -27,6 +27,12 @@ $router->get('/', function($req, $res) {
     return $res->render('welcome');
 });
 ```
+
+## Create routes with CLI
+```
+php cli make:routes optional/path/routerName
+```
+
 
 ## Router placeholder
 
