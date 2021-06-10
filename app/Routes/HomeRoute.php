@@ -13,11 +13,3 @@ $router->get('/', function($req, $res) {
         'library' => Library::class
     ]);
 });
-
-
-$router->post('create', function($req, $res) {
-    $res->send($req->body());
-});
-
-
-$router->get('some/one/is/here', 'PagesController@home');
