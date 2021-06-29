@@ -145,6 +145,7 @@ class ItemsController {
 |$req->query(string $key)|Query param|
 |$req->queryStr()|Query parameters as string|
 |$req->files()|Getting file request|
+|$req->isAjax()|Check if request is ajax|
 
 
 ## Avalable response methods
