@@ -39,6 +39,16 @@ trait RequestTrait {
     }
 
 
+    // Check if request is ajax
+    public function isAjax() {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strcasecmp($_SERVER['HTTP_X_REQUESTED_WITH'], 'xmlhttprequest') == 0) {
+            return true;
+        }
+
+        return false;
+    }
+    
+
     // Get url segment
     public function getSegment(int $index, bool $withQeuryString = false) {
         
