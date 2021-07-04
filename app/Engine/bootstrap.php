@@ -48,12 +48,12 @@ require_once APPROOT . "/Engine/TemplateEngine/Engine.php";
 // Composer autoload
 if (file_exists(APPROOT . '/Helpers/vendor/autoload.php')) {
     require_once APPROOT . '/Helpers/vendor/autoload.php';
-    if (DATABASE) {
-        require_once APPROOT . '/Engine/Libraries/rb.php';
-        require_once APPROOT . '/Engine/Database/Connection.php';
+}
 
-        new \App\Engine\Database\Connection();
-    }
+
+// RedBeanPHP model initialization function
+if (DATABASE) {
+    require_once APPROOT . "/Engine/Database/Initialization.php";
 }
 
 

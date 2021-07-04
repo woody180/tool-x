@@ -1,6 +1,6 @@
 <?php
 
-define("DATABASE", FALSE);
+define("DATABASE", TRUE);
 define('DATABASE_TYPE', 'SQLite'); // MySQL, PostgreSQL, SQLite, CUBRID
 
 CONST DB_HOST       = 'localhost';

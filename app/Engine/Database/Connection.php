@@ -7,7 +7,6 @@ class Connection {
         
         if (DATABASE) {
             
-            $res = null;
             if (DATABASE_TYPE === 'MySQL') {
                 R::setup( 'mysql:host='.DB_HOST.';dbname='.DB_NAME.'',
                     DB_USERNAME, DB_PASSWORD ); //for both mysql or mariaDB
