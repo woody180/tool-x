@@ -13,7 +13,7 @@ function initModel(string $modelName) {
 
             new \App\Engine\Database\Connection();
 
-            return R::dispense($modelName);
+            return R::dispense(strtolower($modelName));
         }
     }
 

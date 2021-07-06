@@ -53,6 +53,88 @@ Add route path without app\Routes directory
 
 Rotues will be search in app\Routes\Back and app\Routes\Front - automatically.
 
+# Models
+
+A model is a place to put validation and business logic. 
+
+## Create model
+
+Models are located inside **app/Models** directory. It is necessary to follow RedBeanPHP model name convention for naming model file - **Model_Pages.php**.
+
+Inside model add the class and extend it with RedBeanPHP **RedBean_SimpleModel** class.
+
+To initialize model add function inside the controller or router function - **initModel('Pages')**.
+
+```
+<?php namespace App\Controllers;
+
+use App\Engine\Libraries\Library;
+use \R as R;
+
+class HomeController {
+    
+    public function index($req, $res) {
+
+        // Initialize model
+        $pagesModel = initModel('Pages');
+
+        $res->render('welcome', [
+            'title' => 'APP Title',
+            'library' => Library::class
+        ]);
+    }
+}
+```
+
+Make sure SQL is enabled from **app/Config/database.php** file - **define("DATABASE", TRUE);**.
+
+```
+class Model_Pages extends RedBean_SimpleModel {
+
+    public function open() {
+        global $lifeCycle;
+        $lifeCycle .= "called open: ".$this->id;
+    }
+
+    public function dispense() {
+        global $lifeCycle;
+        $lifeCycle .= "called dispense() ".$this->bean;
+    }
+
+    public function update() {
+        global $lifeCycle;
+        $lifeCycle .= "called update() ".$this->bean;
+    }
+
+    public function after_update() {
+        global $lifeCycle;
+        $lifeCycle .= "called after_update() ".$this->bean;
+    }
+
+    public function delete() {
+        global $lifeCycle;
+        $lifeCycle .= "called delete() ".$this->bean;
+    }
+
+    public function after_delete() {
+        global $lifeCycle;
+        $lifeCycle .= "called after_delete() ".$this->bean;
+    }
+}
+```
+
+It is posible to add custom method to the model. They can be available from initModel('Pages'); function;
+
+```
+// Initialize model
+$pagesModel = initModel('Pages');
+
+// Get custom method
+$pagesModel->customMethod();
+```
+
+
+
 # Method spoofing
 In some cases it is necessary use put, patch or some other request. In this case you can trait post request as some other.
 
