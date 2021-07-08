@@ -349,15 +349,17 @@ $router->post('api/one', function($req, $res) {
 
 ## Avaialble validators
 1. alpha
-2. numeric
-3. alpha_num
-4. valid_email
-5. valid_url
-6. valid_slug
-7. min[]
-8. max[]
-9. required
-10. valid_input
+2. alpha_spaces
+3. numeric
+4. alpha_num
+5. alpha_num_spaces
+6. valid_email
+7. valid_url
+8. valid_slug
+9. min[]
+10. max[]
+11. required
+12. valid_input
 
 ## Field error message
 ```
