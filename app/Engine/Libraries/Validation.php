@@ -217,8 +217,22 @@ class Validation {
                     }
                 }
             }
+        }
+
+
+        if ($param === 'alpha_spaces') {
             
-            
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if ( !preg_match('/^[\s a-zA-Zა-ჰа-яА-Я()]+$/', $bodyVal))
+                        $this->errors[$name][] = "$readableName - Only alphabetical characters are allowed!";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if ( !preg_match('/^[\s a-zA-Zა-ჰа-яА-Я()]+$/', $val))
+                            $this->errors[$name][] = "$readableName - Only alphabetical characters are allowed!";    
+                    }
+                }
+            }
         }
         
         
@@ -231,6 +245,22 @@ class Validation {
                 } else {
                     foreach ($bodyVal as $val) {
                         if (!preg_match('/^[a-zA-Zა-ჰа-яА-Я0-9()]+$/', $val))
+                            $this->errors[$name][] = "$readableName - Only alphabetical and numeric characters are allowed!";
+                    }
+                }
+            }
+        }
+        
+        
+        if ($param === 'alpha_num_spaces') {
+            
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if (!preg_match('/^[\s a-zA-Zა-ჰа-яА-Я0-9()]+$/', $bodyVal))
+                        $this->errors[$name][] = "$readableName - Only alphabetical and numeric characters are allowed!";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if (!preg_match('/^[\s a-zA-Zა-ჰа-яА-Я0-9()]+$/', $val))
                             $this->errors[$name][] = "$readableName - Only alphabetical and numeric characters are allowed!";
                     }
                 }
