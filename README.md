@@ -59,6 +59,13 @@ A model is a place to put validation and business logic.
 
 ## Create model
 
+Create model with CLI
+
+With cli you must provide only model name and it will generate file inside the model called Model_Modelname.php. Check out the example below.
+```
+php cli make:models modelname
+```
+
 Models are located inside **app/Models** directory. It is necessary to follow RedBeanPHP model name convention for naming model file - **Model_Pages.php**.
 
 Inside model add the class and extend it with RedBeanPHP **RedBean_SimpleModel** class.
@@ -399,4 +406,5 @@ It is possible to create routes and controllers using CLI commands
 
 - Create route - ``` php cli make:routes filename httpVerb ```
 - Create controller - ``` php cli make:controllers filename methodName ```
+- Create Model - ```php cli make:models modelname```
 - Create restful routes and controllers - ``` php cli make:restful Blog/Articles ```
