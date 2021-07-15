@@ -69,17 +69,55 @@ class Cli {
                 mkdir($path, 0777, true);
             }
         }
-
         
-        $suffix = $fileType === 'controllers' ? 'Controller' : 'Route';
+        // Check suffixes
+        if ($fileType === 'controllers')    $suffix = 'Controller';
+        if ($fileType === 'routes')         $suffix = 'Route';
+        if ($fileType === 'models')         $suffix = 'Model_' . ucfirst($fileName);
 
         // Get file content
         $boilerPlate = call_user_func(['Cli', ucfirst($fileType)], ucfirst($fileName), $type, $param);
+        if ($fileType === 'models') $fileName = '';
 
         // Create file with content
         file_put_contents(__DIR__ . "/app/{$type}/". ucfirst($fileName) . $suffix .".php", $boilerPlate);
 
         echo "✔ - $fileName done! \n";
+    }
+
+
+
+    // Boilerplate for models
+    private static function models(string $filename) {
+
+        return "<?php
+        
+class Model_$filename extends RedBean_SimpleModel {
+
+    public function open() {
+        
+    }
+
+    public function dispense() {
+        
+    }
+
+    public function update() {
+        
+    }
+
+    public function after_update() {
+        
+    }
+
+    public function delete() {
+        
+    }
+
+    public function after_delete() {
+        
+    }
+}";
     }
 
 
