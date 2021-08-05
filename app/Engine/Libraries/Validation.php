@@ -273,11 +273,11 @@ class Validation {
             if (!empty($bodyVal)) {
                 
                 if (!is_array($bodyVal)) {
-                    if (!filter_var($bodyVal, 'FILTER_SANITIZE_STRING'))
+                    if (!filter_var($bodyVal, FILTER_SANITIZE_STRING))
                         $this->errors[$name][] = "Not a string.";
                 } else {
                     foreach ($bodyVal as $val) {
-                        if (!filter_var($val, 'FILTER_SANITIZE_STRING'))
+                        if (!filter_var($val, FILTER_SANITIZE_STRING))
                             $this->errors[$name][] = "Not a string.";
                     }
                 }
