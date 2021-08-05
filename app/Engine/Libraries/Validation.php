@@ -12,6 +12,7 @@
  * max[]
  * required
  * valid_input
+ * string
  * 
  * To make it work
  * $valiate = $validation
@@ -262,6 +263,22 @@ class Validation {
                     foreach ($bodyVal as $val) {
                         if (!preg_match('/^[\s a-zA-Zა-ჰа-яА-Я0-9()]+$/', $val))
                             $this->errors[$name][] = "$readableName - Only alphabetical and numeric characters are allowed!";
+                    }
+                }
+            }
+        }
+
+
+        if ($param === 'string') {
+            if (!empty($bodyVal)) {
+                
+                if (!is_array($bodyVal)) {
+                    if (!filter_var($bodyVal, 'FILTER_SANITIZE_STRING'))
+                        $this->errors[$name][] = "Not a string.";
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if (!filter_var($val, 'FILTER_SANITIZE_STRING'))
+                            $this->errors[$name][] = "Not a string.";
                     }
                 }
             }
