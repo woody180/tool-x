@@ -17,6 +17,8 @@ else
 
 
 // Base helper files
+require_once APPROOT . "/Engine/Helpers/engineToolHelpers.php";
+require_once APPROOT . "/Engine/Helpers/engineHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineDebuggingHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineUrlHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineFormHelpers.php";

@@ -1,7 +1,5 @@
 <?php
 
-use App\Engine\Libraries\Library;
-
 trait RequestTrait {
     
     private $getMethod;
@@ -34,7 +32,7 @@ trait RequestTrait {
             }
         }
 
-        Library::setFlashData('previous_url', urlSegments());
+        setFlashData('previous_url', urlSegments());
         $this->body();
     }
 
@@ -70,7 +68,7 @@ trait RequestTrait {
         $reqString = file_get_contents('php://input');
         $data = [];
 
-        if (!empty($reqString) && \App\Engine\Libraries\Library::isJSON($reqString)) {
+        if (!empty($reqString) && isJSON($reqString)) {
             $data = json_decode($reqString, true);
         } else {
             parse_str($reqString, $data);
@@ -86,10 +84,10 @@ trait RequestTrait {
         if (CSRF_PROTECTION && $this->getMethod() === 'post' && !$this->isDone) {
                     
             // If token inside the request body
-            if (!isset($data['csrf_token'])) return Library::notFound(['code' => 403]);
+            if (!isset($data['csrf_token'])) return abort(['code' => 403]);
 
             // Compare tokens
-            if ($data['csrf_token'] != $_SESSION['csrf_token']) return Library::notFound(['code' => 403]);
+            if ($data['csrf_token'] != $_SESSION['csrf_token']) return abort(['code' => 403]);
 
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 

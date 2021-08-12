@@ -322,7 +322,7 @@ class Library {
     // $limit = 12;
     // $offset = ($currentPage - 1) * $limit;
 
-    // $pagingData = Library::pager([
+    // $pagingData = pager([
     //     'total' => $totalPages,
     //     'limit' => $limit,
     //     'current' => $currentPage

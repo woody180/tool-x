@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/app/Config/urls.php';
 require_once __DIR__ . '/app/Config/database.php';
-require_once __DIR__ . '/app/Engine/Libraries/Library.php';
 require_once __DIR__ . '/app/Engine/Libraries/rb.php';
 require_once __DIR__ . '/app/Engine/Database/Connection.php';
 
@@ -130,7 +129,7 @@ class Model_$filename extends RedBean_SimpleModel {
         return "<?php
 
 use App\Engine\Libraries\Router;
-use App\Engine\Libraries\Library;
+
 
 \$router = Router::getInstance();
 
@@ -149,7 +148,7 @@ use App\Engine\Libraries\Library;
 
 return "<?php namespace App\\$type;
 
-use App\Engine\Libraries\Library;
+
 
 class {$fileName}Controller {
     
@@ -186,7 +185,7 @@ class {$fileName}Controller {
         file_put_contents("{$path}/{$filename}Route.php", '<?php
 
 use App\Engine\Libraries\Router;
-use App\Engine\Libraries\Library;
+
 
 $router = Router::getInstance();
 
@@ -223,7 +222,7 @@ $router->delete(\''.strtolower($pathToController).'/(:segment)\',      \''.ucfir
 
         file_put_contents("{$path}/{$filename}Controller.php", '<?php namespace App\\'.$namespace.';
 
-use App\Engine\Libraries\Library;
+
 
 class '.$filename.'Controller {
     

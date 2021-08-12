@@ -149,7 +149,7 @@ class Router {
                 $callback = $this->checkPatternMatch();
 
                 // Check if callback variable is statusCode
-                if (is_numeric($callback[0])) Library::notFound(['code' => $callback[0]]);
+                if (is_numeric($callback[0])) abort(['code' => $callback[0]]);
                 
                 // Check if $callback is callable
                 if (is_callable($callback[0])) {
@@ -169,7 +169,7 @@ class Router {
 
                     // Check if controller file exists
                     if (!file_exists(APPROOT . "/Controllers/{$this->currentController}.php"))
-                        Library::notFound();
+                        abort();
 
                     // Require controller file
                     require_once APPROOT . "/Controllers/{$this->currentController}.php"; // Include file
@@ -194,7 +194,7 @@ class Router {
 
                     // Check method inside the controller
                     if (!method_exists($this->currentController, $this->currentMethod))
-                        Library::notFound();
+                        abort();
 
                     // Check if route has some middleware
                     if ($callback[1]) $this->runMiddleware($callback[1]);
@@ -205,12 +205,12 @@ class Router {
                 }
             } else {
 
-                Library::notFound();
+                abort();
             }
 
         } else {
 
-            Library::notFound();
+            abort();
         }
     }
     

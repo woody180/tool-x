@@ -75,7 +75,7 @@ To initialize model add function inside the controller or router function - **in
 ```
 <?php namespace App\Controllers;
 
-use App\Engine\Libraries\Library;
+
 use \R as R;
 
 class HomeController {
@@ -86,8 +86,7 @@ class HomeController {
         $pagesModel = initModel('Pages');
 
         $res->render('welcome', [
-            'title' => 'APP Title',
-            'library' => Library::class
+            'title' => 'APP Title'
         ]);
     }
 }
@@ -209,7 +208,7 @@ You can find **\$request** and **\$response** variables in to the routes callbac
 ```
 <?php namespace App\Controllers\Items;
 
-use App\Engine\Libraries\Library;
+
 use App\Engine\Libraries\Validation;
 use \R as R;
 
@@ -297,18 +296,18 @@ CONST CUSTOM_HELPERS = ['myCustomHelperOne', 'myCustomHelperTwo'];
 ```
 
 ## Loading helper locally
-Add custom helper inside the route file using **App\Engine\Libraries\Library** Library class. Take a look at the example below.
+Add custom helper inside the route file using **library()** function. Take a look at the example below.
 
 ```
 use App\Engine\Libraries\Router;
-use App\Engine\Libraries\Library;
+
 
 $router = Router::getInstance();
 
 $router->get('/', function($req, $res) {
 
     // Loading custom helpers
-    Library::helpers(['myCustomHelperOne', 'myCustomHelperTwo']);
+    helpers(['myCustomHelperOne', 'myCustomHelperTwo']);
     
     $res->render('welcome', [
         'title' => 'APP Title',
@@ -375,9 +374,9 @@ $router->post('api/one', function($req, $res) {
 
         <input name="username" />
 
-        <?php if ($library::hasFlashData('errors')): ?>
+        <?php if (hasFlashData('errors')): ?>
             <p class="uk-margin-remove uk-text-danger uk-text-small"><?= implode(', ', 
-            $library::getFlashData('errors')->username ?? []) ?></p>
+            getFlashData('errors')->username ?? []) ?></p>
         <?php endif; ?>
 
     </div>
@@ -392,7 +391,7 @@ $currentPage = $_GET["page"] ?? 1;
 if ($currentPage < 1 OR $currentPage > $totalPages) $currentPage = 1;
 $limit = 12;
 $offset = ($currentPage - 1) * $limit;  
-$pagingData = Library::pager([
+$pagingData = pager([
     'total' => $totalPages,
     'limit' => $limit,
     'current' => $currentPage

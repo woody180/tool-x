@@ -1,7 +1,5 @@
 <?php
 
-use App\Engine\Libraries\Library;
-
 trait ResponseTrait {
     
     public function getResponse() {
@@ -12,7 +10,7 @@ trait ResponseTrait {
     // Respond as JSON
     public function send($obj) {
         header("Content-Type: application/json; charset=UTF-8");
-        echo \App\Engine\Libraries\Library::toJSON($obj);
+        echo toJSON($obj);
     }
     
     
@@ -39,8 +37,8 @@ trait ResponseTrait {
     // Redirect back
     public function redirectBack() {
 
-        if (Library::hasFlashData('previous_url'))
-            return $this->redirect(URLROOT . "/" . Library::getFlashData('previous_url'));
+        if (hasFlashData('previous_url'))
+            return $this->redirect(URLROOT . "/" . getFlashData('previous_url'));
         else {
             return $this->redirect(URLROOT);
         }

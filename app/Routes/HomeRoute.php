@@ -1,8 +1,15 @@
 <?php
 
 use App\Engine\Libraries\Router;
-use App\Engine\Libraries\Library;
 
 $router = Router::getInstance();
 
 $router->get('/', 'HomeController@index');
+
+
+$router->get('message', function($req, $res) {
+
+    setFlashData('message', 'This is sample message');
+
+    return $res->redirectBack();
+});
