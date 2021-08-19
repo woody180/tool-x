@@ -26,8 +26,9 @@ function urlSegments($index = null, $rmQuery = true) {
         return $match;
     }
  
-    preg_match('/([^\/][^\?]+)(\?.*)?/', $url, $match);
-    return $match[1];
+    preg_match('/([^\?]+)(\?.*)?/', $url, $match);
+    $res = strlen($match[1]) > 1 ? ltrim($match[1], '/') : $match[1];
+    return $res;
 }
 
 
