@@ -11,14 +11,22 @@ function urlExists($url) {
 
 
 // Url segments
-function urlSegments($index = null) {
+function urlSegments($index = null, $rmQuery = true) {
     
     $url = explode(URLROOT, CURRENT_URL)[1];
     
-    if ($index) return explode('/', $url)[$index] ?? null;
- 
+    if ($index) {
+        $url = explode('/', $url)[$index] ?? null;
 
-    preg_match('/[\/](.*)/', $url, $match);
+        if ($rmQuery) {
+            $match = explode('?', $url)[0];
+        } else {
+            $match = $url;
+        }
+        return $match;
+    }
+ 
+    preg_match('/([^\/][^\?]+)(\?.*)?/', $url, $match);
     return $match[1];
 }
 
