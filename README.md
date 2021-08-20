@@ -399,6 +399,26 @@ $pagingData = pager([
 $pages = R::find("pages", "order by timestamp asc limit $limit offset $offset");
 ```
 
+
+# Helper functions
+
+- str2url(string);       // Takes string as argument
+- pager(array);
+- rrmdir(string);      // Takes directory path as argument
+- isJSON(string);        // Check if json
+- toJSON(array);         // Array to json
+- toArray(array);        // Array to object
+- array_search_index(array $arr, string $d1, string $d2, $index = true); // Search for index in array
+- array_value_multisort(array $arr, string $key, string $nextArrayKey);
+- set_cookie(array $data);
+- get_cookie(string $name);
+- delete_cookie(string $name);
+- setFlashData(string $key, $data);
+- hasFlashData(string $key);
+- getFlashData(string $key);
+- getUserIP();
+
+
 # CLI
 
 It is possible to create routes and controllers using CLI commands
