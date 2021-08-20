@@ -3,10 +3,13 @@
 use RedBeanPHP\Facade as R;
 
 class Connection {
-    public function __construct() {
+
+    private static $instance = null;
+
+    private function __construct() {
         
         if (DATABASE) {
-            
+
             if (DATABASE_TYPE === 'MySQL') {
                 R::setup( 'mysql:host='.DB_HOST.';dbname='.DB_NAME.'',
                     DB_USERNAME, DB_PASSWORD ); //for both mysql or mariaDB
@@ -31,6 +34,16 @@ class Connection {
             if (!R::testConnection()) die('Database connection failed');
         }
     }
+
+
+    public static function getInstance() {
+        if (self::$instance == null) {
+            self::$instance = new Connection();
+        }
+    
+        return self::$instance;
+    }
+
 
     public function __destruct() {
         R::close();
