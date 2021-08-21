@@ -10,6 +10,7 @@
  * valid_slug
  * min[]
  * max[]
+ * ext[jpg,jpeg,bpm,gif]
  * required
  * valid_input
  * string
@@ -19,7 +20,7 @@
             ->with($body)
             ->rules([
                 'name|Name' => 'required|alpha',
-                'username|UserName' => 'required|min[4]|max[20]alpha_num',
+                'username|UserName' => 'required|min[4]|max[20]|alpha_num',
                 'email|eMail' => 'valid_email|min[5]',
                 'password|Password' => 'min[5]'
             ])
@@ -84,8 +85,6 @@ class Validation {
                     }
                 }
             }
-            
-            
         }
         
         if ($param === 'required') {
@@ -104,6 +103,37 @@ class Validation {
                 $this->errors[$name][] = "$readableName field can't be empty.";
             }
         }
+
+
+        // Validate file extensions
+        if (preg_match('/ext[[](.*)[]]/', $param, $match)) {
+            
+            $extArray = explode(',', $match[1]);            
+            
+            if (!empty($bodyVal)) {
+                
+                if (!empty($bodyVal['name'])) {
+                    if (!is_array($bodyVal['name'])) {
+                        
+                        $ext = pathinfo($bodyVal['name'], PATHINFO_EXTENSION);
+                        
+                        if (!in_array($ext, $extArray)) {
+                            $this->errors[$name][] = "Invalid extension name - <b>$ext</b>!";
+                        }
+                    } else {
+                        foreach ($bodyVal['name'] as $val) {
+                            
+                            $ext = pathinfo($val, PATHINFO_EXTENSION);
+                            
+                            if (!in_array($ext, $extArray))
+                                $this->errors[$name][] = "Invalid extension name - <b>$ext</b>!";
+                        }
+                    }
+                    
+                }
+            }
+        }
+
         
         
         if ($param === 'valid_email') {
