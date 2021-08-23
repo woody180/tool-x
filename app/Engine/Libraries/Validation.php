@@ -3,14 +3,18 @@
 /*
  * Avaialble validators
  * alpha
+ * alpha_spaces
  * numeric
  * alpha_num
+ * alpha_num_spaces
  * valid_email
  * valid_url
  * valid_slug
  * min[]
  * max[]
- * ext[jpg,jpeg,bpm,gif]
+ * ext[jpg,jpeg,gif,bmp]
+ * min_size[1234]
+ * max_size[1234]
  * required
  * valid_input
  * string
@@ -94,9 +98,17 @@ class Validation {
                     if (strlen($bodyVal) < 1) 
                         $this->errors[$name][] = "$readableName field can't be empty.";
                 } else {
-                    foreach ($bodyVal as $val) {
-                        if (strlen($val) < 1) 
-                            $this->errors[$name][] = "$readableName field can't be empty.";
+                    
+                    if (isset($bodyVal['error']) && empty($bodyVal['name'][0])) {
+                        $this->errors[$name][] = "$readableName field can't be empty.";
+                    }
+                    
+                    if (empty($_FILES)) {    
+                        foreach ($bodyVal as $val) {
+                            if (strlen($val) < 1) {
+                                $this->errors[$name][] = "$readableName field can't be empty.";
+                            }
+                        }
                     }
                 }
             } else {
@@ -108,7 +120,7 @@ class Validation {
         // Validate file extensions
         if (preg_match('/ext[[](.*)[]]/', $param, $match)) {
             
-            $extArray = explode(',', $match[1]);            
+            $extArray = explode(',', $match[1]);
             
             if (!empty($bodyVal)) {
                 
@@ -121,15 +133,64 @@ class Validation {
                             $this->errors[$name][] = "Invalid extension name - <b>$ext</b>!";
                         }
                     } else {
-                        foreach ($bodyVal['name'] as $val) {
-                            
-                            $ext = pathinfo($val, PATHINFO_EXTENSION);
-                            
-                            if (!in_array($ext, $extArray))
-                                $this->errors[$name][] = "Invalid extension name - <b>$ext</b>!";
+                        
+                        if (!empty($bodyVal['name'][0])) {
+                            foreach ($bodyVal['name'] as $val) {
+
+                                $ext = pathinfo($val, PATHINFO_EXTENSION);
+
+                                if (!in_array($ext, $extArray))
+                                    $this->errors[$name][] = "Invalid extension name - <b>$ext</b>!";
+                            }
                         }
                     }
                     
+                }
+            }
+        }
+        
+        
+        // Minimum file size
+        if (preg_match('/min_size[[](.*)[]]/', $param, $match)) {
+            $minSize = $match[1];
+            
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal['name'])) {
+                    if (!empty($bodyVal['name'])) {
+                        if ($bodyVal['size'] < $minSize)
+                            $this->errors[$name][] = "File is too small. Minimum size is {$minSize}!";
+                    }
+                } else {
+                    if (!empty($bodyVal['name'][0])) {
+                        foreach ($bodyVal['size'] as $size) {
+                            if ($size < $minSize) {
+                                $this->errors[$name][] = "File is too small. Minimum size is {$minSize}!";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        // Maximum file size
+        if (preg_match('/max_size[[](.*)[]]/', $param, $match)) {
+            $maxSize = $match[1];
+            
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal['name'])) {
+                    if (!empty($bodyVal['name'])) {
+                        if ($bodyVal['size'] > $maxSize)
+                            $this->errors[$name][] = "File is too large - {$bodyVal['size']}. Maximum size is {$maxSize}!";
+                    }
+                } else {
+                    if (!empty($bodyVal['name'][0])) {
+                        foreach ($bodyVal['size'] as $size) {
+                            if ($size > $maxSize) {
+                                $this->errors[$name][] = "File is too large - {$size}. Maximum size is {$maxSize}!";
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -140,11 +201,11 @@ class Validation {
             
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
-                    if (!filter_var($bodyVal, FILTER_VALIDATE_EMAIL))
+                    if (!preg_match('/^[\w\W0-9\-]{3,20}\@[\w\W0-9\-]{2,10}\.[\w\W]{2,4}$/', $bodyVal))
                         $this->errors[$name][] = "Invalid $readableName address!";
                 } else {
                     foreach ($bodyVal as $val) {
-                        if (!filter_var($val, FILTER_VALIDATE_EMAIL))
+                        if (!preg_match('/^[\w\W0-9\-]{3,20}\@[\w\W0-9\-]{2,10}\.[\w\W]{2,4}$/', $val))
                             $this->errors[$name][] = "Invalid $readableName address!";
                     }
                 }
@@ -249,22 +310,38 @@ class Validation {
                 }
             }
         }
-
-
+        
+        
+        if ($param === 'alpha_num_spaces') {
+            
+            if (!empty($bodyVal)) {
+                if (!is_array($bodyVal)) {
+                    if ( !preg_match('/^[\s a-zA-Zა-ჰа-яА-Я1-9()]+$/', $bodyVal))
+                        $this->errors[$name][] = "$readableName - Only alphabetical characters are allowed!"; 
+                } else {
+                    foreach ($bodyVal as $val) {
+                        if ( !preg_match('/^[\s a-zA-Zა-ჰа-яА-Я1-9()]+$/', $val))
+                            $this->errors[$name][] = "$readableName - Only alphabetical characters are allowed!";
+                    }
+                }
+            }
+        }
+        
         if ($param === 'alpha_spaces') {
             
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if ( !preg_match('/^[\s a-zA-Zა-ჰа-яА-Я()]+$/', $bodyVal))
-                        $this->errors[$name][] = "$readableName - Only alphabetical characters are allowed!";
+                        $this->errors[$name][] = "$readableName - Only alphabetical characters and spaces are allowed!";
                 } else {
                     foreach ($bodyVal as $val) {
                         if ( !preg_match('/^[\s a-zA-Zა-ჰа-яА-Я()]+$/', $val))
-                            $this->errors[$name][] = "$readableName - Only alphabetical characters are allowed!";    
+                            $this->errors[$name][] = "$readableName - Only alphabetical characters and spaces are allowed!";
                     }
                 }
             }
         }
+
         
         
         if ($param === 'alpha_num') {
