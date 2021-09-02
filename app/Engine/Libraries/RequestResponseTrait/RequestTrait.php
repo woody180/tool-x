@@ -193,7 +193,7 @@ trait RequestTrait {
                     $newFile = $filePath . '/' . $fileName . '.' . pathinfo($this->file['name'][$i], PATHINFO_EXTENSION);
                     if (file_exists($newFile)) die('File already exists in this directory');
                 } else {
-                    $newFile = $filePath . '/' . basename($this->file['name'][$i]);
+                    $newFile = $filePath . '/' . $this->generateRandomString() . '_' . basename($this->file['name'][$i]);
                 }
                 move_uploaded_file($tempName, $newFile);
                 array_push($uploadedFiles, $newFile);
@@ -205,7 +205,7 @@ trait RequestTrait {
                 $newFile = $filePath . '/' . $fileName . '.' . pathinfo($this->file['name'], PATHINFO_EXTENSION);
                 if (file_exists($newFile)) die('File already exists in this directory');
             } else {
-                $newFile = $filePath . '/' . basename($this->file['name']);
+                $newFile = $filePath . '/' . $this->generateRandomString() . '_' . basename($this->file['name']);
             }
             
             move_uploaded_file($this->file['tmp_name'], $newFile);
