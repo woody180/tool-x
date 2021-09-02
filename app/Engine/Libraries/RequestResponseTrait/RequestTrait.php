@@ -169,10 +169,60 @@ trait RequestTrait {
     // Get files
     public function files(string $key = null) {
         if ($key) {
-            return $_FILES[$key] ?? null;
+            $this->file = $_FILES[$key] ?? null;
+            return $this;
         }
-        
-        return $_FILES;
+        $this->file = $_FILES;
+        return $this;
+    }
+
+
+    public function show() {
+        return $this->file;
+    }
+
+
+    public function upload(string $filePath, string $fileName = null) {
+
+        // If multiple files
+        if (isset($this->file['name']) && is_array($this->file['name'])) {
+            $uploadedFiles = [];
+            foreach ($this->file['tmp_name'] as $i => $tempName) {
+
+                if ($fileName) {
+                    $newFile = $filePath . '/' . $fileName . '.' . pathinfo($this->file['name'][$i], PATHINFO_EXTENSION);
+                    if (file_exists($newFile)) die('File already exists in this directory');
+                } else {
+                    $newFile = $filePath . '/' . basename($this->file['name'][$i]);
+                }
+                move_uploaded_file($tempName, $newFile);
+                array_push($uploadedFiles, $newFile);
+            }
+            return $uploadedFiles;
+        } else {
+
+            if ($fileName) {
+                $newFile = $filePath . '/' . $fileName . '.' . pathinfo($this->file['name'], PATHINFO_EXTENSION);
+                if (file_exists($newFile)) die('File already exists in this directory');
+            } else {
+                $newFile = $filePath . '/' . basename($this->file['name']);
+            }
+            
+            move_uploaded_file($this->file['tmp_name'], $newFile);
+
+            return $newFile;
+        }
+    }
+
+
+    private function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
     
     
