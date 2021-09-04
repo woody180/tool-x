@@ -5,5 +5,5 @@
  */
 
 CONST LIBRARIES = [
-    'ImageResize/ImageResize'
+    //'ImageResize/ImageResize'
 ];

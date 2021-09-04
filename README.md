@@ -316,6 +316,17 @@ $router->get('/', function($req, $res) {
 });
 ```
 
+# Libraries
+
+To load libraries go to app/Config/libraries.php file and uncomment library you want to load.
+
+## Image resize library
+As an image resize library we use - https://github.com/gumlet/php-image-resize
+
+```
+use App\Engine\Libraries\ImageResize\ImageResize;
+```
+
 # Render views
 
 Views are under ```app/Views``` directory. It's possible to render them from router as well as from controller file. The render method is under router/controller ```$response``` argument
