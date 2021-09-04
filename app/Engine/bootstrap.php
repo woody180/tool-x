@@ -8,6 +8,7 @@ require_once APPROOT . '/Config/database.php';
 require_once APPROOT . '/Config/app.php';
 require_once APPROOT . '/Config/routes.php';
 require_once APPROOT . '/Config/helpers.php';
+require_once APPROOT . '/Config/libraries.php';
 
 // Display errors
 if (ERROR_HANDLING) 
@@ -32,6 +33,13 @@ if (!empty(CUSTOM_HELPERS)) {
         require_once APPROOT . "/Helpers/{$helperFile}.php";
     }
 }
+
+
+// Include image resizer library
+foreach (LIBRARIES as $lib) {
+    require_once APPROOT . "/Engine/Libraries/{$lib}.php";
+}
+
 
 // Include template engine
 require_once APPROOT . "/Engine/TemplateEngine/Extension/ExtensionInterface.php";
