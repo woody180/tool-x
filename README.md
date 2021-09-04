@@ -369,18 +369,22 @@ $router->post('api/one', function($req, $res) {
 ```
 
 ## Avaialble validators
-1. alpha
-2. alpha_spaces
-3. numeric
-4. alpha_num
-5. alpha_num_spaces
-6. valid_email
-7. valid_url
-8. valid_slug
-9. min[]
-10. max[]
-11. required
-12. valid_input
+- alpha
+- alpha_spaces
+- alpha_num_spaces
+- numeric
+- alpha_num
+- valid_email
+- valid_url
+- valid_slug
+- min[]
+- max[]
+- ext[jpg,jpeg,gif,bmp]
+- min_size[20000]
+- max_size[200000]
+- required
+- valid_input
+- string
 
 ## Field error message
 ```
