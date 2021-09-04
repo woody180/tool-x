@@ -325,6 +325,10 @@ As an image resize library we use - https://github.com/gumlet/php-image-resize
 
 ```
 use App\Engine\Libraries\ImageResize\ImageResize;
+
+$image = new ImageResize('image.jpg');
+$image->scale(50);
+$image->save('image2.jpg')
 ```
 
 # Render views
