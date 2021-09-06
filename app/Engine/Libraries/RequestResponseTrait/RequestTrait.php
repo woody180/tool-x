@@ -32,7 +32,10 @@ trait RequestTrait {
             }
         }
 
-        setFlashData('previous_url', urlSegments());
+        // Check if not ajax
+        if (!$this->isAjax()) {
+            setFlashData('previous_url', urlSegments());
+        }
         $this->body();
     }
 
