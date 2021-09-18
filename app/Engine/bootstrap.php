@@ -9,6 +9,12 @@ require_once APPROOT . '/Config/app.php';
 require_once APPROOT . '/Config/routes.php';
 require_once APPROOT . '/Config/helpers.php';
 require_once APPROOT . '/Config/libraries.php';
+require_once APPROOT . '/Config/boot.php';
+
+// Load files on application boot
+foreach (AUTOBOOT_FILES as $file) {
+    require_once APPROOT . "/Boot/{$file}.php";
+}
 
 // Display errors
 if (ERROR_HANDLING) 
