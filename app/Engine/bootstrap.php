@@ -11,11 +11,6 @@ require_once APPROOT . '/Config/helpers.php';
 require_once APPROOT . '/Config/libraries.php';
 require_once APPROOT . '/Config/boot.php';
 
-// Load files on application boot
-foreach (AUTOBOOT_FILES as $file) {
-    require_once APPROOT . "/Boot/{$file}.php";
-}
-
 // Display errors
 if (ERROR_HANDLING) 
     ini_set('display_errors', 1);
@@ -71,6 +66,12 @@ if (file_exists(APPROOT . '/Helpers/vendor/autoload.php')) {
 // RedBeanPHP model initialization function
 if (DATABASE) {
     require_once APPROOT . "/Engine/Database/Initialization.php";
+}
+
+
+// Load files on application boot
+foreach (AUTOBOOT_FILES as $file) {
+    require_once APPROOT . "/Boot/{$file}.php";
 }
 
 
