@@ -180,7 +180,8 @@ trait RequestTrait {
     }
 
 
-    public function show() {
+    public function show(string $attr = null) {
+        if ($attr) return $this->file[$attr];
         return $this->file;
     }
 
