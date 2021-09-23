@@ -181,7 +181,7 @@ trait RequestTrait {
 
 
     public function show(string $attr = null) {
-        if ($attr) return $this->file[$attr];
+        if ($attr) return $this->file[$attr] ?? null;
         return $this->file;
     }
 
