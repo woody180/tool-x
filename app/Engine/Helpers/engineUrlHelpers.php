@@ -13,7 +13,9 @@ function urlExists($url) {
 // Url segments
 function urlSegments($index = null, $rmQuery = true) {
     
-    $url = explode(URLROOT, CURRENT_URL)[1];
+    $urlArr = explode(URLROOT, CURRENT_URL);
+    $url = isset($urlArr[1]) ? $urlArr[1] : '/';
+    $url = $url != '/' ? ltrim(rtrim($url, '/'), '/') : '/';
     
     if ($index) {
         $url = explode('/', $url)[$index] ?? null;

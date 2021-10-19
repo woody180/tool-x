@@ -13,10 +13,11 @@ trait RequestTrait {
     protected function constructRequest() {
         
         // Get requested url
-        $url = explode(URLROOT, CURRENT_URL)[1];
+        $urlArr = explode(URLROOT, CURRENT_URL);
+        $url = isset($urlArr[1]) ? $urlArr[1] : '/';
         $url = $url != '/' ? ltrim(rtrim($url, '/'), '/') : '/';
         $this->url = filter_var($url, FILTER_SANITIZE_STRING);
-        
+
         // Url parameters
         $this->urlParams = $this->url == '/' ? null : explode('/', $this->url);
         
