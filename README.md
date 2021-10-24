@@ -353,7 +353,7 @@ Validation seats under ```App\Engine\Libraries\Validation``` namespace.
 $router->post('api/one', function($req, $res) {
 
     // Get request data
-    $body = $req->body;
+    $body = $req->body();
 
     // Valdiate request data
     $valiate = $validation
