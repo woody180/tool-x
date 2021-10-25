@@ -11,7 +11,7 @@ function urlExists($url) {
 
 
 // Url segments
-function urlSegments($index = null, $rmQuery = true) {
+function urlSegments(int $index = null, bool $removeQuery = false) {
 
     $i = $index - 1;
     
@@ -22,22 +22,12 @@ function urlSegments($index = null, $rmQuery = true) {
 
     if ($index) {
         $url = explode('/', $url)[$i] ?? null;
-
-        if ($rmQuery) {
-            $match = explode('?', $url)[0];
-        } else {
-            $match = $url;
-        }
-        return $match;
     }
- 
-    if ($url != '/') {
-        preg_match('/([^\?]+)(\?.*)?/', $url, $match);
-        $res = $match[1];
-        return $res;
-    } 
-    
-    return $url;
+
+    preg_match('/([^\?]+)(\?.*)?/', $url, $match);
+    $matchIndex = $removeQuery ? 1 : 0;
+    $res = $match[$matchIndex] ?? null;
+    return $res;
 }
 
 
