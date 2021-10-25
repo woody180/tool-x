@@ -421,12 +421,13 @@ $pages = R::find("pages", "order by timestamp asc limit $limit offset $offset");
 
 # Helper functions
 
-- str2url(string);       // Takes string as argument
+- str2url(string); // Takes string as argument
+- urlSegments(int $index = null, bool $removeQuery = false);
 - pager(array);
-- rrmdir(string);      // Takes directory path as argument
-- isJSON(string);        // Check if json
-- toJSON(array);         // Array to json
-- toArray(array);        // Array to object
+- rrmdir(string); // Takes directory path as argument
+- isJSON(string); // Check if json
+- toJSON(array); // Array to json
+- toArray(array); // Array to object
 - array_search_index(array $arr, string $d1, string $d2, $index = true); // Search for index in array
 - array_value_multisort(array $arr, string $key, string $nextArrayKey);
 - set_cookie(array $data);
