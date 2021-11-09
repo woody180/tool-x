@@ -402,6 +402,26 @@ $router->post('api/one', function($req, $res) {
 </form>
 ```
 
+# Files.
+
+### Show files
+```
+public function method($req, $res) {
+
+    // Show file/s
+    $files = $req->files('input-name')->show(string $key);
+});
+```
+
+### Upload files
+```
+public function method($req, $res) {
+
+    // Upload file/s
+    $file = $req->files('input-name')->upload(string $filePath, string $fileName = null);
+});
+```
+
 # Pagination
 
 ```
