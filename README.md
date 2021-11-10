@@ -55,7 +55,7 @@ Rotues will be search in app\Routes\Back and app\Routes\Front - automatically.
 
 # Models
 
-A model is a place to put validation and business logic. 
+A model is a place to put validation and business logic.
 
 ## Create model
 
@@ -139,6 +139,11 @@ $pagesModel = initModel('Pages');
 $pagesModel->customMethod();
 ```
 
+## Migration
+
+To create migration, inside the model create method called **migrate()**
+
+This method can be envoced through **CLI**. To fire it inside terminal type - **php cli make:migration modelName**
 
 
 # Method spoofing
@@ -466,4 +471,5 @@ It is possible to create routes and controllers using CLI commands
 - Create route - ``` php cli make:routes filename httpVerb ```
 - Create controller - ``` php cli make:controllers filename methodName ```
 - Create Model - ```php cli make:models modelname```
+- Migration through model method - ```php cli make:migration ModelName```
 - Create restful routes and controllers - ``` php cli make:restful Blog/Articles ```
