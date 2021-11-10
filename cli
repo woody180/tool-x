@@ -3,6 +3,7 @@
 require_once __DIR__ . '/app/Config/urls.php';
 require_once __DIR__ . '/app/Config/database.php';
 require_once __DIR__ . '/app/Engine/Libraries/rb.php';
+require_once __DIR__ . '/app/Engine/Database/Initialization.php';
 require_once __DIR__ . '/app/Engine/Database/Connection.php';
 
 class Cli {
@@ -68,11 +69,19 @@ class Cli {
                 mkdir($path, 0777, true);
             }
         }
+
+
+        if ($fileType === 'migration') {
+            self::migration($fileName);
+            die;
+        }
+        
         
         // Check suffixes
         if ($fileType === 'controllers')    $suffix = 'Controller';
         if ($fileType === 'routes')         $suffix = 'Route';
         if ($fileType === 'models')         $suffix = 'Model_' . ucfirst($fileName);
+        
 
         // Get file content
         $boilerPlate = call_user_func(['Cli', ucfirst($fileType)], ucfirst($fileName), $type, $param);
@@ -82,6 +91,25 @@ class Cli {
         file_put_contents(__DIR__ . "/app/{$type}/". ucfirst($fileName) . $suffix .".php", $boilerPlate);
 
         echo "✔ - $fileName done! \n";
+    }
+
+
+
+    private static function migration(string $migrationName) {
+
+        $modelName = ucfirst($migrationName);
+        $filePath = __DIR__ . "/app/Models/Model_{$modelName}.php";
+
+        if (!file_exists($filePath)) {
+            echo 'Migration not exists';
+            die;
+        }
+
+        $model = initModel($modelName);
+
+        $model->migrate();
+
+        echo "✔ Migration succeed from model - Model_$modelName";
     }
 
 
