@@ -258,12 +258,12 @@ To get progect base url, use - **baseUrl()** function. It takes optional paramet
 ```
 
 ## URL segments
-To get url without site base url with function **getSegments()**. It takes optional parametes where you can set url indexes. 
+To get url without site base url with function **urlSegments()**. It takes optional parametes where you can set url indexes. 
 
 For example you current url is **http://sitename.com/users/login**:
 ```
-<?= getSegments() ?>    <!-- returns - users/login -->
-<?= getSegments(2) ?>   <!-- returns - login -->
+<?= urlSegments() ?>    <!-- returns - users/login -->
+<?= urlSegments(2) ?>   <!-- returns - login -->
 ```
 ## Getting query string
 ```
