@@ -143,7 +143,7 @@ $pagesModel->customMethod();
 
 To create migration, inside the model create method called **migrate()**
 
-This method can be invoked through **CLI**. To fire it inside terminal type - **php cli make:migration modelName**
+This method can be invoked through **CLI**. To fire it, inside terminal type - **php cli make:migration modelName**
 
 
 # Method spoofing
