@@ -33,3 +33,13 @@ function setForm(array $data) {
 function setMethod(string $method) {
     return '<input name="_method" type="hidden" value="'.$method.'" />';
 }
+
+
+function show_error(string $error_name, string $field_name) {
+
+    if (hasFlashData($error_name)) {
+        return '<p class="uk-margin-remove uk-text-danger uk-text-small">'.implode(', ', getFlashData($error_name)->{$field_name} ?? []).'</p>';
+    }
+
+    return '';
+}
