@@ -38,7 +38,7 @@ function setMethod(string $method) {
 function show_error(string $error_name, string $field_name) {
 
     if (hasFlashData($error_name)) {
-        return '<p class="uk-margin-remove uk-text-danger uk-text-small">'.implode(', ', getFlashData($error_name)->{$field_name} ?? []).'</p>';
+        return '<p style="color: #f0506e; font-size: .875rem; line-height: 1.5; margin-top: 0; margin-bottom: 0;">'.implode(', ', getFlashData($error_name)->{$field_name} ?? []).'</p>';
     }
 
     return '';
