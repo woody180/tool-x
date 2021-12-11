@@ -395,13 +395,8 @@ $router->post('api/one', function($req, $res) {
 ```
 <form>
     <div>
-
         <input name="username" />
-
-        <?php if (hasFlashData('errors')): ?>
-            <p class="uk-margin-remove uk-text-danger uk-text-small"><?= show_error('errors', 'username') ?></p>
-        <?php endif; ?>
-
+        <?= show_error('errors', 'username') ?>
     </div>
 </form>
 ```
