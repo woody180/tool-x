@@ -469,6 +469,10 @@ In order to show this translations use namespace `use App\Engine\Libraries\Langu
 
 and than - 
 ```
+<?php
+
+use App\Engine\Libraries\Languages;
+
 Languages::translate('validation.err_name')
 ```
 
