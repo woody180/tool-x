@@ -453,11 +453,6 @@ php cli language:delete en
 php cli language:refresh all
 ```
 
-### Delete list
-```
-php cli language:refresh all
-```
-
 ## Creating translation files
 Inside **app/languages** directory create folder with language code for example 'en'.
 
