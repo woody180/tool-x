@@ -22,11 +22,122 @@ class Cli {
 
                 if (!isset($argv[2])) die(self::$messages);
                 
-                call_user_func(['Cli', $argv_split[0]], $argv_split[1], $argv[2], $argv[3] ?? '');
+                call_user_func(['Cli', $argv_split[0]], $argv_split[1], $argv[2], $argv[3] ?? '', $argv[4] ?? '');
             }
         } else {
             echo self::$messages;
         }
+    }
+
+
+    // Create language list
+    private static function language($arg, $name = null, $suffix = null, $isActive = null) {
+
+        $path = APPROOT . "/Engine/Language_base/languages.json";
+  
+        // Set languages
+        if ($arg === 'set') {
+
+            if (!$name) die("😤 Provide language name like - 'php cli language:set georgian ge' \n");
+            if (!$suffix) die("😤 Provide language code like - 'php cli language:set georgian ge' \n");
+        
+            $langList = [];
+            if (file_exists($path)) {
+                $langList = file_get_contents($path);
+                $langList = json_decode($langList, true);
+            }
+
+            // Check if language already stored
+            foreach($langList as $lg) {
+                if ($lg['code'] === $suffix) 
+                    die("- Language is already stored \n");
+            }
+
+            // If one more active lang
+            foreach($langList as $i => $lg) {
+                if ($lg['primary'] === true && $isActive)
+                    $langList[$i]['primary'] = null;
+            }
+            
+            $langList[] = [
+                'language' => strtolower($name),
+                'code' => strtolower($suffix),
+                'primary' => $isActive == '--primary' ? TRUE : null
+            ];
+    
+            file_put_contents(APPROOT . "/Engine/Language_base/languages.json", json_encode($langList));
+            
+            die("✔️ $name - stored succesfully. \n");
+        }
+
+
+
+        // Get languages list
+        if ($arg === 'get') {
+
+            if (!file_exists($path)) die("Language list not found. \n");
+
+            $data = file_get_contents($path);
+            die($data . "\n");
+        }
+
+
+        // Delete landuage
+        if ($arg === 'delete') {
+
+            $langList = file_get_contents($path);
+            $langList = json_decode($langList, true);
+            $lang = null;
+
+            foreach ($langList as $i => $ll) {
+
+                if ($ll['code'] == $name) {
+                    
+                    $lang = $langList[$i]['language'];
+                    array_splice($langList, $i, 1);
+                    break;
+                }
+            }
+
+            file_put_contents(APPROOT . "/Engine/Language_base/languages.json", json_encode($langList));
+
+            die("✔️ {$lang} removed from language list \n");
+        }
+
+
+        // Make primary
+        if ($arg === 'primary') {
+
+            $langList = file_get_contents($path);
+            $langList = json_decode($langList, true);
+            $lang = null;
+
+            for ($i=0; $i < count($langList); $i++) { 
+                $langList[$i]['primary'] = null;
+            }
+
+
+            foreach ($langList as $i => $ll) {
+                if ($ll['code'] == $name) {
+                    $langList[$i]['primary'] = true;
+                    $lang = $langList[$i]['language'];
+                    break;
+                }
+            }
+
+            file_put_contents(APPROOT . "/Engine/Language_base/languages.json", json_encode($langList));
+
+            die("✔️ {$lang} is primary \n");
+        }
+
+
+        // Delete languages
+        if ($arg === 'refresh') {
+            file_put_contents(APPROOT . "/Engine/Language_base/languages.json", json_encode([]));
+            die("✔️ All languages are removed from list \n");
+        }
+
+        
     }
 
 

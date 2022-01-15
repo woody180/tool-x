@@ -18,6 +18,10 @@ else
     ini_set('display_errors', 0);
 
 
+// Multilingual
+if (MULTILINGUAL) require_once APPROOT . "/Engine/Libraries/Languages.php";
+
+
 // Base helper files
 require_once APPROOT . "/Engine/Helpers/engineToolHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineHelpers.php";

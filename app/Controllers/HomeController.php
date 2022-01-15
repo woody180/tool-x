@@ -1,5 +1,7 @@
 <?php namespace App\Controllers;
 
+use App\Engine\Libraries\Languages;
+
 class HomeController {
     
     public function index($req, $res) {

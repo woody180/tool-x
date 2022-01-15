@@ -1,0 +1,13 @@
+[{
+    "language": "english",
+    "code": "en",
+    "primary": true
+}, {
+    "language": "georigan",
+    "code": "ge",
+    "primary": null
+}, {
+    "language": "russian",
+    "code": "ru",
+    "primary": null
+}]
