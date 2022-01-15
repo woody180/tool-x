@@ -421,6 +421,63 @@ public function method($req, $res) {
 });
 ```
 
+# Languages and Translations
+
+For multilangual activation go to **app/Config/app.php** directory and set **MULTILINGUAL** to **true**
+
+## Creating language list with CLI 
+
+### Creating languages list
+```
+php cli language:set english en --primary
+php cli language:set english ge
+```
+
+### Set primary language
+```
+php cli language:primary ge
+```
+
+### Get language list
+```
+php cli language:list show
+```
+
+### Delete language
+```
+php cli language:delete en
+```
+
+### Delete list
+```
+php cli language:refresh all
+```
+
+### Delete list
+```
+php cli language:refresh all
+```
+
+## Creating translation files
+Inside **app/languages** directory create folder with language code for example 'en'.
+
+Than create .php file called for example **validation** and inside this file return array with key / values of words / sentences you want to translate.
+
+```
+return [
+    'err_name' => 'Name error'
+];
+
+```
+
+In order to show this translations use namespace `use App\Engine\Libraries\Languages;`
+
+and than - 
+```
+Languages::translate('validation.err_name')
+```
+
+
 # Pagination
 
 ```

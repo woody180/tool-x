@@ -137,6 +137,16 @@ class Cli {
             die("✔️ All languages are removed from list \n");
         }
 
+
+        // Language list
+        if ($arg === 'list') {
+
+            $langList = file_get_contents($path);
+
+            print_r($langList);
+            die("\n");
+        }
+
         
     }
 
