@@ -477,6 +477,26 @@ Languages::translate('validation.err_name')
 ```
 
 
+# Singleton pattern
+Create Singleton pattern with CLI
+```
+php cli make:singleton className
+```
+It will generate file in **app/Singleton** directory. This file goning to load automatically form **app/Engine/bootstrap.php** file.
+
+To use this class, just load coresponding namespace
+
+```
+use app\Singleton\ClassName;
+
+public function contorllerName() {
+
+    ClassName::getInstance();
+}
+
+```
+
+
 # Pagination
 
 ```
@@ -523,3 +543,4 @@ It is possible to create routes and controllers using CLI commands
 - Create Model - ```php cli make:models modelname```
 - Migration through model method - ```php cli make:migration ModelName```
 - Create restful routes and controllers - ``` php cli make:restful Blog/Articles ```
+- Create singleton - ``` php cli make:singleton className ```
