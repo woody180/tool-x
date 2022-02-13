@@ -156,6 +156,17 @@ class Cli {
         $type = ucfirst($fileType);
 
 
+        // print_r($fileType . "\n");
+        // die;
+
+
+        // Create singleton pattern file
+        if ($fileType == "singleton") {
+            self::createSingleton(ucfirst($fileName));
+            die("✔ - Singleton file - \"{$fileName}\" created successfully. \n");
+        }
+
+
         // If type is restful
         if ($fileType === 'restful') {
 
@@ -212,6 +223,49 @@ class Cli {
         file_put_contents(__DIR__ . "/app/{$type}/". ucfirst($fileName) . $suffix .".php", $boilerPlate);
 
         echo "✔ - $fileName done! \n";
+    }
+
+
+
+    private static function createSingleton(string $singletonName) {
+        
+        if (is_dir(__DIR__ . "/app/Singleton")) {
+
+            $path = __DIR__ . "/app/Singleton/";
+            $filename = $path . $singletonName . '.php';
+
+            if (file_exists($filename)) die("😤 {$singletonName}.php - singleton file is already exists \n");
+
+            file_put_contents($path . $singletonName . '.php', "<?php
+
+namespace App\Singleton;
+            
+// Singleton class.
+class {$singletonName} {
+    // Hold the class instance.
+    private static \$instance = null;
+
+    // The constructor is private
+    // to prevent initiation with outer code.
+    private function __construct()
+    {
+        // The expensive process (e.g.,db connection) goes here.
+    }
+
+    // The object is created from within the class itself
+    // only if the class has no instance.
+    public static function getInstance()
+    {
+        if (self::\$instance == null)
+        {
+            self::\$instance = new {$singletonName}();
+        }
+
+        return self::\$instance;
+    }
+}
+            ");
+        }
     }
 
 

@@ -18,6 +18,11 @@ else
     ini_set('display_errors', 0);
 
 
+// Adding singeton patterns
+$singletones = glob(APPROOT . "/Singleton/*.php");
+foreach ($singletones as $st) require_once $st;
+
+
 // Multilingual
 if (MULTILINGUAL) require_once APPROOT . "/Engine/Libraries/Languages.php";
 
