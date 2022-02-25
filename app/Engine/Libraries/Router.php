@@ -9,28 +9,53 @@ class Router {
     private $routes = [];
     private $request;
     private static $instance = null;
-
-
-
+    
+    
+    private function dd($x)
+    {
+        echo '<pre>';
+        print_r($x);
+        echo '</pre>';
+        //die;
+    }
+    
     private function __construct() {
         $this->request = $this->getRequest();
     }
+    
+    
+    private function parseArgs(string $method, $arg, $callback, string $middleware = null)
+    {
+        if (is_array($arg)) {
+            $cntrlr = $arg['controller'];
+            $mtd    = $arg['method'] ?? 'index';
+            $md     = $arg['middleware'] ?? '';
+            
+            $contollerWithMethld = ucfirst($cntrlr) . '@' . $mtd; // Bind contorller with method like this - 'Controller@method'
+            $this->routes[$method][$arg['route']] = [$contollerWithMethld, $md, 'csrf' => $arg['csrf'] ?? CSRF_PROTECTION]; // Uppend to the routes array
+        } else {
+            $this->routes[$method][$arg] = [$callback, $middleware, 'csrf' => $arg['csrf'] ?? CSRF_PROTECTION];
+        }
+    }
+
+
+
 
     // Router HTTP verbs
-    public function get($url, $callback, string $middleware = null) {
-        $this->routes['get'][$url] = [$callback, $middleware];
+    public function get($url, $callback = null, string $middleware = null) {
+        $this->parseArgs('get', $url, $callback, $middleware);
     }
-    public function post($url, $callback, string $middleware = null) {
-        $this->routes['post'][$url] = [$callback, $middleware];
+    public function post($url, $callback = null, string $middleware = null) {
+        $this->parseArgs('post', $url, $callback, $middleware);
     }
-    public function put($url, $callback, string $middleware = null) {
-        $this->routes['put'][$url] = [$callback, $middleware];
+    public function put($url, $callback = null, string $middleware = null) {
+        $this->parseArgs('put', $url, $callback, $middleware);
     }
-    public function patch($url, $callback, string $middleware = null) {
-        $this->routes['patch'][$url] = [$callback, $middleware];
+    public function patch($url, $callback = null, string $middleware = null) {
+        $this->parseArgs('patch', $url, $callback, $middleware);
     }
-    public function delete($url, $callback, string $middleware = null) {
-        $this->routes['delete'][$url] = [$callback, $middleware];
+    public function delete($url, $callback = null, string $middleware = null) {
+        $this->parseArgs('delete', $url, $callback, $middleware);
     }
     public function match($methods, $url, $callback, string $middleware = null) {
 
@@ -52,7 +77,7 @@ class Router {
     // Placeholder to regex
     protected function checkPatternMatch() {
         $routes = [];
-
+        
         foreach ($this->routes[$this->request->getMethod()] as $route => $method) {
             $url = str_replace('/', '\/', $route);
             $url = str_replace('(:continue)', '[\w\-_].*', $url);               // Continues segment
@@ -76,13 +101,16 @@ class Router {
             if (preg_match("/" . $route . "/", $compareTo, $match)) {
 
                 if (isset($match[0]) && $match[0] === $compareTo) {
+                    
+                    if (isset($method['csrf']) && $method['csrf']) $this->checkCSRF();
+                    
                     return $method;
                 } else {
                     continue;
                 }
             }
         }
-
+        
         return 0;
     }
     
