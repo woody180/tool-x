@@ -151,7 +151,7 @@ function abort(array $params = ["code" => 404, "url" => NULL, "text" => NULL]) {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>404 - Page not found</title>
+            <title>'.status($params["code"])["code"] . ' ' . status($params["code"])["text"].'</title>
             <style>
                 html, body {margin: 0; padding: 0; font-family: sans-serif;
                 width: 100%; height: 100%; color: #606472}
