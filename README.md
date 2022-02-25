@@ -20,6 +20,18 @@ $router->delete('/', function($req, $res) {});
 $router->all('/', function($req, $res) {});
 $router->match('get|post', '/', function($req, $res) {});
 ```
+It is also possible to add routes in the different way.
+```
+$router->post([
+    'route' => 'some/url',
+    'controller' => 'PagesController',
+    'method' => 'create',
+    'csrf' => false
+]);
+
+```
+
+
 Router verb method takes two arguments -  ```$request``` and ```$response```.
 ```
 $router->get('/', function($req, $res) {
