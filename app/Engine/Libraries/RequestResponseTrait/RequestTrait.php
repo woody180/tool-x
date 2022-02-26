@@ -7,8 +7,11 @@ trait RequestTrait {
     private $urlParams;
     private $url;
     private $isDone = false;
-    
-    
+    private $data;
+
+
+
+
     // Construct request url data...
     protected function constructRequest() {
         
@@ -68,19 +71,22 @@ trait RequestTrait {
     
     protected function checkCSRF($isTrue = true)
     {
+        
         if ($isTrue) {
             
             if (CSRF_PROTECTION && $this->getMethod() === 'post' && !$this->isDone) {
-
+                
                 // If token inside the request body
-                if (!isset($data['csrf_token'])) return abort(['code' => 403]);
+                if (!isset($this->data['csrf_token'])) return abort(['code' => 403]);
 
                 // Compare tokens
-                if ($data['csrf_token'] != $_SESSION['csrf_token']) return abort(['code' => 403]);
+                if ($this->data['csrf_token'] != $_SESSION['csrf_token']) return abort(['code' => 403]);
 
                 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
                 $this->isDone = true;
+                
+                if (isset($this->data['csrf_token'])) unset($this->data['csrf_token']);
             }
         }
         
@@ -90,7 +96,7 @@ trait RequestTrait {
     
 
     public function body(string $index = null) {
-                
+        
         // Request data
         $reqString = file_get_contents('php://input');
         $data = [];
@@ -107,14 +113,12 @@ trait RequestTrait {
         foreach ($_POST as $key => $val)
             $data[$key] = $val;
 
-        if (isset($data['csrf_token'])) unset($data['csrf_token']);
 
-
-        if ($index)
-            return $data[$index] ?? null;
+        if ($index) return $data[$index] ?? null;
+        
+        $this->data = $data;
         
         return $data;
-        
     }
 
 
