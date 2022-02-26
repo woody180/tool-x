@@ -95,8 +95,13 @@ require_once APPROOT . '/Engine/Libraries/Router.php';
 
 // CSRF Protection
 if (CSRF_PROTECTION) {
-    if (!isset($_SESSION['csrf_token'])) 
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    if (!isset($_SESSION['csrf_token'])) {
+        if (!CSRF_REFRESH) {
+            if (!isset($_SESSION['csrf_token'])) $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        } else {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+    }
 }
 
 // Redirect to HTTPS
