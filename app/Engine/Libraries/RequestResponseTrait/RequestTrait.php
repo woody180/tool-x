@@ -82,7 +82,7 @@ trait RequestTrait {
                 // Compare tokens
                 if ($this->data['csrf_token'] != $_SESSION['csrf_token']) return abort(['code' => 403]);
 
-                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+                if (CSRF_REFRESH) $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
                 $this->isDone = true;
                 
