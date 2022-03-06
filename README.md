@@ -1,3 +1,10 @@
+# Starting server
+With your terminal navigation public directory and then type - 
+```
+php -S localhost:3000
+```
+you can change port "3000" from **app/Config/urls.php**
+
 # Router
 ## Creating routes
 
