@@ -60,7 +60,10 @@ function query(string $key = null) {
     }
 
     if ($key) {
-        return $queryArr[$key] ?? null;
+        if (isset($queryArr[$key]))
+                return htmlspecialchars($queryArr[$key], ENT_QUOTES);
+
+            return null;
     } else {
         return $queryArr;
     }
