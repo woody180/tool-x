@@ -53,6 +53,9 @@ foreach (LIBRARIES as $lib) {
 
 // Include template engine
 require_once APPROOT . "/Engine/TemplateEngine/Extension/ExtensionInterface.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/ResolveTemplatePath.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/ResolveTemplatePath/NameAndFolderResolveTemplatePath.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/ResolveTemplatePath/ThemeResolveTemplatePath.php";
 require_once APPROOT . "/Engine/TemplateEngine/Template/Data.php";
 require_once APPROOT . "/Engine/TemplateEngine/Template/Directory.php";
 require_once APPROOT . "/Engine/TemplateEngine/Template/FileExtension.php";
@@ -61,6 +64,8 @@ require_once APPROOT . "/Engine/TemplateEngine/Template/Func.php";
 require_once APPROOT . "/Engine/TemplateEngine/Template/Functions.php";
 require_once APPROOT . "/Engine/TemplateEngine/Template/Name.php";
 require_once APPROOT . "/Engine/TemplateEngine/Template/Template.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Template.php";
+require_once APPROOT . "/Engine/TemplateEngine/Template/Theme.php";
 require_once APPROOT . "/Engine/TemplateEngine/Extension/Asset.php";
 require_once APPROOT . "/Engine/TemplateEngine/Extension/URI.php";
 require_once APPROOT . "/Engine/TemplateEngine/Engine.php";
