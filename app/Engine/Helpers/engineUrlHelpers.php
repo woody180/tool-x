@@ -27,7 +27,7 @@ function urlSegments(int $index = null, bool $removeQuery = false) {
     preg_match('/([^\?]+)(\?.*)?/', $url, $match);
     $matchIndex = $removeQuery ? 1 : 0;
     $res = $match[$matchIndex] ?? null;
-    return $res;
+    return urldecode($res);
 }
 
 

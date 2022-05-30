@@ -62,9 +62,10 @@ trait RequestTrait {
         if (!$param) return null;
         
         if ($withQeuryString) {
-            return $param;
+            return urldecode($param);
         } else {
-            return explode('?', $param)[0];
+            $url = urldecode(explode('?', $param)[0]);
+            return $url;
         }
     }
     
@@ -128,7 +129,7 @@ trait RequestTrait {
         $res = preg_replace('/[\/]?\?.*/', '', $this->url);
         
         if (!strlen($res)) return '/';
-        return $res;
+        return urldecode($res);
     }
 
 

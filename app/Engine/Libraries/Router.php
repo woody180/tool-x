@@ -98,7 +98,7 @@ class Router {
             $compareTo = $queryStr ? explode($queryStr, $this->request->url())[0] : $this->request->url();
             $compareTo = empty($compareTo) ? '/' : $compareTo;
             
-            if (preg_match("/" . $route . "/", $compareTo, $match)) {
+            if (preg_match("/".$route."/mu", $compareTo, $match)) {
 
                 if (isset($match[0]) && $match[0] === $compareTo) {
                     
