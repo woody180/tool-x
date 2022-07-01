@@ -142,7 +142,7 @@ function pager(array $params) {
     
     // Previous page
     $currentLink = $currectPage > 1 ? $currectPage - 1 : $currectPage;
-    $inner .= '<li class="page-item"><a href="'.$currentSiteUrl.'page='.$currentLink.'">&laquo;</a></li>';
+    $inner .= '<li><a href="'.$currentSiteUrl.'page='.$currentLink.'"><span uk-pagination-previous></span></a></li>';
     
     if ( $start > 1 ) {
         $inner .= '<li class="page-item"><a href="'.$currentSiteUrl.'page=1">1</a></li>';
@@ -165,7 +165,7 @@ function pager(array $params) {
     
     // Next page
     $nextLink = $currectPage < $last ? $currectPage + 1 : $currectPage;
-    $inner .= '<li><a href="'.$currentSiteUrl.'page='.$nextLink.'">&raquo;</a></li>';
+    $inner .= '<li><a href="'.$currentSiteUrl.'page='.$nextLink.'"><span uk-pagination-next></span></a></li>';
     
     
     return sprintf($outer, $inner);
