@@ -11,19 +11,26 @@ function urlExists($url) {
 
 
 // Url segments
-function urlSegments(int $index = null, bool $removeQuery = false) {
+function urlSegments($index = null, bool $removeQuery = false) {
 
-    $i = $index - 1;
-    
     $urlArr = explode(URLROOT, CURRENT_URL);
     $url = isset($urlArr[1]) ? $urlArr[1] : '/';
     $url = ltrim($url, '/');
     $url = empty($url) ? '/' : $url;
-
-    if ($index) {
-        $url = explode('/', $url)[$i] ?? null;
+    
+    if (!is_null($index) && !is_int($index)) {
+        $option = strtolower($index);
+        $urlSegments = explode('/', $url);
+        
+        if ($option === 'last') $url = end($urlSegments);
+        if ($option === 'first') $url = reset($urlSegments);
     }
 
+    if (is_int($index)) {
+        $i = $index - 1;
+        $url = explode('/', $url)[$i] ?? null;
+    }
+    
     preg_match('/([^\?]+)(\?.*)?/', $url, $match);
     $matchIndex = $removeQuery ? 1 : 0;
     $res = $match[$matchIndex] ?? null;
