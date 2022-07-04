@@ -288,6 +288,8 @@ For example you current url is **http://sitename.com/users/login**:
 ```
 <?= urlSegments() ?>    <!-- returns - users/login -->
 <?= urlSegments(2) ?>   <!-- returns - login -->
+<?= urlSegments('first') ?>   <!-- returns - first part of url -->
+<?= urlSegments('last') ?>   <!-- returns - last part of url -->
 ```
 ## Getting query string
 ```
