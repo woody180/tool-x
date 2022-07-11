@@ -19,7 +19,7 @@ trait RequestTrait {
         $urlArr = explode(URLROOT, CURRENT_URL);
         $url = isset($urlArr[1]) ? $urlArr[1] : '/';
         $url = $url != '/' ? ltrim(rtrim($url, '/'), '/') : '/';
-        $this->url = filter_var($url, FILTER_SANITIZE_STRING);
+        $this->url = filter_string_polyfill($url);
 
         // Url parameters
         $this->urlParams = $this->url == '/' ? null : explode('/', $this->url);
