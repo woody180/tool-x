@@ -2,6 +2,15 @@
 
 
 
+function filter_string_polyfill(string $string): string
+{
+    $str = preg_replace('/\x00|<[^>]*>?/', '', $string);
+    return str_replace(["'", '"'], ['&#39;', '&#34;'], $str);
+}
+
+
+
+
 function str2url($str, $options = array()) {
     // Make sure string is in UTF-8 and strip invalid UTF-8 characters
     $str = mb_convert_encoding((string)$str, 'UTF-8', mb_list_encodings());
