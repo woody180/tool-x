@@ -310,7 +310,7 @@ function get_cookie(string $name) {
 
 function delete_cookie(string $name) {
 
-    if (isset($_COOKIE[$name])) setcookie($name, null, time() - 3600, '/');
+    if (isset($_COOKIE[$name])) setcookie($name, '', time() - 3600, '/');
     return true;
 }
 
