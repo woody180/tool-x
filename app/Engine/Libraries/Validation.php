@@ -380,11 +380,11 @@ class Validation {
             if (!empty($bodyVal)) {
                 
                 if (!is_array($bodyVal)) {
-                    if (!filter_string_polyfill($bodyVal))
+                    if (!is_string($bodyVal))
                         $this->errors[$name][] = "Not a string.";
                 } else {
                     foreach ($bodyVal as $val) {
-                        if (!filter_string_polyfill($val))
+                        if (!is_string($val))
                             $this->errors[$name][] = "Not a string.";
                     }
                 }
