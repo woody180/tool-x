@@ -18,7 +18,7 @@ function csrf_hash() {
 function getForm(string $val) {
         
     if (hasFlashData('form'))
-        return getFlashData('form')->{$val};
+        return getFlashData('form')->{$val} ?? null;
     else 
         return null;
 }
