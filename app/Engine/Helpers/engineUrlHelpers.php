@@ -31,6 +31,7 @@ function urlSegments($index = null, bool $removeQuery = false) {
         $url = explode('/', $url)[$i] ?? null;
     }
     
+    if (is_null($url)) return null;
     preg_match('/([^\?]+)(\?.*)?/', $url, $match);
     $matchIndex = $removeQuery ? 1 : 0;
     $res = $match[$matchIndex] ?? null;
