@@ -68,14 +68,16 @@ function query(string $key = null) {
     }
 
     if ($key) {
-        if (isset($queryArr[$key]))
-                return htmlspecialchars($queryArr[$key], ENT_QUOTES);
-
-            return null;
+        if (isset($queryArr[$key])) {
+            $res = htmlspecialchars($queryArr[$key], ENT_QUOTES);
+            return empty($res) ? null : $res;
+        }
+        
+        return null;
+        
     } else {
         return $queryArr;
     }
-
 }
 
 
