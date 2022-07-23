@@ -93,7 +93,7 @@ foreach (AUTOBOOT_FILES as $file) {
 require_once APPROOT . '/Engine/Libraries/Validation.php';
 
 // Router
-require_once APPROOT . '/Engine/Libraries/Library.php';
+// require_once APPROOT . '/Engine/Libraries/Library.php';
 require_once APPROOT . '/Engine/Libraries/RequestResponseTrait/RequestTrait.php';
 require_once APPROOT . '/Engine/Libraries/RequestResponseTrait/ResponseTrait.php';
 require_once APPROOT . '/Engine/Libraries/Router.php';

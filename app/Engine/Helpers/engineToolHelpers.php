@@ -283,15 +283,15 @@ function array_value_multisort(&$array, $key, $nextArrayKey) {
 function set_cookie(array $data) {
 
     $tobeStored = [
-       'name' => $data['name'] ?? null,
-       'value' => isset($data['value']) ? toJSON($data['value']) : null,
+       'name' => $data['name'] ?? "",
+       'value' => isset($data['value']) ? toJSON($data['value']) : '',
        'expire' => isset($data['expire']) ? time() + $data['expire'] : time() + 86400,
        'path' => $data['path'] ?? '/',
        'domain' => $data['domain'] ?? "",
        'secure' => $data['secure'] ?? false,
        'httponly' => $data['httponly'] ?? false,
     ];
-
+    
     setcookie($tobeStored['name'], $tobeStored['value'], $tobeStored['expire'], $tobeStored['path'], $tobeStored['domain'], $tobeStored['secure'], $tobeStored['httponly']);
 }
 
