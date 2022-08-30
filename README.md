@@ -394,7 +394,7 @@ $router->post('api/one', function($req, $res) {
 });
 ```
 
-## Avaialble validators
+## Available validators
 - alpha
 - alpha_spaces
 - alpha_num_spaces
