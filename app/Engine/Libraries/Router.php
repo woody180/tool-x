@@ -178,6 +178,7 @@ class Router {
 
                 // Check if callback variable is statusCode
                 if (is_numeric($callback[0])) abort(['code' => $callback[0]]);
+                unset($_POST['csrf_token']);
                 
                 // Check if $callback is callable
                 if (is_callable($callback[0])) {
@@ -223,7 +224,7 @@ class Router {
                     // Check method inside the controller
                     if (!method_exists($this->currentController, $this->currentMethod))
                         abort();
-
+                    
                     // Check if route has some middleware
                     if ($callback[1]) $this->runMiddleware($callback[1]);
 

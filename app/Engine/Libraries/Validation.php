@@ -92,14 +92,14 @@ class Validation {
         }
         
         if ($param === 'required') {
-
+            
             if (!empty($bodyVal)) {
                 if (!is_array($bodyVal)) {
                     if (strlen($bodyVal) < 1) 
                         $this->errors[$name][] = "$readableName field can't be empty.";
                 } else {
                     
-                    if (isset($bodyVal['error']) && empty($bodyVal['name'][0])) {
+                    if (isset($bodyVal['error']) && strlen($bodyVal['name'][0]) < 1) {
                         $this->errors[$name][] = "$readableName field can't be empty.";
                     }
                     
