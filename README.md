@@ -1,9 +1,11 @@
 # Starting server
-With your terminal navigation public directory and then type - 
+With your terminal open application root directory and fire: 
 ```
-php -S localhost:3000
+php cli serve
 ```
-you can change port "3000" from **app/Config/urls.php**
+Note that you must provide URLROOT from **app/Config/urls.php**
+
+Starting server in that manner is only for development purposes.
 
 # Router
 ## Creating routes
