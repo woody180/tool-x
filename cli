@@ -12,6 +12,17 @@ class Cli {
     private static $messages;
 
     public static function construct($argv) {
+        
+        if (isset($argv[1]) && $argv[1]==='serve')
+        {
+            $hostArrHttp = explode('//', URLROOT);
+            $host = $hostArrHttp[1] ?? $hostArrHttp[0];
+            $port = explode(':', $host)[1] ?? die("Port missing in Config/urls.php where 'URLROOT' is declared");
+            $host = explode(':', $host)[0];
+            
+            if (!shell_exec("php -S {$host}:{$port} -t public/")) die("Server failed on {$host}:{$port}");
+        }
+            
 
         self::$messages = "😤 try \n ➡  php cli make:controllers blog something \n ➡  php cli make:routes blog post \n ➡  php cli make:restful blog";
 

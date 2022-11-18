@@ -1,8 +1,7 @@
 <?php
 
 // Application config
-define("URLROOT", "http://localhost:8080");
-// define("URLROOT", (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]");
+define("URLROOT", "http://localhost:9191");
 define("PUBLIC_DIR", URLROOT . "/assets");
 define("APPROOT", dirname(dirname(__FILE__)));
 
