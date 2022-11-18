@@ -5,7 +5,7 @@ php cli serve
 ```
 Note that you must provide URLROOT from **app/Config/urls.php**
 
-Starting server in that manner is only for development purposes.
+Starting server in that manner is for development purposes only!
 
 # Router
 ## Creating routes
