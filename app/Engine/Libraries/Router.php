@@ -16,7 +16,7 @@ class Router {
         echo '<pre>';
         print_r($x);
         echo '</pre>';
-        //die;
+        die;
     }
     
     private function __construct() {
@@ -24,7 +24,7 @@ class Router {
     }
     
     
-    private function parseArgs(string $method, $arg, $callback, string $middleware = null)
+    private function parseArgs(string $method, $arg, $callback, $middleware = null)
     {
         if (is_array($arg)) {
             $cntrlr = $arg['controller'];
@@ -42,29 +42,29 @@ class Router {
 
 
     // Router HTTP verbs
-    public function get($url, $callback = null, string $middleware = null) {
+    public function get($url, $callback = null, $middleware = null) {
         $this->parseArgs('get', $url, $callback, $middleware);
     }
-    public function post($url, $callback = null, string $middleware = null) {
+    public function post($url, $callback = null, $middleware = null) {
         $this->parseArgs('post', $url, $callback, $middleware);
     }
-    public function put($url, $callback = null, string $middleware = null) {
+    public function put($url, $callback = null, $middleware = null) {
         $this->parseArgs('put', $url, $callback, $middleware);
     }
-    public function patch($url, $callback = null, string $middleware = null) {
+    public function patch($url, $callback = null, $middleware = null) {
         $this->parseArgs('patch', $url, $callback, $middleware);
     }
-    public function delete($url, $callback = null, string $middleware = null) {
+    public function delete($url, $callback = null, $middleware = null) {
         $this->parseArgs('delete', $url, $callback, $middleware);
     }
-    public function match($methods, $url, $callback, string $middleware = null) {
+    public function match($methods, $url, $callback, $middleware = null) {
 
         $methodsArray = explode('|', $methods);
 
         foreach ($methodsArray as $method)
             $this->routes[$method][$url] = [$callback, $middleware];
     }
-    public function all($url, $callback, string $middleware = null) {
+    public function all($url, $callback, $middleware = null) {
 
         $httpVerbs = ['get', 'post', 'put', 'patch', 'delete', 'options'];
 
@@ -90,7 +90,7 @@ class Router {
             // Push to new routes array
             $routes[$this->request->getMethod()][$url] = $method;
         }
-
+        
         // Find requested url
         foreach ($routes[$this->request->getMethod()] as $route => $method) {
 
@@ -116,19 +116,38 @@ class Router {
     
     
     private function runMiddleware($func) {
-        // Check if file exists
-        $file = APPROOT . "/Routes/{$func}.php";
-
-        if (!file_exists($file))
-            die('Wrong middleware path ' . $func );
-    
-        // check slashes
-        require_once $file;
-
-        $arr = explode('/', $func);
-        $function = end($arr);
         
-        $function($this->getRequest(), $this->getResponse());
+        // Check if array
+        if (is_array($func))
+        {
+            foreach ($func as $md) {
+                // Check if file exists
+                $file = APPROOT . "/Routes/{$md}.php";
+                
+                if (!file_exists($file)) die('Wrong middleware path: <strong><mark>' . $md . '</mark></strong>' );
+                
+                // check slashes
+                require_once $file;
+                
+                $arr = explode('/', $md);
+                $function = end($arr);
+
+                $function($this->getRequest(), $this->getResponse());
+            }
+        } else {
+            // Check if file exists
+            $file = APPROOT . "/Routes/{$func}.php";
+
+            if (!file_exists($file)) die('Wrong middleware path: <strong><mark>' . $func . '</mark></strong>' );
+
+            // check slashes
+            require_once $file;
+
+            $arr = explode('/', $func);
+            $function = end($arr);
+
+            $function($this->getRequest(), $this->getResponse());
+        }
     }
 
 
@@ -165,7 +184,7 @@ class Router {
     
     
     public function __destruct() {
-
+        
         // Check if method exists inside the router
         if (array_key_exists($this->request->getMethod(), $this->routes)) {
 
@@ -189,7 +208,7 @@ class Router {
                     call_user_func($callback[0], $this->getRequest(), $this->getResponse());
 
                 } else {
-
+                    
                     // Controller & method array
                     $controllerMethodArray = explode('@', $callback[0]);
 
@@ -220,7 +239,7 @@ class Router {
 
                     // Get method
                     $this->currentMethod = $controllerMethodArray[1];
-
+                    
                     // Check method inside the controller
                     if (!method_exists($this->currentController, $this->currentMethod))
                         abort();
