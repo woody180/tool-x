@@ -109,7 +109,7 @@ class Languages {
     {
         if (!isset($_SESSION['lang'])) {
             foreach (self::list() as $lang) {
-                if ($lang->primary) return $lang->primary;
+                if ($lang->primary) return $lang->code;
                 else dd('No default language code has been found. You must provide default language close through CLI.');
             }
         }
