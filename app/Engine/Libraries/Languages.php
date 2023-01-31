@@ -31,13 +31,21 @@ class Languages {
 
 
     // Translate by language file/s
-    public static function translate(string $path) {
+    public static function translate($path) {
 
         self::construct();
         
-        $pathArr = explode('.', $path);
-
         $lang = isset($_SESSION['lang']) ? strtolower($_SESSION['lang']) : null;
+        
+        if (is_array($path)) {
+            if (isset($path[$lang]))
+                return $path[$lang];
+            else 
+                return null;
+        }
+            
+        
+        $pathArr = explode('.', $path);
 
         $filePath = APPROOT . "/Languages/{$lang}/{$pathArr[0]}.php";
         if (file_exists($filePath))

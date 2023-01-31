@@ -499,6 +499,18 @@ use App\Engine\Libraries\Languages;
 Languages::translate('validation.err_name')
 ```
 
+## Inline translation
+You can also translation within **html / view** file.
+
+> **_NOTE:_**  Lanugage codes provided inside array as keys must be created within **Engine** via **CLI**. Look at documentation above.
+
+```
+\App\Engine\Libraries\Languages::translate([
+    'en' => 'English language',
+    'de' => 'Englische Sprache'
+]);
+```
+
 
 # Singleton pattern
 Create Singleton pattern with CLI
