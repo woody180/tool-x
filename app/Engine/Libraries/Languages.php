@@ -105,7 +105,15 @@ class Languages {
     }
 
 
-    public static function active() {
+    public static function active()
+    {
+        if (!isset($_SESSION['lang'])) {
+            foreach (self::list() as $lang) {
+                if ($lang->primary) return $lang->primary;
+                else dd('No default language code has been found. You must provide default language close through CLI.');
+            }
+        }
+        
         return $_SESSION['lang'];
     }
 }
