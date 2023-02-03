@@ -92,8 +92,8 @@ class Router {
         }
         
         // Find requested url
-        foreach ($routes[$this->request->getMethod()] as $route => $method) {
-
+        foreach ($routes[$this->request->getMethod()] as $route => $method)
+        {
             $queryStr = !empty($this->request->query()) ? $this->request->queryStr() : null;
             $compareTo = $queryStr ? explode($queryStr, $this->request->url())[0] : $this->request->url();
             $compareTo = empty($compareTo) ? '/' : $compareTo;

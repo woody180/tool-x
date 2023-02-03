@@ -78,6 +78,8 @@ class Languages {
 
     // Languages list
     public static function list() {
+        
+        self::construct();
 
         $path = APPROOT . "/Engine/Language_base/languages.json";
 
@@ -89,13 +91,15 @@ class Languages {
 
     // Active languages
     public static function primary() {
+        
+        self::construct();
 
         $languageList = json_decode(file_get_contents(self::$path));
 
         $activeLang = null;
 
         foreach($languageList as $lg) {
-            if ($lg->active === true) {
+            if ($lg->primary === true) {
                 $activeLang = $lg;
                 break;
             }
@@ -107,6 +111,8 @@ class Languages {
 
     public static function active()
     {
+        self::construct();
+        
         if (!isset($_SESSION['lang'])) {
             foreach (self::list() as $lang) {
                 if ($lang->primary) return $lang->code;

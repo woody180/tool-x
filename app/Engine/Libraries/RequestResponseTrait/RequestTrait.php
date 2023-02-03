@@ -20,9 +20,18 @@ trait RequestTrait {
         $url = isset($urlArr[1]) ? $urlArr[1] : '/';
         $url = $url != '/' ? ltrim(rtrim($url, '/'), '/') : '/';
         $this->url = filter_string_polyfill($url);
-
+        
         // Url parameters
         $this->urlParams = $this->url == '/' ? null : explode('/', $this->url);
+        
+        // Check multilanguage
+        if (MULTILINGUAL)
+        {
+            array_splice($this->urlParams, 0, 1);
+            $newurlArr = explode('/', $this->url);
+            array_splice($newurlArr, 0, 1);
+            $this->url = join('/', $newurlArr);
+        }
         
         // Get request method
         $this->getMethod = strtolower($_SERVER["REQUEST_METHOD"]);

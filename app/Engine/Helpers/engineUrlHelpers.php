@@ -39,8 +39,15 @@ function urlSegments($index = null, bool $removeQuery = false) {
 }
 
 
-function baseUrl(string $url = null) {
-
+function baseUrl(string $url = null, $withLanguageCode = true) {
+    
+    if (MULTILINGUAL && $withLanguageCode) {
+        if ($url)
+            return URLROOT . '/' . \App\Engine\Libraries\Languages::active() . '/' . $url;
+        else
+            return URLROOT . '/' . \App\Engine\Libraries\Languages::active();
+    }
+    
     if ($url)
         return URLROOT . '/' . $url;
     else

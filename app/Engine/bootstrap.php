@@ -22,17 +22,31 @@ else
 $singletones = glob(APPROOT . "/Singleton/*.php");
 foreach ($singletones as $st) require_once $st;
 
-
-// Multilingual
-if (MULTILINGUAL) require_once APPROOT . "/Engine/Libraries/Languages.php";
-
-
 // Base helper files
 require_once APPROOT . "/Engine/Helpers/engineToolHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineDebuggingHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineUrlHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineFormHelpers.php";
+
+
+
+// Multilingual
+require_once APPROOT . "/Engine/Libraries/Languages.php";   
+if (MULTILINGUAL)
+{
+    $langList = \App\Engine\Libraries\Languages::list();
+    
+    if (isset($_SESSION['lang'])) {
+        
+        if (is_null(urlSegments('first')) || urlSegments('first') != \App\Engine\Libraries\Languages::active()) {
+            
+            $urlSegments = urlSegments() === '/' ? '' : urlSegments();
+            return header('Location: ' . baseUrl($urlSegments));
+        }
+    }
+}
+
 
 
 // Helper library
