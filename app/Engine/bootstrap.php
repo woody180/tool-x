@@ -35,16 +35,8 @@ require_once APPROOT . "/Engine/Helpers/engineFormHelpers.php";
 require_once APPROOT . "/Engine/Libraries/Languages.php";   
 if (MULTILINGUAL)
 {
-    $langList = \App\Engine\Libraries\Languages::list();
-    
-    if (isset($_SESSION['lang'])) {
-        
-        if (is_null(urlSegments('first')) || urlSegments('first') != \App\Engine\Libraries\Languages::active()) {
-            
-            $urlSegments = urlSegments() === '/' ? '' : urlSegments();
-            return header('Location: ' . baseUrl($urlSegments));
-        }
-    }
+    require_once APPROOT . '/Engine/Libraries/LanguageLogic.php';
+    App\Engine\Libraries\LanguageLogic::start();
 }
 
 

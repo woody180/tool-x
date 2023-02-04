@@ -25,7 +25,7 @@ trait RequestTrait {
         $this->urlParams = $this->url == '/' ? null : explode('/', $this->url);
         
         // Check multilanguage
-        if (MULTILINGUAL)
+        if (MULTILINGUAL && !is_null(urlSegments('first')))
         {
             array_splice($this->urlParams, 0, 1);
             $newurlArr = explode('/', $this->url);
