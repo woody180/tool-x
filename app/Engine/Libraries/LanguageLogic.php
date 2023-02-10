@@ -12,12 +12,12 @@ class LanguageLogic {
         }, $langList);
 
         if (isset($_SESSION['lang'])) {
-            if (!is_null(urlSegments('first')) && in_array(urlSegments('first'), $langCodeList))
-                \App\Engine\Libraries\Languages::switch(urlSegments('first'));
+            if (!is_null(urlSegments('first', true)) && in_array(urlSegments('first', true), $langCodeList))
+                \App\Engine\Libraries\Languages::switch(urlSegments('first', true));
 
-            if (!is_null(urlSegments(2)) && !in_array(urlSegments('first'), $langCodeList)) return abort();
+            if (!is_null(urlSegments(2)) && !in_array(urlSegments('first', true), $langCodeList)) return abort();
 
-            if (!is_null(urlSegments('first')) && !in_array(urlSegments('first'), $langCodeList)) return abort();
+            if (!is_null(urlSegments('first', true)) && !in_array(urlSegments('first', true), $langCodeList)) return abort();
         }
     }
 }

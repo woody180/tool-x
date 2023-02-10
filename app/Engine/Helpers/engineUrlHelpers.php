@@ -17,6 +17,13 @@ function urlSegments($index = null, bool $removeQuery = false) {
     $url = isset($urlArr[1]) ? $urlArr[1] : '/';
     $url = ltrim($url, '/');
     $url = empty($url) ? '/' : $url;
+
+    if ($removeQuery) {
+        if (preg_match('/\?/', $url, $matchQuery)) {
+            list($path, $parameters) = explode('?', $url);
+            $url = $path;
+        }
+    }
     
     if (!is_null($index) && !is_int($index)) {
         $option = strtolower($index);
