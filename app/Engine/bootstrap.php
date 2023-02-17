@@ -18,10 +18,6 @@ else
     ini_set('display_errors', 0);
 
 
-// Adding singeton patterns
-$singletones = glob(APPROOT . "/Singleton/*.php");
-foreach ($singletones as $st) require_once $st;
-
 // Base helper files
 require_once APPROOT . "/Engine/Helpers/engineToolHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineHelpers.php";
@@ -29,6 +25,27 @@ require_once APPROOT . "/Engine/Helpers/engineDebuggingHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineUrlHelpers.php";
 require_once APPROOT . "/Engine/Helpers/engineFormHelpers.php";
 
+
+// Composer autoload
+if (file_exists(APPROOT . '/Helpers/vendor/autoload.php')) {
+    require_once APPROOT . '/Helpers/vendor/autoload.php';
+}
+
+
+// Helper library
+if (!empty(CUSTOM_HELPERS)) {
+    foreach (CUSTOM_HELPERS as $helperFile) {
+        if (!file_exists(APPROOT . "/Helpers/{$helperFile}.php")) die("Wrong helper file path for - <b>{$helperFile}.php</b>");
+
+        require_once APPROOT . "/Helpers/{$helperFile}.php";
+    }
+}
+
+
+// Load files on application boot
+foreach (AUTOBOOT_FILES as $file) {
+    require_once APPROOT . "/Boot/{$file}.php";
+}
 
 
 // Multilingual
@@ -41,14 +58,12 @@ if (MULTILINGUAL)
 
 
 
-// Helper library
-if (!empty(CUSTOM_HELPERS)) {
-    foreach (CUSTOM_HELPERS as $helperFile) {
-        if (!file_exists(APPROOT . "/Helpers/{$helperFile}.php")) die("Wrong helper file path for - <b>{$helperFile}.php</b>");
+// Adding singeton patterns
+$singletones = glob(APPROOT . "/Singleton/*.php");
+foreach ($singletones as $st) require_once $st;
 
-        require_once APPROOT . "/Helpers/{$helperFile}.php";
-    }
-}
+
+
 
 
 // Include image resizer library
@@ -77,23 +92,12 @@ require_once APPROOT . "/Engine/TemplateEngine/Extension/URI.php";
 require_once APPROOT . "/Engine/TemplateEngine/Engine.php";
 
 
-// Composer autoload
-if (file_exists(APPROOT . '/Helpers/vendor/autoload.php')) {
-    require_once APPROOT . '/Helpers/vendor/autoload.php';
-}
 
 
 // RedBeanPHP model initialization function
 if (DATABASE) {
     require_once APPROOT . "/Engine/Database/Initialization.php";
 }
-
-
-// Load files on application boot
-foreach (AUTOBOOT_FILES as $file) {
-    require_once APPROOT . "/Boot/{$file}.php";
-}
-
 
 // Validation library
 require_once APPROOT . '/Engine/Libraries/Validation.php';
