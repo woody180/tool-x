@@ -42,6 +42,10 @@ if (!empty(CUSTOM_HELPERS)) {
 }
 
 
+// RedBeanPHP model initialization function
+if (DATABASE) require_once APPROOT . "/Engine/Database/Initialization.php";
+
+
 // Load files on application boot
 foreach (AUTOBOOT_FILES as $file) {
     require_once APPROOT . "/Boot/{$file}.php";
@@ -91,13 +95,6 @@ require_once APPROOT . "/Engine/TemplateEngine/Extension/Asset.php";
 require_once APPROOT . "/Engine/TemplateEngine/Extension/URI.php";
 require_once APPROOT . "/Engine/TemplateEngine/Engine.php";
 
-
-
-
-// RedBeanPHP model initialization function
-if (DATABASE) {
-    require_once APPROOT . "/Engine/Database/Initialization.php";
-}
 
 // Validation library
 require_once APPROOT . '/Engine/Libraries/Validation.php';

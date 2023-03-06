@@ -46,7 +46,7 @@ function urlSegments($index = null, bool $removeQuery = false) {
 }
 
 
-function baseUrl(string $url = null, $withLanguageCode = true) {
+function baseUrl(string $url = null, $withLanguageCode = false) {
     
     if (MULTILINGUAL && $withLanguageCode) {
         if ($url)
