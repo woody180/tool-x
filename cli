@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/app/Engine/Helpers/engineToolHelpers.php';
+require_once __DIR__ . '/app/Engine/Helpers/engineUrlHelpers.php';
 require_once __DIR__ . '/app/Config/urls.php';
 require_once __DIR__ . '/app/Config/database.php';
 require_once __DIR__ . '/app/Engine/Libraries/rb.php';
