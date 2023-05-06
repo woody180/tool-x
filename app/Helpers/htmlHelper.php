@@ -22,6 +22,15 @@ function youtubeVid($url, $width = '640', $height = '360') {
 function img($params = [], $directPath = false) {
 
     $src = $params['src'];
+    $path = $directPath ? dirname(APPROOT) . "/public/assets/tinyeditor/filemanager/files/" . $src : dirname(APPROOT) . "/public/assets/" . $src;
+    
+    // Check if file exists
+    if (!file_exists($path)) {
+        $directPath = false;
+        $src = "images/not-found.png";
+    }
+    
+    
     $alt = isset($params['alt']) ? 'alt="'.$params['alt'].'"' : '';
     $width = isset($params['width']) ? 'width="'.$params['width'].'"' : '';
     $height = isset($params['height']) ? 'height="'.$params['height'].'"' : '';
@@ -33,7 +42,6 @@ function img($params = [], $directPath = false) {
     }
     return "<img {$class} {$width} {$height} src=\"".baseUrl("assets/$src")."\" {$alt} />";
 }
-
 
 
 
