@@ -12,8 +12,10 @@ class Cli {
 
     private static $command_array = NULL;
     private static $messages;
+    protected static $argv;
 
     public static function construct($argv) {
+        self::$argv = $argv;
         
         if (isset($argv[1]) && $argv[1]==='serve')
         {
@@ -159,6 +161,26 @@ class Cli {
 
             print_r($json_string);
             die("\n");
+        }
+        
+        
+        // Switch language
+        if ($arg === 'switch')
+        {
+            $langs = file_get_contents(APPROOT . "/Engine/Language_base/languages.json");
+            $langsArr = json_decode($langs);
+            
+            $languageCode = self::$argv[2] ?? null;
+            if (!$languageCode) die ("\n Provide language code \n");
+            
+            foreach ($langsArr as $la) {
+                if ($la->code === $languageCode) {
+                    $_SESSION['lang'] = $languageCode;
+                    die("\n language switched to - " . $languageCode);
+                }
+            }
+            
+            die("\n" . $languageCode . " - language code not detected");
         }
 
         
