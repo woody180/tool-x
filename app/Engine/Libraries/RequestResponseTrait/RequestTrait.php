@@ -127,6 +127,7 @@ trait RequestTrait {
         if ($index) return $data[$index] ?? null;
         
         $this->data = $data;
+        unset($data['csrf_token']);
         
         return $data;
     }

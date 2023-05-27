@@ -12,7 +12,7 @@ function urlExists($url) {
 
 // Url segments
 function urlSegments($index = null, bool $removeQuery = false) {
-
+    
     $urlArr = explode(URLROOT, CURRENT_URL);
     $url = isset($urlArr[1]) ? $urlArr[1] : '/';
     $url = ltrim($url, '/');
@@ -47,6 +47,8 @@ function urlSegments($index = null, bool $removeQuery = false) {
 
 
 function baseUrl(string $url = null, $withLanguageCode = false) {
+    
+    if (MULTILINGUAL) $withLanguageCode = true;
     
     if (MULTILINGUAL && $withLanguageCode) {
         if ($url)
