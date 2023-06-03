@@ -191,6 +191,11 @@ class Router {
             // Check if user exists inside the routes method
             
             if ($this->checkPatternMatch()) {
+
+                // Get url segments as array with request & response traits 
+                $urlSegmentsWtihReqResTrait = $this->urlSegments() ?? [];
+                array_unshift($urlSegmentsWtihReqResTrait, $this->getRequest());
+                array_unshift($urlSegmentsWtihReqResTrait, $this->getResponse());
                 
                 // Get callback variable
                 $callback = $this->checkPatternMatch();
@@ -205,7 +210,7 @@ class Router {
                     // Check if route has some middleware
                     if ($callback[1]) $this->runMiddleware($callback[1]);
 
-                    call_user_func($callback[0], $this->getRequest(), $this->getResponse());
+                    call_user_func_array($callback[0], $urlSegmentsWtihReqResTrait);
 
                 } else {
                     
@@ -241,14 +246,13 @@ class Router {
                     $this->currentMethod = $controllerMethodArray[1];
                     
                     // Check method inside the controller
-                    if (!method_exists($this->currentController, $this->currentMethod))
-                        abort();
+                    if (!method_exists($this->currentController, $this->currentMethod)) abort();
                     
                     // Check if route has some middleware
                     if ($callback[1]) $this->runMiddleware($callback[1]);
 
                     // Call method and apply arguments
-                    call_user_func_array([$this->currentController, $this->currentMethod], [$this->getRequest(), $this->getResponse()]);
+                    call_user_func_array([$this->currentController, $this->currentMethod], $urlSegmentsWtihReqResTrait);
 
                 }
             } else {
