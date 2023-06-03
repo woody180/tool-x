@@ -49,6 +49,15 @@ $router->get('/', function($req, $res) {
 });
 ```
 
+## Get url segments as callback arguments
+```
+$router->get('books/orange-fox/part-one', function($req, $res, $x, $y, $z) {
+
+    dd( $y ); // orange-fox
+});
+```
+
+
 ## Create routes with CLI
 ```
 php cli make:routes optional/path/routerName
