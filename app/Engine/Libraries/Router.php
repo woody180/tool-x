@@ -191,18 +191,19 @@ class Router {
             // Check if user exists inside the routes method
             
             if ($this->checkPatternMatch()) {
-
+                
+                // Get callback variable
+                $callback = $this->checkPatternMatch();
+                
+                // Check if callback variable is statusCode
+                if (is_numeric($callback[0])) abort(['code' => $callback[0]]);
+                unset($_POST['csrf_token']);
+                
+                
                 // Get url segments as array with request & response traits 
                 $urlSegmentsWtihReqResTrait = $this->urlSegments() ?? [];
                 array_unshift($urlSegmentsWtihReqResTrait, $this->getRequest());
                 array_unshift($urlSegmentsWtihReqResTrait, $this->getResponse());
-                
-                // Get callback variable
-                $callback = $this->checkPatternMatch();
-
-                // Check if callback variable is statusCode
-                if (is_numeric($callback[0])) abort(['code' => $callback[0]]);
-                unset($_POST['csrf_token']);
                 
                 // Check if $callback is callable
                 if (is_callable($callback[0])) {
