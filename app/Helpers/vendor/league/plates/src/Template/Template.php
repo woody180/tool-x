@@ -158,16 +158,16 @@ class Template
     public function render(array $data = array())
     {
         $this->data($data);
-        unset($data);
-        extract($this->data);
-
         $path = ($this->engine->getResolveTemplatePath())($this->name);
 
         try {
             $level = ob_get_level();
             ob_start();
 
-            include $path;
+            (function() {
+                extract($this->data);
+                include func_get_arg(0);
+            })($path);
 
             $content = ob_get_clean();
 
@@ -368,7 +368,7 @@ class Template
             $string = $this->batch($string, $functions);
         }
 
-        return htmlspecialchars($string, $flags, 'UTF-8');
+        return htmlspecialchars($string ?? '', $flags, 'UTF-8');
     }
 
     /**
