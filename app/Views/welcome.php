@@ -1,6 +1,6 @@
-<?php $this->layout('partials/template', ['title' => $title]) ?>
+<?= $this->layout('partials/template', ['title' => $title]) ?>
 
-<?php $this->start('mainSection') ?>
+<?= $this->start('mainSection') ?>
 <section class="uk-section">
     <div class="uk-container uk-container-small">
 
@@ -10,4 +10,4 @@
     </div>
 </section>
 
-<?php $this->stop() ?>
+<?= $this->stop() ?>
