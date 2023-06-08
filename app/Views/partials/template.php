@@ -1,5 +1,5 @@
-<?php include APPROOT . '/Views/partials/head.php' ?>
+<?= $this->insert('partials/head') ?>
 
 <?= $this->section('mainSection'); ?>
 
-<?php include APPROOT . '/Views/partials/footer.php' ?>
+<?= $this->insert('partials/footer') ?>
